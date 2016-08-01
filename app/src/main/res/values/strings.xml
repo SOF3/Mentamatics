@@ -1,0 +1,30 @@
+<resources>
+	<string name="app_name">Mentamatics</string>
+
+	<string name="main_input_1" translatable="false">1</string>
+	<string name="main_input_2" translatable="false">2</string>
+	<string name="main_input_3" translatable="false">3</string>
+	<string name="main_input_4" translatable="false">4</string>
+	<string name="main_input_5" translatable="false">5</string>
+	<string name="main_input_6" translatable="false">6</string>
+	<string name="main_input_7" translatable="false">7</string>
+	<string name="main_input_8" translatable="false">8</string>
+	<string name="main_input_9" translatable="false">9</string>
+	<string name="main_input_0" translatable="false">0</string>
+	<string name="main_input_point" translatable="false">.</string>
+	<string name="main_input_neg" translatable="false">&#x00B1; <!--&#x207A;&#x2215;&#x208B;--></string>
+	<string name="main_input_backspace">Back</string>
+	<string name="main_input_delete">Delete</string>
+	<string name="main_input_reset">Reset</string>
+
+	<string name="main_question_placeholder">Question here…</string>
+
+	<string name="config_subtract_error_negative">
+
+	</string>
+
+	<string name="operator_addition">+</string>
+	<string name="operator_subtraction">-</string>
+	<string name="operator_multiplication">&#xd7;</string>
+	<string name="operator_division">&#xf7;</string>
+</resources>

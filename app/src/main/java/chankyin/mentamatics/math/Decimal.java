@@ -1,4 +1,4 @@
-package chankyin.mentamatics;
+package chankyin.mentamatics.math;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.IntRange;
@@ -369,5 +369,40 @@ public class Decimal implements Comparable<Decimal>{
 	@Override
 	public int compareTo(@NonNull Decimal other){
 		return signumAgainst(other);
+	}
+
+	public static Decimal parseString(String string){
+		return parseString(DEFAULT_BASE, string);
+	}
+
+	public static Decimal parseString(int base, String string){
+		if(base > 36){
+			throw new UnsupportedOperationException("Only base 2-36 supported");
+		}
+
+		boolean positive;
+		int[] digits;
+		if(positive = !(string.charAt(0) == '-')){
+			digits = new int[string.length() - 1];
+		}else{
+			digits = new int[string.length()];
+		}
+		for(int i = positive ? 0 : 1; i < string.length(); i++){
+			char c = string.charAt(i);
+			digits[i] = c == '.' ? DIGIT_DECIMAL_POINT : charToInt(c);
+		}
+
+		return decimalBase(positive, base, digits);
+	}
+
+	public static int charToInt(char c){
+		if('0' <= c && c <= '9'){
+			return c - '0';
+		}else if('a' <= c && c <= 'z'){
+			return c - 'a' + 10;
+		}else if('A' <= c && c <= 'Z'){
+			return c - 'A' + 10;
+		}
+		throw new NumberFormatException("Unknown digit");
 	}
 }

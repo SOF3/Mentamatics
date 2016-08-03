@@ -1,96 +1,78 @@
 package chankyin.mentamatics.config;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import chankyin.mentamatics.BuildConfig;
-import lombok.AllArgsConstructor;
-import lombok.Value;
+import android.preference.Preference;
+import android.preference.PreferenceFragment;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
-@AllArgsConstructor
-@Value
-public class ConfigEntry{
-	public final static Validator DEFAULT_VALIDATOR = new Validator(){
-		@Override
-		public void validate(Config config, Object value){
+@FieldDefaults(level = AccessLevel.PUBLIC)
+public class ConfigEntry extends ConfigElement{
+	@StringRes final int summary;
+	final Type type;
+	final String[] typeArgs;
+	final Object defaultValue;
+
+	public ConfigEntry(String id, @StringRes int name, @StringRes int summary, Type type, String[] typeArgs, Object defaultValue, @NonNull ConfigGroup parent){
+		super(id, name, parent);
+		this.summary = summary;
+		this.type = type;
+		this.typeArgs = typeArgs;
+		this.defaultValue = defaultValue;
+	}
+
+	@Override
+	public Preference toPreference(PreferenceFragment fragment){
+		Preference preference = type.createPreference(fragment, typeArgs);
+		preference.setTitle(name);
+		preference.setSummary(summary);
+		preference.setDefaultValue(defaultValue);
+		preference.setKey(getFullId());
+		return preference; // TODO
+	}
+
+	public static Builder build(String id, @StringRes int name, ConfigGroup parent){
+		return new Builder(id, name, parent);
+	}
+
+	public static class Builder{
+		private String id;
+		private int name;
+		private int summary;
+		private Type type;
+		private String[] typeArgs;
+		private Object defaultValue;
+		private ConfigGroup parent;
+
+		Builder(String id, @StringRes int name, ConfigGroup parent){
+			this.id = id;
+			this.name = name;
+			this.parent = parent;
 		}
-	};
 
-	Type type;
-	String name;
-	Object defaultValue;
-	Validator validator;
-
-	public ConfigEntry(final Type type, String name, Object defaultValue){
-		this(type, name, defaultValue, DEFAULT_VALIDATOR);
-	}
-
-	public Object readPref(SharedPreferences pref){
-		if(BuildConfig.DEBUG && !type.validate(defaultValue)){
-			throw new AssertionError(defaultValue.getClass().getName());
+		public Builder summary(@StringRes int summary){
+			this.summary = summary;
+			return this;
 		}
-		return type.fromPref(pref, name, defaultValue);
-	}
 
-	public static interface Validator{
-		public void validate(Config config, Object value) throws ConfigException;
-	}
+		public Builder type(Type type){
+			this.type = type;
+			return this;
+		}
 
-	enum Type{
-		BOOL{
-			@Override
-			public boolean validate(Object value){
-				return value instanceof Boolean;
-			}
+		public Builder typeArgs(String[] typeArgs){
+			this.typeArgs = typeArgs;
+			return this;
+		}
 
-			@Override
-			public Object fromPref(SharedPreferences pref, String name, Object defaultValue){
-				return pref.getBoolean(name, (boolean) defaultValue);
-			}
+		public Builder defaultValue(Object defaultValue){
+			this.defaultValue = defaultValue;
+			return this;
+		}
 
-			@Override
-			public Editor writePref(Editor editor, String key, Object value){
-				return editor.putBoolean(key, (boolean) value);
-			}
-		},
-
-		INTEGER{
-			@Override
-			public boolean validate(Object value){
-				return value instanceof Integer;
-			}
-
-			@Override
-			public Object fromPref(SharedPreferences pref, String name, Object defaultValue){
-				return pref.getInt(name, (int) defaultValue);
-			}
-
-			@Override
-			public Editor writePref(Editor editor, String key, Object value){
-				return editor.putInt(key, (int) value);
-			}
-		},
-
-		STRING{
-			@Override
-			public boolean validate(Object value){
-				return value instanceof String;
-			}
-
-			@Override
-			public Object fromPref(SharedPreferences pref, String name, Object defaultValue){
-				return pref.getString(name, (String) defaultValue);
-			}
-
-			@Override
-			public Editor writePref(Editor editor, String key, Object value){
-				return editor.putString(key, (String) value);
-			}
-		};
-
-		public abstract boolean validate(Object value);
-
-		public abstract Object fromPref(SharedPreferences pref, String name, Object defaultValue);
-
-		public abstract Editor writePref(Editor editor, String key, Object value);
+		public ConfigEntry build(){
+			return new ConfigEntry(id, name, summary, type, typeArgs, defaultValue, parent);
+		}
 	}
 }

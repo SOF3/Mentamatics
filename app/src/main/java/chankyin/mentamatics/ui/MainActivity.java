@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.R;
+import chankyin.mentamatics.math.Decimal;
 import chankyin.mentamatics.problems.Problem;
 import chankyin.mentamatics.problems.generator.ProblemGenerator;
 import lombok.Getter;
@@ -53,13 +54,13 @@ public class MainActivity extends AppCompatActivity{
 		if(text.length() == 0){
 			return;
 		}
-		double val;
+		Decimal val;
 		try{
-			val = Double.parseDouble(text.toString());
+			val = Decimal.parseString(text.toString());
 		}catch(NumberFormatException e){
 			return;
 		}
-		if(val == currentProblem.getAnswer()){
+		if(currentProblem.getAnswer().equalsIgnoreExponent(val)){
 			nextProblem();
 		}
 	}

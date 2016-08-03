@@ -14,10 +14,10 @@
 	<string name="main_input_point" translatable="false">.</string>
 	<string name="main_input_neg" translatable="false">&#x00B1; <!--&#x207A;&#x2215;&#x208B;--></string>
 	<string name="main_input_backspace">Back</string>
-	<string name="main_input_delete">Delete</string>
+	<!--<string name="main_input_delete">Delete</string>-->
 	<string name="main_input_reset">Reset</string>
 
-	<string name="main_question_placeholder">Question here…</string>
+	<!--<string name="main_question_placeholder">Question here…</string>-->
 
 	<string name="config_subtract_error_negative">
 
@@ -27,4 +27,6 @@
 	<string name="operator_subtraction">-</string>
 	<string name="operator_multiplication">&#xd7;</string>
 	<string name="operator_division">&#xf7;</string>
+
+	<string name="config_root">Settings</string>
 </resources>

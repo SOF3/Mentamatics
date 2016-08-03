@@ -1,13 +1,13 @@
 package chankyin.mentamatics.problems.generator;
 
 import android.support.annotation.NonNull;
-import chankyin.mentamatics.config.Config;
+import chankyin.mentamatics.config.old.Config;
 import chankyin.mentamatics.problems.Problem;
 
 import java.util.Random;
 
 import static chankyin.mentamatics.Main.randomRange;
-import static chankyin.mentamatics.config.Config.*;
+import static chankyin.mentamatics.config.old.Config.*;
 
 public class AdditionProblemGenerator extends ProblemGenerator{
 	private static AdditionProblemGenerator ourInstance = new AdditionProblemGenerator();

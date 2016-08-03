@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ConfigEntries>
+	<ConfigGroup id="gui" name="cfg_gui" header="true">
+		<ConfigEntry id="verticalAlign" name="cfg_gui_verticalAlign">
+			<EntrySummary>cfg_gui_verticalAlign_summary</EntrySummary>
+			<EntryType>bool</EntryType>
+			<DefaultValue>false</DefaultValue>
+		</ConfigEntry>
+	</ConfigGroup>
+	<ConfigGroup id="opt" name="cfg_opt" header="true">
+		<ConfigGroup id="lock" name="cfg_opt_lock">
+			<ConfigEntry id="enabled" name="cfg_opt_lock_enabled">
+				<EntrySummary>cfg_opt_lock_enabled_summary</EntrySummary>
+				<EntryType>bool</EntryType>
+				<DefaultValue>false</DefaultValue>
+			</ConfigEntry>
+			<ConfigEntry id="value" name="cfg_opt_lock_value">
+				<EntrySummary>cfg_opt_lock_value_summary</EntrySummary>
+				<EntryType>string</EntryType>
+				<DefaultValue>******</DefaultValue>
+			</ConfigEntry>
+		</ConfigGroup>
+	</ConfigGroup>
+	<ConfigGroup id="gen" name="cfg_gen" header="true">
+		<ConfigGroup id="addition" name="cfg_gen_addition">
+			<ConfigEntry id="enabled" name="cfg_gen_addition_enabled">
+				<EntrySummary>cfg_gen_addition_enabled_summary</EntrySummary>
+				<EntryType>bool</EntryType>
+				<DefaultValue>true</DefaultValue>
+			</ConfigEntry>
+			<ConfigEntry id="carryAllowed" name="cfg_gen_addition_carryAllowed">
+				<EntrySummary>cfg_gen_addition_carryAllowed_summary</EntrySummary>
+				<EntryType>bool</EntryType>
+				<DefaultValue>true</DefaultValue>
+			</ConfigEntry>
+			<ConfigEntry id="digits" name="cfg_gen_addition_digits">
+				<EntrySummary>cfg_gen_addition_digits_summary</EntrySummary>
+				<EntryType>integerDoubleRange?1,10,1,10</EntryType>
+				<DefaultValue>2,3;2,3</DefaultValue>
+			</ConfigEntry>
+		</ConfigGroup>
+		<ConfigGroup id="subtraction" name="cfg_gen_subtraction">
+			<ConfigEntry id="enabled" name="cfg_gen_subtraction_enabled">
+				<EntrySummary>cfg_gen_subtraction_enabled_summary</EntrySummary>
+				<EntryType>bool</EntryType>
+				<DefaultValue>true</DefaultValue>
+			</ConfigEntry>
+			<ConfigEntry id="borrowAllowed" name="cfg_gen_subtraction_borrowAllowed">
+				<EntrySummary>cfg_gen_subtraction_borrowAllowed_summary</EntrySummary>
+				<EntryType>bool</EntryType>
+				<DefaultValue>true</DefaultValue>
+			</ConfigEntry>
+			<ConfigEntry id="negativeAllowed" name="cfg_gen_subtraction_negativeAllowed">
+				<EntrySummary>cfg_gen_subtraction_negativeAllowed_summary</EntrySummary>
+				<EntryType>bool</EntryType>
+				<DefaultValue>false</DefaultValue>
+			</ConfigEntry>
+			<ConfigEntry id="digits" name="cfg_gen_subtraction_digits">
+				<EntrySummary>cfg_gen_subtraction_digits_summary</EntrySummary>
+				<EntryType>integerDoubleRange?1,10,1,10,>=</EntryType><!-- TODO support negative -->
+				<DefaultValue>3,4;2,3</DefaultValue>
+			</ConfigEntry>
+		</ConfigGroup>
+		<ConfigGroup id="mulitiplication" name="cfg_gen_multiplication">
+			<ConfigEntry id="enabled" name="cfg_gen_multiplication_enabled">
+				<EntrySummary>cfg_gen_multiplication_enabled_summary</EntrySummary>
+				<EntryType>bool</EntryType>
+				<DefaultValue>false</DefaultValue>
+			</ConfigEntry>
+		</ConfigGroup>
+		<ConfigGroup id="division" name="cfg_gen_division">
+			<ConfigEntry id="enabled" name="cfg_gen_division_enabled">
+				<EntrySummary>cfg_gen_division_enabled_summary</EntrySummary>
+				<EntryType>bool</EntryType>
+				<DefaultValue>false</DefaultValue>
+			</ConfigEntry>
+		</ConfigGroup>
+	</ConfigGroup>
+</ConfigEntries>

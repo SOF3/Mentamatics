@@ -1,4 +1,4 @@
-package chankyin.mentamatics.config;
+package chankyin.mentamatics.config.old;
 
 import lombok.AccessLevel;
 import lombok.Builder;

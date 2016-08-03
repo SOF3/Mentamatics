@@ -1,13 +1,12 @@
 package chankyin.mentamatics.problems.generator;
 
 import android.support.annotation.NonNull;
-import chankyin.mentamatics.config.old.Config;
+import chankyin.mentamatics.Main;
+import chankyin.mentamatics.config.Config;
+import chankyin.mentamatics.config.ui.Quadret;
 import chankyin.mentamatics.problems.Problem;
 
 import java.util.Random;
-
-import static chankyin.mentamatics.Main.randomRange;
-import static chankyin.mentamatics.config.old.Config.*;
 
 public class AdditionProblemGenerator extends ProblemGenerator{
 	private static AdditionProblemGenerator ourInstance = new AdditionProblemGenerator();
@@ -22,10 +21,13 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 	@NonNull
 	@Override
 	protected Problem generateProblem(Config config, Random random){
-		int upperDigits = randomRange(random,
-				config.getInteger(KEY_GEN_ADDITION_DIGITS_UPPER_MIN), config.getInteger(KEY_GEN_ADDITION_DIGITS_UPPER_MAX));
-		int lowerDigits = randomRange(random,
-				config.getInteger(KEY_GEN_ADDITION_DIGITS_LOWER_MIN), config.getInteger(KEY_GEN_ADDITION_DIGITS_LOWER_MAX));
+		Quadret digits = config.getIntDoubleRange(KEY_GEN_ADDITION_DIGITS);
+		int upperDigits = Main.randomRange(random, digits.upperMin, digits.upperMax);
+		int lowerDigits = Main.randomRange(random, digits.lowerMin, digits.lowerMax);
+//		int upperDigits = randomRange(random,
+//				config.getInt(KEY_GEN_ADDITION_DIGITS_UPPER_MIN), config.getInt(KEY_GEN_ADDITION_DIGITS_UPPER_MAX));
+//		int lowerDigits = randomRange(random,
+//				config.getInt(KEY_GEN_ADDITION_DIGITS_LOWER_MIN), config.getInt(KEY_GEN_ADDITION_DIGITS_LOWER_MAX));
 
 		return null; // TODO
 	}

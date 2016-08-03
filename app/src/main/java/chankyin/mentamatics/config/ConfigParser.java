@@ -23,12 +23,17 @@ public class ConfigParser{
 
 	private BuildState currentState = BuildState.NOT_BUILDING;
 
+	@SneakyThrows(XmlPullParserException.class)
+	public static ConfigEntries parse(Context context){
+		return new ConfigParser(context).doParse();
+	}
+
 	public ConfigParser(Context context){
 		this.context = context;
 	}
 
 	@SneakyThrows(IOException.class)
-	public ConfigEntries parse() throws XmlPullParserException{
+	public ConfigEntries doParse() throws XmlPullParserException{
 		res = context.getResources();
 		parser = res.getXml(R.xml.config_entries);
 		entries = new ConfigEntries();

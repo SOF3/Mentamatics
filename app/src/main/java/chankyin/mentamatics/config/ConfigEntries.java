@@ -9,9 +9,9 @@ public class ConfigEntries extends ConfigGroup{
 		super(null, R.string.config_root, null, false);
 	}
 
-	public ConfigElement getElement(@NonNull String key){
+	public ConfigEntry getEntry(@NonNull String key){
 		String[] ids = key.split("\\.");
-		ConfigEntry entry = recurseGetElement(ids, 0);
+		ConfigEntry entry = recurseGetEntry(ids, 0);
 		if(BuildConfig.DEBUG && !key.equals(entry.calcFullId())){
 			throw new AssertionError();
 		}

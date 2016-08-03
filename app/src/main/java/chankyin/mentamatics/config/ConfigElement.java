@@ -33,7 +33,6 @@ public abstract class ConfigElement{
 
 	@Nullable
 	public String calcFullId(){
-		String start;
 		if(parent != null){
 			return parent.getFullId() + "." + id;
 		}else{
@@ -160,6 +159,7 @@ public abstract class ConfigElement{
 					int upperMax = Integer.parseInt(args[1]);
 					int lowerMin = Integer.parseInt(args[2]);
 					int lowerMax = Integer.parseInt(args[3]);
+					// TODO use
 				}
 				Constraint constraint = Constraint.NONE;
 				if(args.length == 1 || args.length == 5){

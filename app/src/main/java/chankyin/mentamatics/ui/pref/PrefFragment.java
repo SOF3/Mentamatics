@@ -3,9 +3,7 @@ package chankyin.mentamatics.ui.pref;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
-import chankyin.mentamatics.config.Config;
-import chankyin.mentamatics.config.ConfigParser;
-import org.xmlpull.v1.XmlPullParserException;
+import chankyin.mentamatics.Main;
 
 public class PrefFragment extends PreferenceFragment{
 	@Override
@@ -16,10 +14,6 @@ public class PrefFragment extends PreferenceFragment{
 	}
 
 	private PreferenceScreen loadPrefScreen(){
-		try{
-			return new Config(new ConfigParser(getActivity()).parse(), this).toPrefScreen();
-		}catch(XmlPullParserException e){
-			throw new AssertionError(e.getMessage());
-		}
+		return Main.getInstance().getConfig().toPrefScreen(this);
 	}
 }

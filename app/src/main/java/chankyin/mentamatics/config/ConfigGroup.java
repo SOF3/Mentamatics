@@ -39,12 +39,12 @@ public class ConfigGroup extends ConfigElement{
 		return out;
 	}
 
-	protected ConfigEntry recurseGetElement(String[] ids, int level){
+	protected ConfigEntry recurseGetEntry(String[] ids, int level){
 		ConfigElement el = children.get(ids[level]);
 		if(el instanceof ConfigEntry){
 			return ids.length == level + 1 ? (ConfigEntry) el : null;
 		}else if(el instanceof ConfigGroup){
-			return ids.length == level + 1 ? null : ((ConfigGroup) el).recurseGetElement(ids, level + 1);
+			return ids.length == level + 1 ? null : ((ConfigGroup) el).recurseGetEntry(ids, level + 1);
 		}
 		return null;
 	}

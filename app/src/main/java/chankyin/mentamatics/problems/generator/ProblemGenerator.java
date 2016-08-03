@@ -1,7 +1,8 @@
 package chankyin.mentamatics.problems.generator;
 
 import android.support.annotation.NonNull;
-import chankyin.mentamatics.config.old.Config;
+import chankyin.mentamatics.config.Config;
+import chankyin.mentamatics.config.ConfigConstants;
 import chankyin.mentamatics.problems.Problem;
 
 import java.util.ArrayList;
@@ -9,9 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static chankyin.mentamatics.config.old.Config.*;
-
-public abstract class ProblemGenerator{
+public abstract class ProblemGenerator implements ConfigConstants{
 	private static List<ProblemGenerator> available = Arrays.asList(
 			AdditionProblemGenerator.getInstance(),
 			SubtractionProblemGenerator.getInstance(),

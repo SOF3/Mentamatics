@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import lombok.AllArgsConstructor;
 
 public class IntegerDoubleRangePreference extends DialogPreference{
-	@FinalizedQuadret
 	private Quadret hardLimit;
 	private Quadret softLimit;
 	private Quadret value;
@@ -97,31 +96,5 @@ public class IntegerDoubleRangePreference extends DialogPreference{
 		protected abstract boolean validate0(int[] quadret);
 
 		protected abstract void adaptRange(int[] quadret, boolean upperModified);
-	}
-
-	public static class Quadret{
-		public int upperMin;
-		public int upperMax;
-		public int lowerMin;
-		public int lowerMax;
-
-		public Quadret(int[] array){
-			upperMin = array[0];
-			upperMax = array[1];
-			lowerMin = array[2];
-			lowerMax = array[3];
-		}
-
-		public int[] toArray(){
-			return new int[]{
-					upperMin,
-					upperMax,
-					lowerMin,
-					lowerMax
-			};
-		}
-	}
-
-	public static @interface FinalizedQuadret{
 	}
 }

@@ -1,8 +1,8 @@
 package chankyin.mentamatics.problems;
 
 import android.widget.LinearLayout;
-import chankyin.mentamatics.math.Decimal;
 import chankyin.mentamatics.R;
+import chankyin.mentamatics.math.Decimal;
 import chankyin.mentamatics.ui.MainActivity;
 import lombok.Value;
 

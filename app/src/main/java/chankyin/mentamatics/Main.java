@@ -3,8 +3,12 @@ package chankyin.mentamatics;
 import android.app.Activity;
 import android.app.Application;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout.LayoutParams;
+import chankyin.mentamatics.config.Config;
+import chankyin.mentamatics.config.ConfigEntries;
+import chankyin.mentamatics.config.ConfigParser;
 import com.github.nantaphop.fluentview.FluentView;
 import lombok.Getter;
 
@@ -14,6 +18,8 @@ import java.util.Random;
 import static android.view.ViewGroup.LayoutParams.*;
 
 public class Main extends Application{
+	public final static String TAG = "Mentamatics";
+
 	@Getter private static Main instance;
 	private final static Field fluentViewField;
 
@@ -30,6 +36,8 @@ public class Main extends Application{
 		}
 		fluentViewField.setAccessible(true);
 	}
+
+	@Getter(lazy = true) private final Config config = reloadConfig();
 
 	@Override
 	public void onCreate(){
@@ -51,7 +59,8 @@ public class Main extends Application{
 
 	public static int randomRange(@NonNull Random random, int lower, int upper){
 		if(lower > upper){
-			throw new IndexOutOfBoundsException();
+			Log.w(TAG, "Call to randomRange() with lower greater than upper");
+			return randomRange(random, upper, lower);
 		}
 		if(lower == upper){
 			return lower;
@@ -86,5 +95,10 @@ public class Main extends Application{
 			result = lcm(result, input[i]);
 		}
 		return result;
+	}
+
+	public Config reloadConfig(){
+		ConfigEntries entries = ConfigParser.parse(this);
+		return new Config(entries, this);
 	}
 }

@@ -6,7 +6,7 @@ import chankyin.mentamatics.R;
 
 public class ConfigEntries extends ConfigGroup{
 	public ConfigEntries(){
-		super(null, R.string.pref_default_display_name, null, false);
+		super(null, R.string.config_root, null, false);
 	}
 
 	public ConfigElement getElement(@NonNull String key){

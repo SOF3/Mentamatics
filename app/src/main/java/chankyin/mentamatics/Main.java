@@ -5,7 +5,6 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.LinearLayout.LayoutParams;
-import chankyin.mentamatics.config.old.Config;
 import com.github.nantaphop.fluentview.FluentView;
 import lombok.Getter;
 
@@ -23,8 +22,6 @@ public class Main extends Application{
 	public final static LayoutParams MP_WC = new LayoutParams(MATCH_PARENT, WRAP_CONTENT);
 	public final static LayoutParams MP_MP = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
 
-	@Deprecated public final static String PREF_SETTINGS = "chankyin.mentamatics.PREF_SETTINGS";
-
 	static{
 		try{
 			fluentViewField = FluentView.class.getDeclaredField("view");
@@ -34,16 +31,10 @@ public class Main extends Application{
 		fluentViewField.setAccessible(true);
 	}
 
-	@Deprecated @Getter(lazy = true) private final Config config = reloadConfig();
-
 	@Override
 	public void onCreate(){
 		super.onCreate();
 		instance = this;
-	}
-
-	@Deprecated private Config reloadConfig(){
-		return new Config(this);
 	}
 
 	public static Main getInstance(Activity ctx){

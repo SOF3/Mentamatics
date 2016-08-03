@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity{
 	}
 
 	public void nextProblem(){
-		setCurrentProblem(ProblemGenerator.generate(Main.getInstance(this).getConfig(), random));
+		setCurrentProblem(ProblemGenerator.generate(Main.getInstance(this).getConfig(), getRandom()));
 	}
 
 	public void setCurrentProblem(Problem currentProblem){

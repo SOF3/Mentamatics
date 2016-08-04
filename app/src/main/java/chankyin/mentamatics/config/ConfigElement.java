@@ -6,10 +6,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import chankyin.mentamatics.config.ui.IntegerDoubleRangePreference;
-import chankyin.mentamatics.config.ui.IntegerDoubleRangePreference.Constraint;
-import chankyin.mentamatics.config.ui.IntegerPreference;
-import chankyin.mentamatics.config.ui.IntegerRangePreference;
+import chankyin.mentamatics.config.ui.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
@@ -154,19 +151,18 @@ public abstract class ConfigElement{
 
 			@Override
 			public Preference createPreference(PreferenceFragment fragment, String[] args){
+				Duplet duplet = null;
 				if(args.length >= 4){
-					int upperMin = Integer.parseInt(args[0]);
-					int upperMax = Integer.parseInt(args[1]);
-					int lowerMin = Integer.parseInt(args[2]);
-					int lowerMax = Integer.parseInt(args[3]);
-					// TODO use
+					int min = Integer.parseInt(args[0]);
+					int max = Integer.parseInt(args[1]);
+					duplet = new Duplet(min, max);
 				}
-				Constraint constraint = Constraint.NONE;
+				DoubleRangeConstraint constraint = DoubleRangeConstraint.NONE;
 				if(args.length == 1 || args.length == 5){
 					String symbol = args[args.length - 1];
-					constraint = Constraint.bySymbol(symbol);
+					constraint = DoubleRangeConstraint.bySymbol(symbol);
 				}
-				return new IntegerDoubleRangePreference(fragment.getActivity());
+				return new IntegerDoubleRangePreference(fragment.getActivity(), duplet, constraint);
 			}
 		},
 

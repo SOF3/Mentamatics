@@ -1,5 +1,8 @@
 package chankyin.mentamatics.config.ui;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class Quadret{
 	public int upperMin;
 	public int upperMax;

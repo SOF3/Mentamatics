@@ -67,8 +67,7 @@ public class IntegerRangePreference extends DialogPreference{
 		super.onDialogClosed(positiveResult);
 
 		if(positiveResult){
-			int[] newValue;
-			newValue = new int[]{
+			int[] newValue = new int[]{
 					rangeSeekBar.getSelectedMinValue(),
 					rangeSeekBar.getSelectedMaxValue()
 			};
@@ -86,11 +85,7 @@ public class IntegerRangePreference extends DialogPreference{
 	@Override
 	protected void onSetInitialValue(boolean restorePersistedValue, Object defaultObject){
 		int[] defaultValue = (int[]) defaultObject;
-		if(restorePersistedValue){
-			setValue((int[]) fromString(getPersistedString("")));
-		}else{
-			setValue(defaultValue);
-		}
+		setValue(restorePersistedValue ? (int[]) fromString(getPersistedString("")) : defaultValue);
 	}
 
 	public static Object fromString(String string){

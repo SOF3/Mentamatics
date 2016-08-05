@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import chankyin.mentamatics.config.range.DoubleRangeConstraint;
 import chankyin.mentamatics.config.range.DupletRange;
+import chankyin.mentamatics.config.range.QuadretRange;
 import chankyin.mentamatics.config.ui.IntegerDoubleRangePreference;
 import chankyin.mentamatics.config.ui.IntegerPreference;
 import chankyin.mentamatics.config.ui.IntegerRangePreference;
@@ -130,7 +131,7 @@ public abstract class ConfigElement{
 
 			@Override
 			public boolean validate(Object value){
-				return value instanceof int[] && ((int[]) value).length == 4;
+				return value instanceof QuadretRange;
 			}
 
 			@Override
@@ -139,18 +140,18 @@ public abstract class ConfigElement{
 				if(!matcher.matches()){
 					throw new NumberFormatException();
 				}
-				return new int[]{
+				return new QuadretRange(new int[]{
 						Integer.parseInt(matcher.group(1)),
 						Integer.parseInt(matcher.group(2)),
 						Integer.parseInt(matcher.group(3)),
 						Integer.parseInt(matcher.group(4)),
-				};
+				});
 			}
 
 			@Override
 			public String toString(Object value){
-				int[] array = (int[]) value;
-				return array[0] + "," + array[1] + ";" + array[2] + "," + array[3];
+				QuadretRange array = (QuadretRange) value;
+				return array.toString();
 			}
 
 			@Override

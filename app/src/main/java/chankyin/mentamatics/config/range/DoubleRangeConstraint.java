@@ -108,16 +108,6 @@ public enum DoubleRangeConstraint{
 	public final static boolean UPPER = true, LOWER = false;
 
 	/**
-	 * Do not call {@link #updateValueForValue(DoubleRangeTriplet, boolean)} if this method is called.
-	 * Choose one of these two to call.
-	 *
-	 * @param triplet
-	 * @param upperModified
-	 */
-	@Deprecated
-	public abstract void updateSoftLimitForValue(DoubleRangeTriplet triplet, boolean upperModified);
-
-	/**
 	 * Do not call {@link #updateSoftLimitForValue(DoubleRangeTriplet, boolean)} if this method is called.
 	 * Choose one of these two to call.
 	 *
@@ -127,6 +117,16 @@ public enum DoubleRangeConstraint{
 	public abstract void updateValueForValue(DoubleRangeTriplet triplet, boolean upperModified);
 
 	public abstract void updateValueForHardLimit(DoubleRangeTriplet triplet);
+
+	/**
+	 * Do not call {@link #updateValueForValue(DoubleRangeTriplet, boolean)} if this method is called.
+	 * Choose one of these two to call.
+	 *
+	 * @param triplet
+	 * @param upperModified
+	 */
+	@Deprecated
+	public abstract void updateSoftLimitForValue(DoubleRangeTriplet triplet, boolean upperModified);
 
 	@Deprecated
 	public void onSoftLimitChange(DoubleRangeTriplet triplet){

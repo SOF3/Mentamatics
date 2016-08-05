@@ -24,4 +24,9 @@ public class QuadretRange{
 				lowerMax
 		};
 	}
+
+	@Override
+	public String toString(){
+		return upperMin + "," + upperMax + ";" + lowerMin + "," + lowerMax;
+	}
 }

@@ -1,15 +1,15 @@
-package chankyin.mentamatics.config.ui;
+package chankyin.mentamatics.config.range;
 
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
-public class Quadret{
+public class QuadretRange{
 	public int upperMin;
 	public int upperMax;
 	public int lowerMin;
 	public int lowerMax;
 
-	public Quadret(int[] array){
+	public QuadretRange(int[] array){
 		upperMin = array[0];
 		upperMax = array[1];
 		lowerMin = array[2];

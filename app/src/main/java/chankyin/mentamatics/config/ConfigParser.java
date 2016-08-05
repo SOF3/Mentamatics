@@ -72,9 +72,10 @@ public class ConfigParser{
 				}
 				if("ConfigGroup".equals(parser.getName())){
 					currentGroup = currentGroup.parent;
+					return true;
 				}
 				if(!"ConfigEntries".equals(parser.getName())){
-					throw new XmlPullParserException("Wrong end tag");
+					throw new XmlPullParserException("Wrong end tag: " + parser.getName());
 				}
 			case END_DOCUMENT:
 				return false;

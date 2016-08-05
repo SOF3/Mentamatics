@@ -380,13 +380,9 @@ public class Decimal implements Comparable<Decimal>{
 			throw new UnsupportedOperationException("Only base 2-36 supported");
 		}
 
-		boolean positive;
+		boolean positive = string.charAt(0) != '-';
 		int[] digits;
-		if(positive = !(string.charAt(0) == '-')){
-			digits = new int[string.length() - 1];
-		}else{
-			digits = new int[string.length()];
-		}
+		digits = positive ? new int[string.length()] : new int[string.length() - 1];
 		for(int i = positive ? 0 : 1; i < string.length(); i++){
 			char c = string.charAt(i);
 			digits[i] = c == '.' ? DIGIT_DECIMAL_POINT : charToInt(c);

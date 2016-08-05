@@ -17,13 +17,13 @@
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			tools:ignore="Orientation"/>
 	<EditText
-			android:layout_width="wrap_content"
-			android:layout_centerHorizontal="true"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/main_question"
 			android:inputType="numberSigned|numberDecimal"
 			android:ems="10"
-			android:id="@+id/main_input"/>
+			android:id="@+id/main_input"
+			android:layout_above="@+id/mainKeyboard"
+			android:layout_centerHorizontal="true"/>
 
 	<GridLayout
 			android:layout_width="match_parent"
@@ -31,7 +31,7 @@
 			android:layout_alignParentBottom="true"
 			android:layout_centerHorizontal="true"
 			android:rowCount="4"
-			android:columnCount="4">
+			android:columnCount="4" android:id="@+id/mainKeyboard">
 		<Button
 				android:id="@+id/main_input_7"
 				android:layout_height="wrap_content"

@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import chankyin.mentamatics.config.ui.Quadret;
+import chankyin.mentamatics.config.range.QuadretRange;
 
 public class Config{
 	private final ConfigEntries entries;
@@ -55,16 +55,16 @@ public class Config{
 		}
 	}
 
-	public Quadret getIntDoubleRange(String key){
+	public QuadretRange getIntDoubleRange(String key){
 		ConfigEntry entry = entries.getEntry(key);
 		if(entry.type != ConfigElement.Type.integerRange){
 			throw new ClassCastException();
 		}
 		String out = prefs.getString(key, null);
 		if(out == null){
-			return new Quadret((int[]) entry.defaultValue);
+			return new QuadretRange((int[]) entry.defaultValue);
 		}else{
-			return new Quadret((int[]) ConfigElement.Type.integerRange.fromString(out));
+			return new QuadretRange((int[]) ConfigElement.Type.integerRange.fromString(out));
 		}
 	}
 }

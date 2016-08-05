@@ -1,11 +1,11 @@
-package chankyin.mentamatics.config.ui;
+package chankyin.mentamatics.config.range;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
 @AllArgsConstructor
-public class Duplet{
+public class DupletRange{
 	public int min;
 	public int max;
 }

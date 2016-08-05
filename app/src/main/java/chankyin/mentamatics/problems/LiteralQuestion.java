@@ -10,7 +10,7 @@ import static chankyin.mentamatics.Main.*;
 
 @RequiredArgsConstructor
 public class LiteralQuestion implements Question{
-	@Getter private String literal;
+	@Getter private final String literal;
 
 	@Override
 	public void populate(LinearLayout layout){

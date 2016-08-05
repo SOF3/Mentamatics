@@ -2,16 +2,17 @@ package chankyin.mentamatics.config.ui;
 
 import android.content.Context;
 import android.preference.DialogPreference;
+import chankyin.mentamatics.config.range.*;
 import lombok.Getter;
 
 public class IntegerDoubleRangePreference extends DialogPreference implements DoubleRangeTriplet{
-	@Getter private Duplet hardLimit;
-	@Getter private Quadret softLimit;
-	@Getter private Quadret value;
+	@Getter private DupletRange hardLimit;
+	@Deprecated @Getter private OctetRange softLimit;
+	@Getter private QuadretRange value;
 
 	@Getter private DoubleRangeConstraint constraint;
 
-	public IntegerDoubleRangePreference(Context context, Duplet hardLimit, DoubleRangeConstraint constraint){
+	public IntegerDoubleRangePreference(Context context, DupletRange hardLimit, DoubleRangeConstraint constraint){
 		super(context, null);
 		this.hardLimit = hardLimit;
 		setConstraint(constraint);
@@ -20,12 +21,14 @@ public class IntegerDoubleRangePreference extends DialogPreference implements Do
 	public void setConstraint(DoubleRangeConstraint constraint){
 		this.constraint = constraint;
 
-		constraint.onHardLimitChange(this);
+		constraint.updateValueForHardLimit(this);
 	}
 
-	public void setHardLimit(Duplet hardLimit){
+	public void setHardLimit(DupletRange hardLimit){
 		this.hardLimit = hardLimit;
 
-		constraint.onHardLimitChange(this);
+		constraint.updateValueForHardLimit(this);
 	}
+
+	// TODO
 }

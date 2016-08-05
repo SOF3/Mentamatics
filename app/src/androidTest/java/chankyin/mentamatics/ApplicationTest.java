@@ -9,6 +9,6 @@ import android.test.ApplicationTestCase;
 public class ApplicationTest extends ApplicationTestCase<Main>{
 	public ApplicationTest(){
 		super(Main.class);
-//		createApplication();
+		createApplication();
 	}
 }

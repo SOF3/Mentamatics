@@ -21,5 +21,5 @@ install:
   - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
 script:
   - './gradlew connectedCheck'
-after_falure:
+after_failure:
   - curl -T app/build/reports/androidTests/connected/index.html https://transfer.sh/error.html

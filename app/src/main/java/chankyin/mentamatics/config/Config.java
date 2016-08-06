@@ -21,7 +21,7 @@ public class Config{
 	public PreferenceScreen toPrefScreen(PreferenceFragment fragment){
 		PreferenceScreen screen = fragment.getPreferenceManager().createPreferenceScreen(fragment.getActivity());
 		for(ConfigElement element : entries.getChildren().values()){
-			screen.addPreference(element.toPreference(fragment));
+			element.addPreferenceTo(fragment, screen);
 		}
 		return screen;
 	}

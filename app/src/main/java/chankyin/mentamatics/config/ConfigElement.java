@@ -1,9 +1,7 @@
 package chankyin.mentamatics.config;
 
-import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
+import android.preference.*;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import chankyin.mentamatics.config.range.DoubleRangeConstraint;
@@ -12,6 +10,7 @@ import chankyin.mentamatics.config.range.QuadretRange;
 import chankyin.mentamatics.config.ui.IntegerDoubleRangePreference;
 import chankyin.mentamatics.config.ui.IntegerPreference;
 import chankyin.mentamatics.config.ui.IntegerRangePreference;
+import chankyin.mentamatics.config.ui.LockPreference;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
@@ -35,14 +34,16 @@ public abstract class ConfigElement{
 
 	@Nullable
 	public String calcFullId(){
-		if(parent != null){
-			return parent.getFullId() + "." + id;
+		String parentFullId;
+		if(parent != null && (parentFullId = parent.getFullId()) != null){
+			return parentFullId + "." + id;
 		}else{
 			return id;
 		}
 	}
 
-	public abstract Preference toPreference(PreferenceFragment fragment);
+	@NonNull
+	public abstract Preference addPreferenceTo(PreferenceFragment fragment, PreferenceGroup group);
 
 	public enum Type{
 		bool{
@@ -190,6 +191,28 @@ public abstract class ConfigElement{
 			@Override
 			public Preference createPreference(PreferenceFragment fragment, String[] args){
 				return new EditTextPreference(fragment.getActivity());
+			}
+		},
+
+		password{
+			@Override
+			public boolean validate(Object value){
+				return value instanceof Lock;
+			}
+
+			@Override
+			public Object fromString(String string){
+				return Lock.fromString(string);
+			}
+
+			@Override
+			public String toString(Object value){
+				return value.toString();
+			}
+
+			@Override
+			public Preference createPreference(PreferenceFragment fragment, String[] args){
+				return new LockPreference(fragment.getActivity());
 			}
 		};
 

@@ -1,9 +1,9 @@
 package chankyin.mentamatics.config;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.support.annotation.StringRes;
+import chankyin.mentamatics.Main;
 import chankyin.mentamatics.R;
 import lombok.SneakyThrows;
 import org.xmlpull.v1.XmlPullParserException;
@@ -14,7 +14,6 @@ import static org.xmlpull.v1.XmlPullParser.*;
 
 public class ConfigParser{
 	private final Context context;
-	private Resources res;
 	private XmlResourceParser parser;
 
 	private ConfigEntries entries;
@@ -34,8 +33,7 @@ public class ConfigParser{
 
 	@SneakyThrows(IOException.class)
 	public ConfigEntries doParse() throws XmlPullParserException{
-		res = context.getResources();
-		parser = res.getXml(R.xml.config_entries);
+		parser = context.getResources().getXml(R.xml.config_entries);
 		entries = new ConfigEntries();
 
 		while(true){
@@ -59,6 +57,7 @@ public class ConfigParser{
 			case END_TAG:
 				if("EntryType".equals(parser.getName()) ||
 						"EntrySummary".equals(parser.getName()) ||
+						"EntrySummaryPositive".equals(parser.getName()) ||
 						"DefaultValue".equals(parser.getName())){
 					currentState = BuildState.NOT_BUILDING;
 					return true;
@@ -85,8 +84,11 @@ public class ConfigParser{
 					return true;
 				}
 				if(currentState == BuildState.ENTRY_SUMMARY){
-					readEntrySummaryText();
+					readEntrySummaryText(false);
 					return true;
+				}
+				if(currentState == BuildState.ENTRY_SUMMARY_POSITIVE){
+					readEntrySummaryText(true);
 				}
 				if(currentState == BuildState.DEFAULT_VALUE){
 					readDefaultValueText();
@@ -122,6 +124,12 @@ public class ConfigParser{
 			}
 			return true;
 		}
+		if("EntrySummaryPositive".equals(parser.getName())){
+			if(currentEntryBuilder != null){
+				currentState = BuildState.ENTRY_SUMMARY_POSITIVE;
+			}
+			return true;
+		}
 		if("DefaultValue".equals(parser.getName())){
 			if(currentEntryBuilder != null){
 				currentState = BuildState.DEFAULT_VALUE;
@@ -140,8 +148,7 @@ public class ConfigParser{
 			throw new XmlPullParserException("Wrong base tag");
 		}
 		String groupId = parser.getAttributeValue(null, "id");
-		@StringRes int nameResId = res.getIdentifier(
-				parser.getAttributeValue(null, "name"), "string", context.getPackageName());
+		@StringRes int nameResId = Main.getStringIdentifier(context, parser.getAttributeValue(null, "name"));
 		boolean header = parser.getAttributeBooleanValue(null, "header", false);
 		ConfigGroup group = new ConfigGroup(groupId, nameResId, currentGroup, header);
 		currentGroup.addChild(group);
@@ -153,10 +160,14 @@ public class ConfigParser{
 			throw new XmlPullParserException("Wrong base tag");
 		}
 		String entryId = parser.getAttributeValue(null, "id");
-		@StringRes int nameResId = res.getIdentifier(
-				parser.getAttributeValue(null, "name"), "string", context.getPackageName());
+		@StringRes int nameResId = Main.getStringIdentifier(context, parser.getAttributeValue(null, "name"));
+
+		boolean groupToggle = parser.getAttributeBooleanValue(null, "groupToggle", false);
 
 		currentEntryBuilder = ConfigEntry.build(entryId, nameResId, currentGroup);
+		if(groupToggle){
+			currentEntryBuilder.groupToggle(true);
+		}
 	}
 
 	private void readEntryTypeText() throws XmlPullParserException{
@@ -176,9 +187,13 @@ public class ConfigParser{
 		currentEntryBuilder.type(type).typeArgs(query);
 	}
 
-	private void readEntrySummaryText(){
-		@StringRes int summaryResId = res.getIdentifier(parser.getText(), "string", context.getPackageName());
-		currentEntryBuilder.summary(summaryResId);
+	private void readEntrySummaryText(boolean positive){
+		@StringRes int summaryResId = Main.getStringIdentifier(context, parser.getText());
+		if(positive){
+			currentEntryBuilder.summaryPositive(summaryResId);
+		}else{
+			currentEntryBuilder.summary(summaryResId);
+		}
 	}
 
 	private void readDefaultValueText(){
@@ -189,6 +204,7 @@ public class ConfigParser{
 		NOT_BUILDING,
 		ENTRY_TYPE,
 		ENTRY_SUMMARY,
+		ENTRY_SUMMARY_POSITIVE,
 		DEFAULT_VALUE
 	}
 }

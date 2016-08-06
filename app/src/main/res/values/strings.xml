@@ -17,16 +17,56 @@
 	<!--<string name="main_input_delete">Delete</string>-->
 	<string name="main_input_reset">Reset</string>
 
-	<!--<string name="main_question_placeholder">Question here…</string>-->
+	<string name="menu_main_pref">Preferences</string>
 
-	<string name="config_subtract_error_negative">
-
-	</string>
+	<string name="pref_unlock_query">Please enter password to unlock preferences</string>
+	<string name="pref_dialog_unlock_positive">Unlock</string>
 
 	<string name="operator_addition">+</string>
 	<string name="operator_subtraction">-</string>
 	<string name="operator_multiplication">&#xd7;</string>
 	<string name="operator_division">&#xf7;</string>
 
-	<string name="config_root">Settings</string>
+	<string name="config_root">Preferences</string>
+	<string name="cfg_lock">Preference Lock</string>
+	<string name="cfg_lock_summary">Protect preferences with a password</string>
+	<string name="cfg_lock_error">Incorrect password!</string>
+	<string name="cfg_gui">User Interface</string>
+	<string name="cfg_gui_verticalAlign">Show question in vertical align</string>
+	<string name="cfg_gui_verticalAlign_summary">The question is shown as a horizontal expression</string>
+	<string name="cfg_gui_verticalAlign_summary_positive">The question is shown in straight calculation format</string>
+	<string name="cfg_gen">Problem Generation</string>
+	<string name="cfg_gen_addition">Addition</string>
+	<string name="cfg_gen_addition_enabled">Generate addition problems</string>
+	<string name="cfg_gen_addition_enabled_summary_positive">Addition problems will be generated.</string>
+	<string name="cfg_gen_addition_enabled_summary">Addition problems will not be generated.</string>
+	<string name="cfg_gen_addition_carryAllowed">Generate problems involving carry</string>
+	<string name="cfg_gen_addition_carryAllowed_summary_positive">Problems like 83 + 17 will also be generated.</string>
+	<string name="cfg_gen_addition_carryAllowed_summary">Only problems like 72 + 17 will not be generated.</string>
+	<string name="cfg_gen_subtraction">Subtraction</string>
+	<string name="cfg_gen_addition_digits">Number of digits</string>
+	<string name="cfg_gen_addition_digits_summary" formatted="false">%d-%d digits + %d-%d digits</string>
+	<string name="cfg_gen_subtraction_enabled">Generate subtraction problems</string>
+	<string name="cfg_gen_subtraction_enabled_summary_positive">Subtraction problems will be generated.</string>
+	<string name="cfg_gen_subtraction_enabled_summary">Subtraction problems will not be generated.</string>
+	<string name="cfg_gen_subtraction_borrowAllowed">Generate problems involving borrow</string>
+	<string name="cfg_gen_subtraction_borrowAllowed_summary_positive">Problems like 95 – 16 will also be generated.
+	</string>
+	<string name="cfg_gen_subtraction_borrowAllowed_summary">Only problems like 95 – 14 will be generated.</string>
+	<string name="cfg_gen_subtraction_negativeAllowed">Allow negative results</string>
+	<string name="cfg_gen_subtraction_negativeAllowed_summary_positive">Both questions with positive and negative
+		answers are generated.
+	</string>
+	<string name="cfg_gen_subtraction_negativeAllowed_summary">Only questions with positive answers are generated.
+	</string>
+	<string name="cfg_gen_subtraction_digits">Number of digits</string>
+	<string name="cfg_gen_subtraction_digits_summary" formatted="false">%d-%d digits – %d-%d digits</string>
+	<string name="cfg_gen_multiplication">Multiplication</string>
+	<string name="cfg_gen_multiplication_enabled">Generate multiplication problems</string>
+	<string name="cfg_gen_multiplication_enabled_summary_positive">Multiplication problems will be generated.</string>
+	<string name="cfg_gen_multiplication_enabled_summary">Multiplication problems will not be generated.</string>
+	<string name="cfg_gen_division">Division</string>
+	<string name="cfg_gen_division_enabled">Generate division problems</string>
+	<string name="cfg_gen_division_enabled_summary_positive">Division problems will be generated.</string>
+	<string name="cfg_gen_division_enabled_summary">Division problems will not be generated.</string>
 </resources>

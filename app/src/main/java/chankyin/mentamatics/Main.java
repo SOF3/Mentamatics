@@ -2,6 +2,8 @@ package chankyin.mentamatics;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -9,8 +11,10 @@ import android.widget.LinearLayout.LayoutParams;
 import chankyin.mentamatics.config.Config;
 import chankyin.mentamatics.config.ConfigEntries;
 import chankyin.mentamatics.config.ConfigParser;
+import chankyin.mentamatics.ui.BaseActivity;
 import com.github.nantaphop.fluentview.FluentView;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.lang.reflect.Field;
 import java.util.Random;
@@ -18,10 +22,12 @@ import java.util.Random;
 import static android.view.ViewGroup.LayoutParams.*;
 
 public class Main extends Application{
-	public final static String TAG = "Mentamatics";
+	public final static String TAG = "AndroidRuntime";
 
 	@Getter private static Main instance;
 	private final static Field fluentViewField;
+
+	@Getter @Setter private BaseActivity currentActivity;
 
 	public final static LayoutParams WC_WC = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
 	public final static LayoutParams WC_MP = new LayoutParams(WRAP_CONTENT, MATCH_PARENT);
@@ -45,8 +51,8 @@ public class Main extends Application{
 		instance = this;
 	}
 
-	public static Main getInstance(Activity ctx){
-		return (Main) ctx.getApplication();
+	public static Main getInstance(Activity activity){
+		return (Main) activity.getApplication();
 	}
 
 	public static View defluent(FluentView view){
@@ -100,5 +106,17 @@ public class Main extends Application{
 	public Config reloadConfig(){
 		ConfigEntries entries = ConfigParser.parse(this);
 		return new Config(entries, this);
+	}
+
+	public static int getStringIdentifier(String name){
+		return getStringIdentifier(getInstance(), name);
+	}
+
+	public static int getStringIdentifier(Context context, String name){
+		int identifier = context.getResources().getIdentifier(name, "string", context.getPackageName());
+		if(identifier == 0){
+			throw new Resources.NotFoundException(name);
+		}
+		return identifier;
 	}
 }

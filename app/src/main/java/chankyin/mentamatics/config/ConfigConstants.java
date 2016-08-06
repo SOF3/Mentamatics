@@ -3,8 +3,7 @@ package chankyin.mentamatics.config;
 public interface ConfigConstants{
 	public final static String KEY_GUI_VERTICAL_ALIGN = "gui.verticalAlign";
 
-	public final static String KEY_OPT_LOCK_ENABLED = "opt.lock.enabled";
-	public final static String KEY_OPT_LOCK_VALUE = "opt.lock.value";
+	public final static String KEY_LOCK = "lock";
 
 	public final static String KEY_GEN_ADDITION_ENABLED = "gen.addition.enabled";
 	public final static String KEY_GEN_ADDITION_CARRY_ALLOWED = "gen.addition.carryAllowed";

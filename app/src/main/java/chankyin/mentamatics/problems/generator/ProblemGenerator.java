@@ -22,8 +22,9 @@ public abstract class ProblemGenerator implements ConfigConstants{
 			DivisionProblemGenerator.getInstance()
 	);
 
+	@SuppressWarnings("PointlessBooleanExpression")
 	public static Problem generate(Config config, Random random){
-		if(IS_GENERATOR_IMPLEMENTED){
+		if(!IS_GENERATOR_IMPLEMENTED){
 			return new Problem(new LiteralQuestion("Question here"), Decimal.integer(true, 1, 2, 3, 4));
 		}
 		List<ProblemGenerator> generators = new ArrayList<>(available);

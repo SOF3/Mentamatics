@@ -2,6 +2,8 @@ package chankyin.mentamatics.config;
 
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceGroup;
+import android.preference.TwoStatePreference;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import lombok.AccessLevel;
@@ -9,27 +11,34 @@ import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 public class ConfigEntry extends ConfigElement{
-	@StringRes final int summary;
+	@StringRes final int summary, summaryPositive;
 	final Type type;
 	final String[] typeArgs;
 	final Object defaultValue;
 
-	public ConfigEntry(String id, @StringRes int name, @StringRes int summary, Type type, String[] typeArgs, Object defaultValue, @NonNull ConfigGroup parent){
+	public ConfigEntry(String id, @StringRes int name, @StringRes int summary, int summaryPositive, Type type, String[] typeArgs, String defaultValue, @NonNull ConfigGroup parent){
 		super(id, name, parent);
 		this.summary = summary;
+		this.summaryPositive = summaryPositive == -1 ? summary : summaryPositive;
 		this.type = type;
 		this.typeArgs = typeArgs;
-		this.defaultValue = defaultValue;
+		this.defaultValue = type.fromString(defaultValue);
 	}
 
+	@NonNull
 	@Override
-	public Preference toPreference(PreferenceFragment fragment){
+	public Preference addPreferenceTo(PreferenceFragment fragment, PreferenceGroup group){
 		Preference preference = type.createPreference(fragment, typeArgs);
+		group.addPreference(preference);
 		preference.setTitle(name);
 		preference.setSummary(summary);
+		if(preference instanceof TwoStatePreference){
+			((TwoStatePreference) preference).setSummaryOn(summaryPositive);
+			((TwoStatePreference) preference).setSummaryOff(summary);
+		}
 		preference.setDefaultValue(defaultValue);
 		preference.setKey(getFullId());
-		return preference; // TODO
+		return preference;
 	}
 
 	public static Builder build(String id, @StringRes int name, ConfigGroup parent){
@@ -37,13 +46,14 @@ public class ConfigEntry extends ConfigElement{
 	}
 
 	public static class Builder{
-		private String id;
-		private int name;
-		private int summary;
+		private final String id;
+		private final int name;
+		private int summary, summaryPositive = -1;
 		private Type type;
 		private String[] typeArgs;
-		private Object defaultValue;
-		private ConfigGroup parent;
+		private String defaultValue = "";
+		private final ConfigGroup parent;
+		private boolean groupToggle;
 
 		Builder(String id, @StringRes int name, ConfigGroup parent){
 			this.id = id;
@@ -53,6 +63,11 @@ public class ConfigEntry extends ConfigElement{
 
 		public Builder summary(@StringRes int summary){
 			this.summary = summary;
+			return this;
+		}
+
+		public Builder summaryPositive(@StringRes int summary){
+			summaryPositive = summary;
 			return this;
 		}
 
@@ -66,13 +81,26 @@ public class ConfigEntry extends ConfigElement{
 			return this;
 		}
 
-		public Builder defaultValue(Object defaultValue){
+		public Builder defaultValue(String defaultValue){
 			this.defaultValue = defaultValue;
 			return this;
 		}
 
+		public Builder groupToggle(boolean groupToggle){
+			this.groupToggle = groupToggle;
+			return this;
+		}
+
 		public ConfigEntry build(){
-			return new ConfigEntry(id, name, summary, type, typeArgs, defaultValue, parent);
+			ConfigEntry entry = new ConfigEntry(id, name, summary, summaryPositive, type, typeArgs, defaultValue, parent);
+			if(groupToggle){
+				if(type != Type.bool){
+					throw new AssertionError();
+				}
+
+				parent.setGroupToggle(entry);
+			}
+			return entry;
 		}
 	}
 }

@@ -82,4 +82,6 @@ public class IntegerPreference extends DialogPreference{
 		int defaultInt = (int) defaultValue;
 		setValue(restorePersistedValue ? getPersistedInt(0) : defaultInt);
 	}
+
+	// TODO: 8/6/2016 save instance state
 }

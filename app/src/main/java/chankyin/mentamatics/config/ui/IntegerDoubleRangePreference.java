@@ -44,7 +44,7 @@ public class IntegerDoubleRangePreference extends DialogPreference implements Do
 	public void setConstraint(DoubleRangeConstraint constraint){
 		this.constraint = constraint;
 
-		if(hardLimit != null){
+		if(hardLimit != null && value != null){
 			constraint.updateValueForHardLimit(this);
 		}
 	}
@@ -58,7 +58,7 @@ public class IntegerDoubleRangePreference extends DialogPreference implements Do
 		if(lowerBar != null){
 			lowerBar.setRangeValues(hardLimit.min, hardLimit.max);
 		}
-		if(constraint != null){
+		if(constraint != null && value != null){
 			constraint.updateValueForHardLimit(this);
 		}
 	}
@@ -71,6 +71,9 @@ public class IntegerDoubleRangePreference extends DialogPreference implements Do
 
 	@Override
 	public CharSequence getSummary(){
+		if(value == null){
+			return super.getSummary();
+		}
 		return String.format(super.getSummary().toString(), value.upperMin, value.upperMax, value.lowerMin, value.lowerMax);
 	}
 

@@ -1,8 +1,10 @@
 package chankyin.mentamatics.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -12,11 +14,12 @@ import chankyin.mentamatics.R;
 import chankyin.mentamatics.math.Decimal;
 import chankyin.mentamatics.problems.Problem;
 import chankyin.mentamatics.problems.generator.ProblemGenerator;
+import chankyin.mentamatics.ui.pref.PrefActivity;
 import lombok.Getter;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends BaseActivity{
 	@Getter(lazy = true) private final Random random = new Random();
 
 	private EditText input;
@@ -39,6 +42,20 @@ public class MainActivity extends AppCompatActivity{
 		});
 
 		nextProblem();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu){
+		getMenuInflater().inflate(R.menu.menu_main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		if(item.getItemId() == R.id.menu_pref){
+			startActivity(new Intent(this, PrefActivity.class));
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	public void nextProblem(){

@@ -7,7 +7,9 @@
 		android:orientation="vertical"
 		tools:context=".ui.pref.PrefActivity">
 	<fragment
+			android:name="chankyin.mentamatics.ui.EmptyFragment"
 			android:id="@+id/pref_pref"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"/>
+			android:layout_height="match_parent"
+			android:tag="Prefs"/>
 </LinearLayout>

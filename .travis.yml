@@ -22,4 +22,5 @@ install:
 script:
   - './gradlew connectedCheck'
 after_failure:
-  - curl -T app/build/reports/androidTests/connected/index.html https://transfer.sh/error.html
+  - zip -r reports.zip app/build/reports
+  - curl -T reports.zip https://transfer.sh/reports.zip

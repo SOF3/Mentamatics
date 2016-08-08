@@ -3,7 +3,7 @@ package chankyin.mentamatics.problems.generator;
 import android.support.annotation.NonNull;
 import chankyin.mentamatics.config.Config;
 import chankyin.mentamatics.config.ConfigConstants;
-import chankyin.mentamatics.math.Decimal;
+import chankyin.mentamatics.math.RealNumber;
 import chankyin.mentamatics.problems.LiteralQuestion;
 import chankyin.mentamatics.problems.Problem;
 
@@ -25,7 +25,7 @@ public abstract class ProblemGenerator implements ConfigConstants{
 	@SuppressWarnings("PointlessBooleanExpression")
 	public static Problem generate(Config config, Random random){
 		if(!IS_GENERATOR_IMPLEMENTED){
-			return new Problem(new LiteralQuestion("Question here"), Decimal.integer(true, 1, 2, 3, 4));
+			return new Problem(new LiteralQuestion("Question here"), RealNumber.bigEndianDigits(1, 0, new int[]{1, 2, 3, 4}));
 		}
 		List<ProblemGenerator> generators = new ArrayList<>(available);
 		if(!config.getBoolean(KEY_GEN_ADDITION_ENABLED)){

@@ -25,6 +25,8 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 		int upperDigits = Main.randomRange(random, digits.upperMin, digits.upperMax);
 		int lowerDigits = Main.randomRange(random, digits.lowerMin, digits.lowerMax);
 
+
+
 		return null; // TODO
 	}
 }

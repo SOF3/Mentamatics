@@ -11,7 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.R;
-import chankyin.mentamatics.math.Decimal;
+import chankyin.mentamatics.math.RealNumber;
 import chankyin.mentamatics.problems.Problem;
 import chankyin.mentamatics.problems.generator.ProblemGenerator;
 import chankyin.mentamatics.ui.pref.PrefActivity;
@@ -72,13 +72,13 @@ public class MainActivity extends BaseActivity{
 		if(text.length() == 0){
 			return;
 		}
-		Decimal val;
+		RealNumber val;
 		try{
-			val = Decimal.parseString(text.toString());
+			val = RealNumber.parseString(text.toString());
 		}catch(NumberFormatException e){
 			return;
 		}
-		if(currentProblem.getAnswer().equalsIgnoreExponent(val)){
+		if(currentProblem.getAnswer().equals(val)){
 			nextProblem();
 		}
 	}

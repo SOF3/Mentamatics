@@ -3,14 +3,14 @@ package chankyin.mentamatics.problems;
 import android.widget.LinearLayout;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.config.ConfigConstants;
-import chankyin.mentamatics.math.Decimal;
+import chankyin.mentamatics.math.RealNumber;
 
 public class TripletProblem implements ConfigConstants, Question{
-	private final Decimal a;
+	private final RealNumber a;
 	private final Operator op;
-	private final Decimal b;
+	private final RealNumber b;
 
-	public TripletProblem(Decimal a, Operator op, Decimal b){
+	public TripletProblem(RealNumber a, Operator op, RealNumber b){
 		this.a = a;
 		this.op = op;
 		this.b = b;

@@ -18,9 +18,12 @@ install:
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
+before_script:
+  - ./gradlew check || true
+  - ./gradlew test || true
 script:
-  - './gradlew check'
-  - './gradlew test'
+  - ./gradlew check
+  - ./gradlew test
 after_failure:
-  - zip -r reports.zip app/build/reports
+  - zip -r reports.zip app/build
   - curl -T reports.zip https://transfer.sh/reports.zip

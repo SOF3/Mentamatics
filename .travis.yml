@@ -14,7 +14,6 @@ android:
   - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
 install:
   - chmod +x gradlew
-#  - ./gradlew build jacocoTestReport assembleAndroidTest
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
@@ -22,5 +21,6 @@ install:
 script:
   - './gradlew check'
   - './gradlew test'
-after_falure:
-  - curl -T app/build/reports/androidTests/connected/index.html https://transfer.sh/error.html
+after_failure:
+  - zip -r reports.zip app/build/reports
+  - curl -T reports.zip https://transfer.sh/reports.zip

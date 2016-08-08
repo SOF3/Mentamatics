@@ -20,7 +20,6 @@ install:
   - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
 before_script:
   - ./gradlew check || true
-  - ./gradlew test || true
 script:
   - ./gradlew check
   - ./gradlew test

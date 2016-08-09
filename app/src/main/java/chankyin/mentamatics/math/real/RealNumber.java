@@ -4,9 +4,9 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import chankyin.mentamatics.BuildConfig;
 import chankyin.mentamatics.math.NumberUtils;
-import chankyin.mentamatics.math.real.annotation.BigEndian;
+import chankyin.mentamatics.math.real.annotation.AscendingDigits;
+import chankyin.mentamatics.math.real.annotation.DescendingDigits;
 import chankyin.mentamatics.math.real.annotation.Immutable;
-import chankyin.mentamatics.math.real.annotation.SmallEndian;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
@@ -26,12 +26,12 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 	public final static RealNumber ZERO = new RealNumber(new int[0], 0, DEFAULT_BASE, 0);
 	private final static Pattern parseFormat = Pattern.compile("^(\\-)?([0-9a-z]+)(\\.([0-9a-z]+))?(e([\\+\\-])([0-9]+))?(_([0-9]+))?$", Pattern.CASE_INSENSITIVE);
 
-	@Immutable @SmallEndian int[] digits;
+	@Immutable @AscendingDigits int[] digits;
 	int exp;
 	@IntRange(from = 2) int base;
 	@IntRange(from = -1, to = 1) int signum;
 
-	private RealNumber(@SmallEndian int[] digits, int exp, @IntRange(from = 2) int base, @IntRange(from = -1, to = 1) int signum){
+	private RealNumber(@AscendingDigits int[] digits, int exp, @IntRange(from = 2) int base, @IntRange(from = -1, to = 1) int signum){
 		this.digits = digits;
 		this.exp = exp;
 		this.base = base;
@@ -40,25 +40,25 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 		debug("Constructed RealNumber: " + toString());
 	}
 
-	public static RealNumber bigEndianDigits(int signum, int exp, @BigEndian int[] digits){
+	public static RealNumber bigEndianDigits(int signum, int exp, @DescendingDigits int[] digits){
 		return bigEndianDigits(DEFAULT_BASE, signum, exp, digits);
 	}
 
-	public static RealNumber smallEndianDigits(int signum, int exp, @BigEndian int[] digits){
+	public static RealNumber smallEndianDigits(int signum, int exp, @DescendingDigits int[] digits){
 		return smallEndianDigits(DEFAULT_BASE, signum, exp, digits);
 	}
 
-	public static RealNumber bigEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @Immutable @BigEndian int[] digits){
+	public static RealNumber bigEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @Immutable @DescendingDigits int[] digits){
 		return bigEndianDigits(base, signum, exp, true, digits);
 	}
 
-	public static RealNumber smallEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @Immutable @SmallEndian int[] digits){
+	public static RealNumber smallEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @Immutable @AscendingDigits int[] digits){
 		digits = digits.clone();
 		flipIntArray(digits);
 		return bigEndianDigits(base, signum, exp, true, digits);
 	}
 
-	public static RealNumber bigEndianDigits(@IntRange(from = 2) int base, int signum, int exp, boolean trim, @Immutable @BigEndian int[] digits){
+	public static RealNumber bigEndianDigits(@IntRange(from = 2) int base, int signum, int exp, boolean trim, @Immutable @DescendingDigits int[] digits){
 		NumberUtils.validate(base, digits);
 
 		int start = -1;
@@ -90,7 +90,7 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 			end = digits.length;
 		}
 
-		@SmallEndian int[] newDigits = new int[end - start];
+		@AscendingDigits int[] newDigits = new int[end - start];
 
 		for(int i = 0; i < end - start; i++){
 			newDigits[i] = digits[end - i - 1]; // flip of range end till start

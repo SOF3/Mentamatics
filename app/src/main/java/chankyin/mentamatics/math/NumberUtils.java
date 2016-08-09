@@ -4,10 +4,10 @@ import android.support.annotation.IntRange;
 import android.util.Log;
 import chankyin.mentamatics.BuildConfig;
 import chankyin.mentamatics.Main;
-import chankyin.mentamatics.math.real.annotation.BigEndian;
+import chankyin.mentamatics.math.real.annotation.AscendingDigits;
+import chankyin.mentamatics.math.real.annotation.DescendingDigits;
 import chankyin.mentamatics.math.real.annotation.Immutable;
 import chankyin.mentamatics.math.real.annotation.Mutable;
-import chankyin.mentamatics.math.real.annotation.SmallEndian;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -38,8 +38,8 @@ public class NumberUtils{
 		}
 	}
 
-	@SmallEndian
-	public static int[] carry(@Mutable @SmallEndian int[] digits, @IntRange(from = 2) int base){
+	@AscendingDigits
+	public static int[] carry(@Mutable @AscendingDigits int[] digits, @IntRange(from = 2) int base){
 		int carry = 0;
 		for(int i = 0; i < digits.length; i++){
 			int newDigit = digits[i] + carry;
@@ -61,8 +61,8 @@ public class NumberUtils{
 		}
 	}
 
-	@SmallEndian
-	public static void borrow(@Mutable @SmallEndian int[] digits, @IntRange(from = 2) int base){
+	@AscendingDigits
+	public static void borrow(@Mutable @AscendingDigits int[] digits, @IntRange(from = 2) int base){
 		int borrow = 0;
 		for(int i = 0; i < digits.length; i++){
 			int digit = digits[i];
@@ -79,8 +79,8 @@ public class NumberUtils{
 		}
 	}
 
-	@SmallEndian
-	public static int[] add(@Immutable @SmallEndian int[] foo, @Immutable @SmallEndian int[] bar, @IntRange(from = 2) int base){
+	@AscendingDigits
+	public static int[] add(@Immutable @AscendingDigits int[] foo, @Immutable @AscendingDigits int[] bar, @IntRange(from = 2) int base){
 		if(foo.length < bar.length){
 			return add(bar, foo, base);
 		}
@@ -98,8 +98,8 @@ public class NumberUtils{
 		return add;
 	}
 
-	@SmallEndian
-	public static int[] subtract(@Immutable @SmallEndian int[] left, @Immutable @SmallEndian int[] right, @IntRange(from = 2) int base){
+	@AscendingDigits
+	public static int[] subtract(@Immutable @AscendingDigits int[] left, @Immutable @AscendingDigits int[] right, @IntRange(from = 2) int base){
 		if(BuildConfig.DEBUG && cmp(left, right) <= 0){
 			throw new IllegalArgumentException();
 		}
@@ -156,10 +156,10 @@ public class NumberUtils{
 		return true;
 	}
 
-	public static int cmp(@Immutable @SmallEndian int[] foo0, int fooExp, @Immutable @SmallEndian int[] bar0, int barExp){
-		@BigEndian int[] foo = foo0.clone();
+	public static int cmp(@Immutable @AscendingDigits int[] foo0, int fooExp, @Immutable @AscendingDigits int[] bar0, int barExp){
+		@DescendingDigits int[] foo = foo0.clone();
 		flipIntArray(foo);
-		@BigEndian int[] bar = bar0.clone();
+		@DescendingDigits int[] bar = bar0.clone();
 		flipIntArray(bar);
 
 		if(fooExp > barExp){
@@ -172,7 +172,7 @@ public class NumberUtils{
 		return cmp(foo, bar);
 	}
 
-	private static int cmp(@Immutable @BigEndian int[] foo, @Immutable @BigEndian int[] bar){
+	private static int cmp(@Immutable @DescendingDigits int[] foo, @Immutable @DescendingDigits int[] bar){
 		if(foo.length > bar.length){
 			return 1;
 		}

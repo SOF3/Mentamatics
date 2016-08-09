@@ -1,4 +1,4 @@
-package chankyin.mentamatics.math.annotation;
+package chankyin.mentamatics.math.real.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;

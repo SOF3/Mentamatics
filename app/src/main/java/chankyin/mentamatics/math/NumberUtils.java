@@ -4,13 +4,14 @@ import android.support.annotation.IntRange;
 import android.util.Log;
 import chankyin.mentamatics.BuildConfig;
 import chankyin.mentamatics.Main;
-import chankyin.mentamatics.math.annotation.BigEndian;
-import chankyin.mentamatics.math.annotation.Immutable;
-import chankyin.mentamatics.math.annotation.Mutable;
-import chankyin.mentamatics.math.annotation.SmallEndian;
+import chankyin.mentamatics.math.real.annotation.BigEndian;
+import chankyin.mentamatics.math.real.annotation.Immutable;
+import chankyin.mentamatics.math.real.annotation.Mutable;
+import chankyin.mentamatics.math.real.annotation.SmallEndian;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Random;
 
 public class NumberUtils{
 	public static boolean IS_TEST = classExists("junit.framework.Test");
@@ -120,36 +121,6 @@ public class NumberUtils{
 		return length == subtract.length ? subtract : Arrays.copyOf(subtract, length);
 	}
 
-	public static void flipIntArray(@Mutable int[] array){
-		for(int i = 0; i < array.length / 2; i++){
-			int opposite = array.length - 1 - i;
-			int swap = array[i];
-			array[i] = array[opposite];
-			array[opposite] = swap;
-		}
-	}
-
-	public static int[] joinArrays(@Immutable int[]... arrays){
-		int sum = 0;
-		for(int[] array : arrays){
-			sum += array.length;
-		}
-		int[] out = new int[sum];
-		int offset = 0;
-
-		for(int[] array : arrays){
-			System.arraycopy(array, 0, out, offset, array.length);
-			offset += array.length;
-		}
-		return out;
-	}
-
-	public static int[] leftPadArray(@Immutable int[] array, @IntRange(from = 1) int diff){
-		int[] out = new int[array.length + diff];
-		System.arraycopy(array, 0, out, diff, array.length);
-		return out;
-	}
-
 	public static void validate(int base, @Immutable int[]... subjects){
 		validate(base, IndexOutOfBoundsException.class, subjects);
 	}
@@ -252,5 +223,50 @@ public class NumberUtils{
 			output[i] = intToChar(input[i]);
 		}
 		return output;
+	}
+
+	public static void flipIntArray(@Mutable int[] array){
+		for(int i = 0; i < array.length / 2; i++){
+			int opposite = array.length - 1 - i;
+			int swap = array[i];
+			array[i] = array[opposite];
+			array[opposite] = swap;
+		}
+	}
+
+	public static int[] joinArrays(@Immutable int[]... arrays){
+		int sum = 0;
+		for(int[] array : arrays){
+			sum += array.length;
+		}
+		int[] out = new int[sum];
+		int offset = 0;
+
+		for(int[] array : arrays){
+			System.arraycopy(array, 0, out, offset, array.length);
+			offset += array.length;
+		}
+		return out;
+	}
+
+	public static int[] leftPadArray(@Immutable int[] array, @IntRange(from = 1) int diff){
+		int[] out = new int[array.length + diff];
+		System.arraycopy(array, 0, out, diff, array.length);
+		return out;
+	}
+
+	/**
+	 * @param random random object to create pseudorandomness with
+	 * @param length length of array to generate
+	 * @param min    inclusive minimum value in array
+	 * @param max    exclusive maximum value in array
+	 * @return an array of length {@code length} filled with integers where {@code min <= i < max}
+	 */
+	public static int[] randomRangeArray(Random random, int length, int min, int max){
+		int[] array = new int[length];
+		for(int i = 0; i < length; i++){
+			array[i] = random.nextInt(max - min) + min;
+		}
+		return array;
 	}
 }

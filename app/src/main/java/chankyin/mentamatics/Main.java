@@ -7,7 +7,7 @@ import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout.LayoutParams;
+import android.view.ViewGroup.LayoutParams;
 import chankyin.mentamatics.config.Config;
 import chankyin.mentamatics.config.ConfigEntries;
 import chankyin.mentamatics.config.ConfigParser;

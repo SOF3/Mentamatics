@@ -1,4 +1,4 @@
-package chankyin.mentamatics.problems;
+package chankyin.mentamatics.problem;
 
 import android.widget.LinearLayout;
 
@@ -11,5 +11,5 @@ public interface Question{
 	 *
 	 * @param layout
 	 */
-	public void populate(LinearLayout layout);
+	public void populateQuestionLayout(LinearLayout layout);
 }

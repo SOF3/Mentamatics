@@ -1,11 +1,12 @@
-package chankyin.mentamatics.math;
+package chankyin.mentamatics.math.real;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import chankyin.mentamatics.BuildConfig;
-import chankyin.mentamatics.math.annotation.BigEndian;
-import chankyin.mentamatics.math.annotation.Immutable;
-import chankyin.mentamatics.math.annotation.SmallEndian;
+import chankyin.mentamatics.math.NumberUtils;
+import chankyin.mentamatics.math.real.annotation.BigEndian;
+import chankyin.mentamatics.math.real.annotation.Immutable;
+import chankyin.mentamatics.math.real.annotation.SmallEndian;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
@@ -13,7 +14,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static chankyin.mentamatics.math.NumberUtils.debug;
+import static chankyin.mentamatics.math.NumberUtils.*;
 
 /**
  * Arbitrary-base floating-point infinite-precision real number class.
@@ -43,11 +44,21 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 		return bigEndianDigits(DEFAULT_BASE, signum, exp, digits);
 	}
 
-	public static RealNumber bigEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @BigEndian int[] digits){
+	public static RealNumber smallEndianDigits(int signum, int exp, @BigEndian int[] digits){
+		return smallEndianDigits(DEFAULT_BASE, signum, exp, digits);
+	}
+
+	public static RealNumber bigEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @Immutable @BigEndian int[] digits){
 		return bigEndianDigits(base, signum, exp, true, digits);
 	}
 
-	public static RealNumber bigEndianDigits(@IntRange(from = 2) int base, int signum, int exp, boolean trim, @BigEndian int[] digits){
+	public static RealNumber smallEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @Immutable @SmallEndian int[] digits){
+		digits = digits.clone();
+		flipIntArray(digits);
+		return bigEndianDigits(base, signum, exp, true, digits);
+	}
+
+	public static RealNumber bigEndianDigits(@IntRange(from = 2) int base, int signum, int exp, boolean trim, @Immutable @BigEndian int[] digits){
 		NumberUtils.validate(base, digits);
 
 		int start = -1;

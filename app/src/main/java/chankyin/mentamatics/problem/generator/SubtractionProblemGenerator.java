@@ -1,8 +1,8 @@
-package chankyin.mentamatics.problems.generator;
+package chankyin.mentamatics.problem.generator;
 
 import android.support.annotation.NonNull;
 import chankyin.mentamatics.config.Config;
-import chankyin.mentamatics.problems.Problem;
+import chankyin.mentamatics.problem.Problem;
 
 import java.util.Random;
 

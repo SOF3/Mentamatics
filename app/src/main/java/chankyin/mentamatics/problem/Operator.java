@@ -1,4 +1,4 @@
-package chankyin.mentamatics.problems;
+package chankyin.mentamatics.problem;
 
 import android.support.annotation.StringRes;
 import chankyin.mentamatics.Main;

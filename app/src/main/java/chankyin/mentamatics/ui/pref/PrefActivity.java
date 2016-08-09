@@ -1,6 +1,7 @@
 package chankyin.mentamatics.ui.pref;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import chankyin.mentamatics.R;
 import chankyin.mentamatics.config.Lock;
 import chankyin.mentamatics.ui.BaseActivity;
@@ -17,6 +18,12 @@ public class PrefActivity extends BaseActivity{
 		}else{
 			showPrefs();
 		}
+	}
+
+	@Override
+	@IdRes
+	public int getContentViewId(){
+		return R.id.pref_content_view;
 	}
 
 	public void showPrefs(){

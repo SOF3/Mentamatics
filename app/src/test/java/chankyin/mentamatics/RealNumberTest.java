@@ -1,14 +1,11 @@
 package chankyin.mentamatics;
 
-import chankyin.mentamatics.math.RealNumber;
+import chankyin.mentamatics.math.real.RealNumber;
 import org.junit.Test;
 
 import static junit.framework.Assert.*;
 
-/**
- * To work on unit tests, switch the Test Artifact in the Build Variants view.
- */
-public class ExampleUnitTest{
+public class RealNumberTest{
 	@Test
 	public void parseClean(){
 		assertEquals("parseClean", 12345, RealNumber.parseString("12345").doubleValue(), 1e-3);

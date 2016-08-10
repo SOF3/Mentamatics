@@ -5,7 +5,6 @@ import android.widget.Toast;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.R;
 import chankyin.mentamatics.config.Config;
-import chankyin.mentamatics.config.ConfigConstants;
 import chankyin.mentamatics.math.real.RealFloat;
 import chankyin.mentamatics.problem.Answer;
 import chankyin.mentamatics.problem.Problem;
@@ -18,8 +17,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public abstract class ProblemGenerator implements ConfigConstants{
-	public final static boolean IS_GENERATOR_IMPLEMENTED = false; // FIXME
+import static chankyin.mentamatics.config.ConfigConstants.*;
+
+public abstract class ProblemGenerator{
+	public final static boolean IS_GENERATOR_IMPLEMENTED = true; // FIXME
 
 	private static List<ProblemGenerator> available = Arrays.asList(
 			AdditionProblemGenerator.getInstance(),

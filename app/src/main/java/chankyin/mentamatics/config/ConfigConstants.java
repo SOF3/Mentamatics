@@ -1,6 +1,9 @@
 package chankyin.mentamatics.config;
 
-public interface ConfigConstants{
+public final class ConfigConstants{
+	private ConfigConstants(){
+	}
+
 	public final static String KEY_GUI_VERTICAL_ALIGN = "gui.verticalAlign";
 
 	public final static String KEY_LOCK = "lock";

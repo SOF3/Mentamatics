@@ -57,14 +57,14 @@ public class Config{
 
 	public QuadretRange getIntDoubleRange(String key){
 		ConfigEntry entry = entries.getEntry(key);
-		if(entry.type != ConfigElement.Type.integerRange){
+		if(entry.type != ConfigElement.Type.integerDoubleRange){
 			throw new ClassCastException();
 		}
 		String out = prefs.getString(key, null);
 		if(out == null){
-			return new QuadretRange((int[]) entry.defaultValue);
+			return (QuadretRange) entry.defaultValue;
 		}else{
-			return new QuadretRange((int[]) ConfigElement.Type.integerRange.fromString(out));
+			return (QuadretRange) ConfigElement.Type.integerDoubleRange.fromString(out);
 		}
 	}
 }

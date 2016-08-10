@@ -18,6 +18,8 @@ import chankyin.mentamatics.problem.question.TripletQuestion;
 
 import java.util.Random;
 
+import static chankyin.mentamatics.config.ConfigConstants.*;
+
 public class AdditionProblemGenerator extends ProblemGenerator{
 	private static AdditionProblemGenerator ourInstance = new AdditionProblemGenerator();
 	private final static Operator OPERATOR = Operator.ADDITION;

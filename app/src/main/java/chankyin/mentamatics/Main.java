@@ -1,12 +1,16 @@
 package chankyin.mentamatics;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Base64;
 import android.util.Base64InputStream;
 import android.util.Base64OutputStream;
@@ -169,5 +173,19 @@ public class Main extends Application{
 		Object ret = oos.readObject();
 		oos.close();
 		return ret;
+	}
+
+	@SuppressWarnings("deprecation")
+	public static Spanned fromHtml(String html){
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+			return fromHtmlN(html);
+		}else{
+			return Html.fromHtml(html);
+		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.N)
+	private static Spanned fromHtmlN(String html){
+		return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
 	}
 }

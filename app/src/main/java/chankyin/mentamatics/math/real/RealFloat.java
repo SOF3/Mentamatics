@@ -2,7 +2,9 @@ package chankyin.mentamatics.math.real;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.text.Spanned;
 import chankyin.mentamatics.BuildConfig;
+import chankyin.mentamatics.Main;
 import chankyin.mentamatics.math.MathUtils;
 import chankyin.mentamatics.math.real.annotation.AscendingDigits;
 import chankyin.mentamatics.math.real.annotation.DescendingDigits;
@@ -11,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -380,5 +383,37 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 		String d = new String(MathUtils.intsToChars(digits));
 		d = new StringBuilder(d).reverse().toString();
 		return (signum == -1 ? "-" : "") + d + " E" + exp + " _" + base;
+	}
+
+	public String toUserString(boolean html){
+		if(signum == 0){
+			return "0";
+		}
+		StringBuilder output = new StringBuilder();
+		if(signum == -1){
+			output.append('-');
+		}
+		for(int i = digits.length - 1; i >= 0; i--){
+			output.append(MathUtils.intToChar(digits[i]));
+		}
+		if(exp != 0){
+			output.append(html ? "<sub>E</sub>" : " E")
+					.append(String.format(Locale.getDefault(), "%d", exp));
+		}
+		if(base != DEFAULT_BASE){
+			output.append(' ');
+			String baseStr = String.format(Locale.getDefault(), "%d", base);
+			if(html){
+				output.append("<sub>").append(baseStr).append("</sub>");
+			}else{
+				output.append(baseStr);
+			}
+		}
+		return output.toString();
+	}
+
+	@SuppressWarnings("deprecation")
+	public Spanned toUserStringHtml(){
+		return Main.fromHtml(toUserString(true));
 	}
 }

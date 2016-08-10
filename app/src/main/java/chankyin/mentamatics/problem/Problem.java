@@ -1,8 +1,9 @@
 package chankyin.mentamatics.problem;
 
+import android.view.View;
 import android.widget.LinearLayout;
 import chankyin.mentamatics.R;
-import chankyin.mentamatics.ui.main.MainActivity;
+import chankyin.mentamatics.problem.question.Question;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,12 +16,12 @@ public class Problem{
 
 	@Setter private OnAnswerCorrectListener onAnswerCorrectListener;
 
-	public void express(MainActivity activity){
-		LinearLayout questionLayout = (LinearLayout) activity.findViewById(R.id.main_question);
+	public void express(View container){
+		LinearLayout questionLayout = (LinearLayout) container.findViewById(R.id.main_question);
 		questionLayout.removeAllViews();
 		question.populateQuestionLayout(questionLayout);
 
-		LinearLayout answerLayout = (LinearLayout) activity.findViewById(R.id.main_answer);
+		LinearLayout answerLayout = (LinearLayout) container.findViewById(R.id.main_answer);
 		answerLayout.removeAllViews();
 		answer.populateAnswerField(answerLayout, this);
 	}

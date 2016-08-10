@@ -13,7 +13,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import chankyin.mentamatics.Main;
-import chankyin.mentamatics.math.real.RealNumber;
+import chankyin.mentamatics.R;
+import chankyin.mentamatics.math.real.RealFloat;
 import chankyin.mentamatics.ui.BaseActivity;
 import chankyin.mentamatics.ui.main.KeyboardFragment;
 import lombok.Getter;
@@ -68,17 +69,14 @@ public class NumberInputField extends EditText implements View.OnFocusChangeList
 	public void openKeyboard(){
 		keyboardActivity = Main.getInstance().getCurrentActivity();
 		if(keyboardActivity == null){
-			Log.w(Main.TAG, "No activity to open keyboard in");
+			Log.w(Main.TAG, "No activity to open keyboard in", new Throwable("Backtrace"));
 			return;
 		}
 
-		if(keyboardActivity.getFragmentManager().findFragmentByTag(KeyboardFragment.TAG) != null){
-//			Log.w(Main.TAG, "Activity already has keyboard");
-			return;
-		}
+		FragmentManager manager = keyboardActivity.getFragmentManager();
 
-		keyboardActivity.getFragmentManager().beginTransaction()
-				.add(keyboardActivity.getContentViewId(), new KeyboardFragment(), KeyboardFragment.TAG)
+		manager.beginTransaction()
+				.show(manager.findFragmentById(R.id.fragment_keyboard))
 				.addToBackStack(KeyboardFragment.TAG)
 				.commit();
 	}
@@ -91,15 +89,15 @@ public class NumberInputField extends EditText implements View.OnFocusChangeList
 		}
 
 		FragmentManager manager = keyboardActivity.getFragmentManager();
-		Fragment fragment = manager.findFragmentByTag(KeyboardFragment.TAG);
+		Fragment fragment = manager.findFragmentById(R.id.fragment_keyboard);
 		if(!(fragment instanceof KeyboardFragment)){
-//			Log.w(Main.TAG, "keyboardActivity doesn't have a KeyboardFragment");
+			Log.w(Main.TAG, "keyboardActivity doesn't have a KeyboardFragment");
 			return;
 		}
 		KeyboardFragment keyboard = (KeyboardFragment) fragment;
 
 		manager.beginTransaction()
-				.remove(keyboard)
+				.hide(keyboard)
 				.commit();
 		manager.popBackStack(KeyboardFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
@@ -123,9 +121,9 @@ public class NumberInputField extends EditText implements View.OnFocusChangeList
 		}
 
 		if(text.length() != 0 && onRealNumberValidListener != null){
-			RealNumber number;
+			RealFloat number;
 			try{
-				number = RealNumber.parseString(text.toString());
+				number = RealFloat.parseString(text.toString());
 			}catch(NumberFormatException e){
 				return;
 			}
@@ -135,6 +133,6 @@ public class NumberInputField extends EditText implements View.OnFocusChangeList
 	}
 
 	public static interface OnRealNumberValidListener{
-		public void onValid(@NonNull RealNumber number);
+		public void onValid(@NonNull RealFloat number);
 	}
 }

@@ -3,8 +3,12 @@ package chankyin.mentamatics.problem.generator;
 import android.support.annotation.NonNull;
 import chankyin.mentamatics.config.Config;
 import chankyin.mentamatics.config.ConfigConstants;
-import chankyin.mentamatics.math.real.RealNumber;
-import chankyin.mentamatics.problem.*;
+import chankyin.mentamatics.math.real.RealFloat;
+import chankyin.mentamatics.problem.Answer;
+import chankyin.mentamatics.problem.Problem;
+import chankyin.mentamatics.problem.SingleAnswer;
+import chankyin.mentamatics.problem.question.LiteralQuestion;
+import chankyin.mentamatics.problem.question.Question;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +29,7 @@ public abstract class ProblemGenerator implements ConfigConstants{
 	public static Problem generate(Config config, Random random){
 		if(!IS_GENERATOR_IMPLEMENTED){
 			Question question = new LiteralQuestion("Question here");
-			Answer answer = new SingleAnswer(RealNumber.bigEndianDigits(1, 0, new int[]{1, 2, 3, 4}));
+			Answer answer = new SingleAnswer(RealFloat.bigEndianDigits(1, 0, new int[]{1, 2, 3, 4}));
 			return new Problem(question, answer);
 		}
 		List<ProblemGenerator> generators = new ArrayList<>(available);

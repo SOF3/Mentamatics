@@ -1,8 +1,9 @@
 package chankyin.mentamatics.ui.main;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,17 +19,22 @@ import lombok.Getter;
 
 import java.util.Random;
 
-public class MainActivity extends BaseActivity{
+public class HomeActivity extends BaseActivity{
 	@Getter(lazy = true) private final Random random = new Random();
 
-	@Getter private Problem currentProblem;
+	@Getter private static Problem currentProblem = null;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState){
+	protected void onCreate(@Nullable Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-
-		nextProblem();
+		setContentView(R.layout.activity_home);
+		FragmentManager manager = getFragmentManager();
+		manager.beginTransaction()
+				.hide(manager.findFragmentById(R.id.fragment_keyboard))
+				.commit();
+		if(currentProblem == null){
+			nextProblem();
+		}
 	}
 
 	@Override
@@ -45,27 +51,23 @@ public class MainActivity extends BaseActivity{
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	@IdRes
-	public int getContentViewId(){
-		return R.id.main_content_view;
-	}
-
-	public void nextProblem(){
-		Log.i(Main.TAG, "Generating next problem");
-		setCurrentProblem(ProblemGenerator.generate(Main.getInstance(this).getConfig(), getRandom()));
+	public Problem nextProblem(){
+		Log.i(Main.TAG, "Generating next problem", new Throwable("Backtrace"));
+		Problem newProblem = ProblemGenerator.generate(Main.getInstance(this).getConfig(), getRandom());
+		setCurrentProblem(newProblem);
+		return newProblem;
 	}
 
 	public void setCurrentProblem(Problem currentProblem){
-		this.currentProblem = currentProblem;
+		HomeActivity.currentProblem = currentProblem;
 		currentProblem.setOnAnswerCorrectListener(new Problem.OnAnswerCorrectListener(){
 			@Override
 			public void onAnswerCorrect(){
-				nextProblem();
+				Problem newProblem = nextProblem();
+				newProblem.express(getFragmentManager().findFragmentById(R.id.fragment_problem).getView());
 				// TODO stat
 			}
 		});
-		currentProblem.express(this);
 
 		View currentFocus = getCurrentFocus();
 		if(currentFocus instanceof NumberInputField){

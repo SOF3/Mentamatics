@@ -1,19 +1,19 @@
 package chankyin.mentamatics.math.foobar;
 
-import lombok.Value;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Random;
 
-@Value
+@RequiredArgsConstructor
 public class FooBarRange{
 	/**
 	 * inclusive minimum
 	 */
-	int min;
+	public final int min;
 	/**
 	 * exclusive maximum
 	 */
-	int max;
+	public final int max;
 
 	public int generateRandom(Random random){
 		return random.nextInt(max - min) + min;

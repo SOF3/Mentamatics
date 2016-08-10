@@ -1,6 +1,7 @@
 package chankyin.mentamatics.math;
 
 import android.support.annotation.IntRange;
+import android.support.annotation.Size;
 import android.util.Log;
 import chankyin.mentamatics.BuildConfig;
 import chankyin.mentamatics.Main;
@@ -13,7 +14,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 
-public class NumberUtils{
+public class MathUtils{
 	public static boolean IS_TEST = classExists("junit.framework.Test");
 	public static boolean IS_ANDROID = classExists("android.app.Application");
 
@@ -268,5 +269,18 @@ public class NumberUtils{
 			array[i] = random.nextInt(max - min) + min;
 		}
 		return array;
+	}
+
+	@Size(2)
+	public static double[] solveQuadratic(int a, int b, int c){
+		int d = b * b - 4 * a * c;
+		if(d < 0){
+			throw new IndexOutOfBoundsException("Cannot solve imaginary problem");
+		}
+		double root = Math.sqrt(d);
+		return new double[]{
+				(-b + root) / (2 * a),
+				(-b - root) / (2 * a),
+		};
 	}
 }

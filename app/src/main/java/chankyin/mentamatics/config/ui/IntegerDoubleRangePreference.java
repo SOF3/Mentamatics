@@ -87,7 +87,7 @@ public class IntegerDoubleRangePreference extends DialogPreference implements Do
 		lowerBar.setSelectedMaxValue(value.lowerMax);
 
 		ViewParent oldParent = layout.getParent();
-		if(oldParent!=view){
+		if(oldParent != view){
 			if(oldParent != null){
 				((ViewGroup) oldParent).removeView(layout);
 			}

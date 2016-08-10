@@ -16,15 +16,7 @@ public class KeyboardFragment extends Fragment{
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		View keyboard = inflater.inflate(R.layout.frag_keyboard, container, false);
-
-		BaseActivity activity = (BaseActivity) getActivity();
-		ViewGroup.LayoutParams keyboardParams = activity.getKeyboardParams();
-		if(keyboardParams != null){
-			keyboard.setLayoutParams(keyboardParams);
-		}
-
-		return keyboard;
+		return inflater.inflate(R.layout.frag_keyboard, container, false);
 	}
 
 	public void onInputButtonClick(View view){

@@ -1,5 +1,6 @@
-package chankyin.mentamatics.problem;
+package chankyin.mentamatics.problem.question;
 
+import android.support.annotation.StringRes;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.github.nantaphop.fluentview.Fluent;
@@ -9,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 import static chankyin.mentamatics.Main.*;
 
 @RequiredArgsConstructor
-public class LiteralQuestion implements Question{
-	@Getter private final String literal;
+public class ResLiteralQuestion implements Question{
+	@Getter @StringRes private final int literal;
 
 	@Override
 	public void populateQuestionLayout(LinearLayout layout){

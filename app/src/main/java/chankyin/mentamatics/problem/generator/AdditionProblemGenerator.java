@@ -1,19 +1,20 @@
 package chankyin.mentamatics.problem.generator;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Size;
 import chankyin.mentamatics.BuildConfig;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.config.Config;
 import chankyin.mentamatics.config.range.QuadretRange;
-import chankyin.mentamatics.math.NumberUtils;
+import chankyin.mentamatics.math.MathUtils;
 import chankyin.mentamatics.math.foobar.FooBar;
 import chankyin.mentamatics.math.foobar.FooBarFactory;
 import chankyin.mentamatics.math.foobar.FooBarRange;
-import chankyin.mentamatics.math.real.RealNumber;
+import chankyin.mentamatics.math.real.RealFloat;
 import chankyin.mentamatics.problem.Operator;
 import chankyin.mentamatics.problem.Problem;
 import chankyin.mentamatics.problem.SingleAnswer;
-import chankyin.mentamatics.problem.TripletQuestion;
+import chankyin.mentamatics.problem.question.TripletQuestion;
 
 import java.util.Random;
 
@@ -34,45 +35,61 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 		QuadretRange digits = config.getIntDoubleRange(KEY_GEN_ADDITION_DIGITS);
 		int upperDigitCount = Main.randomRange(random, digits.upperMin, digits.upperMax);
 		int lowerDigitCount = Main.randomRange(random, digits.lowerMin, digits.lowerMax);
-		int base = RealNumber.DEFAULT_BASE;
+		int base = RealFloat.DEFAULT_BASE;
 
-		RealNumber upper, lower;
+		RealFloat upper, lower;
 
-		if(!config.getBoolean(KEY_GEN_ADDITION_CARRY_ALLOWED)){
-			boolean swap = upperDigitCount < lowerDigitCount;
-			int[] upperDigits = new int[swap ? lowerDigitCount : upperDigitCount];
-			int[] lowerDigits = new int[swap ? upperDigitCount : lowerDigitCount];
-
-			for(int i = 0; i < upperDigits.length; i++){
-				FooBarRange fooRange = new FooBarRange(i + 1 == upperDigits.length ? 1 : 0, base);
-				if(i >= lowerDigits.length){
-					upperDigits[i] = fooRange.generateRandom(random);
-					continue;
-				}
-				FooBarRange barRange = new FooBarRange(i + 1 == lowerDigits.length ? 1 : 0, base);
+		@Size(2) RealFloat[] operands = config.getBoolean(KEY_GEN_ADDITION_CARRY_ALLOWED) ?
+				generateCarry(random, base, upperDigitCount, lowerDigitCount) :
+				generateNoCarry(random, base, upperDigitCount, lowerDigitCount);
 
 
-				FooBar fooBar = FooBarFactory.sumLessThan(fooRange, barRange, base);
-				upperDigits[i] = fooBar.getFoo();
-				lowerDigits[i] = fooBar.getBar();
-			}
-
-			upper = RealNumber.smallEndianDigits(base, 1, 0, swap ? lowerDigits : upperDigits);
-			lower = RealNumber.smallEndianDigits(base, 1, 0, swap ? upperDigits : lowerDigits);
-		}else{
-			upper = RealNumber.bigEndianDigits(base, 1, 0, NumberUtils.randomRangeArray(random, upperDigitCount, 0, base));
-			lower = RealNumber.bigEndianDigits(base, 1, 0, NumberUtils.randomRangeArray(random, upperDigitCount, 0, base));
-		}
-
-
-		RealNumber answer = upper.plus(lower);
+		RealFloat answer = operands[0].plus(operands[1]);
 		if(BuildConfig.DEBUG){
-			RealNumber answer2 = lower.plus(upper);
+			RealFloat answer2 = operands[1].plus(operands[0]);
 			if(!answer.equals(answer2)){
-				throw new AssertionError(upper.toString() + " + " + lower.toString() + " = " + answer.toString() + " OR " + answer2.toString());
+				throw new AssertionError(operands[0].toString() + " + " + operands[1].toString() + " = " + answer.toString() + " OR " + answer2.toString());
 			}
 		}
 
-		return new Problem(new TripletQuestion(upper, OPERATOR, lower), new SingleAnswer(answer)); // TODO
+		return new Problem(new TripletQuestion(operands[0], OPERATOR, operands[1]), new SingleAnswer(answer)); // TODO
+	}
+
+	@Size(2)
+	private RealFloat[] generateCarry(Random random, int base, int upperDigitCount, int lowerDigitCount){
+		return new RealFloat[]{
+				RealFloat.bigEndianDigits(base, 1, 0, MathUtils.randomRangeArray(random, upperDigitCount, 0, base)),
+				RealFloat.bigEndianDigits(base, 1, 0, MathUtils.randomRangeArray(random, lowerDigitCount, 0, base))
+		};
+	}
+
+	@Size(2)
+	private RealFloat[] generateNoCarry(Random random, int base, int upperDigitCount, int lowerDigitCount){
+		boolean swap = upperDigitCount < lowerDigitCount;
+		int[] upperDigits = new int[swap ? lowerDigitCount : upperDigitCount];
+		int[] lowerDigits = new int[swap ? upperDigitCount : lowerDigitCount];
+
+		for(int i = 0; i < upperDigits.length; i++){
+			FooBarRange fooRange = new FooBarRange(i + 1 == upperDigits.length ? 1 : 0, base - 1);
+			if(i >= lowerDigits.length){
+				upperDigits[i] = fooRange.generateRandom(random) + 1;
+				continue;
+			}
+			FooBarRange barRange;
+			if(i + 1 == lowerDigits.length){
+				barRange = new FooBarRange(1, base - 1);
+			}else{
+				barRange = fooRange;
+			}
+
+			FooBar fooBar = FooBarFactory.sumLessThan(random, fooRange, barRange, base);
+			upperDigits[i] = fooBar.getFoo();
+			lowerDigits[i] = fooBar.getBar();
+		}
+
+		return new RealFloat[]{
+				RealFloat.smallEndianDigits(base, 1, 0, swap ? lowerDigits : upperDigits),
+				RealFloat.smallEndianDigits(base, 1, 0, swap ? upperDigits : lowerDigits)
+		};
 	}
 }

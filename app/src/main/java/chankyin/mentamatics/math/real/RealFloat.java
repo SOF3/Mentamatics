@@ -3,7 +3,7 @@ package chankyin.mentamatics.math.real;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import chankyin.mentamatics.BuildConfig;
-import chankyin.mentamatics.math.NumberUtils;
+import chankyin.mentamatics.math.MathUtils;
 import chankyin.mentamatics.math.real.annotation.AscendingDigits;
 import chankyin.mentamatics.math.real.annotation.DescendingDigits;
 import chankyin.mentamatics.math.real.annotation.Immutable;
@@ -14,16 +14,16 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static chankyin.mentamatics.math.NumberUtils.*;
+import static chankyin.mentamatics.math.MathUtils.*;
 
 /**
  * Arbitrary-base floating-point infinite-precision real number class.
  */
 @FieldDefaults(level = AccessLevel.PUBLIC, makeFinal = true)
-public class RealNumber extends Number implements Comparable<RealNumber>, Cloneable{
+public class RealFloat extends Number implements Comparable<RealFloat>, Cloneable{
 	public final static int DEFAULT_BASE = 10;
 
-	public final static RealNumber ZERO = new RealNumber(new int[0], 0, DEFAULT_BASE, 0);
+	public final static RealFloat ZERO = new RealFloat(new int[0], 0, DEFAULT_BASE, 0);
 	private final static Pattern parseFormat = Pattern.compile("^(\\-)?([0-9a-z]+)(\\.([0-9a-z]+))?(e([\\+\\-])([0-9]+))?(_([0-9]+))?$", Pattern.CASE_INSENSITIVE);
 
 	@Immutable @AscendingDigits int[] digits;
@@ -31,35 +31,35 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 	@IntRange(from = 2) int base;
 	@IntRange(from = -1, to = 1) int signum;
 
-	private RealNumber(@AscendingDigits int[] digits, int exp, @IntRange(from = 2) int base, @IntRange(from = -1, to = 1) int signum){
+	private RealFloat(@AscendingDigits int[] digits, int exp, @IntRange(from = 2) int base, @IntRange(from = -1, to = 1) int signum){
 		this.digits = digits;
 		this.exp = exp;
 		this.base = base;
-		this.signum = NumberUtils.isZero(digits) ? 0 : signum;
+		this.signum = MathUtils.isZero(digits) ? 0 : signum;
 
-		debug("Constructed RealNumber: " + toString());
+		debug("Constructed RealFloat: " + toString());
 	}
 
-	public static RealNumber bigEndianDigits(int signum, int exp, @DescendingDigits int[] digits){
+	public static RealFloat bigEndianDigits(int signum, int exp, @DescendingDigits int[] digits){
 		return bigEndianDigits(DEFAULT_BASE, signum, exp, digits);
 	}
 
-	public static RealNumber smallEndianDigits(int signum, int exp, @DescendingDigits int[] digits){
+	public static RealFloat smallEndianDigits(int signum, int exp, @DescendingDigits int[] digits){
 		return smallEndianDigits(DEFAULT_BASE, signum, exp, digits);
 	}
 
-	public static RealNumber bigEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @Immutable @DescendingDigits int[] digits){
+	public static RealFloat bigEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @Immutable @DescendingDigits int[] digits){
 		return bigEndianDigits(base, signum, exp, true, digits);
 	}
 
-	public static RealNumber smallEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @Immutable @AscendingDigits int[] digits){
+	public static RealFloat smallEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @Immutable @AscendingDigits int[] digits){
 		digits = digits.clone();
 		flipIntArray(digits);
 		return bigEndianDigits(base, signum, exp, true, digits);
 	}
 
-	public static RealNumber bigEndianDigits(@IntRange(from = 2) int base, int signum, int exp, boolean trim, @Immutable @DescendingDigits int[] digits){
-		NumberUtils.validate(base, digits);
+	public static RealFloat bigEndianDigits(@IntRange(from = 2) int base, int signum, int exp, boolean trim, @Immutable @DescendingDigits int[] digits){
+		MathUtils.validate(base, digits);
 
 		int start = -1;
 		int end = -1;
@@ -98,10 +98,10 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 			// i = end - start - 1 => end - i - 1 = start
 		}
 
-		return new RealNumber(newDigits, exp, base, signum);
+		return new RealFloat(newDigits, exp, base, signum);
 	}
 
-	public static RealNumber parseString(String string) throws NumberFormatException{
+	public static RealFloat parseString(String string) throws NumberFormatException{
 		debug("Parsing: " + string);
 		Matcher matcher = parseFormat.matcher(string);
 		if(!matcher.matches()){
@@ -119,8 +119,8 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 			signum = -1;
 		}
 
-		int[] intPart = NumberUtils.charsToInts(intPartStr.toCharArray());
-		int[] decPart = decPartStr == null ? new int[0] : NumberUtils.charsToInts(decPartStr.toCharArray());
+		int[] intPart = MathUtils.charsToInts(intPartStr.toCharArray());
+		int[] decPart = decPartStr == null ? new int[0] : MathUtils.charsToInts(decPartStr.toCharArray());
 
 		int exp = 0;
 		if("+".equals(expSigStr)){
@@ -137,16 +137,16 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 			throw new NumberFormatException("Illegal base");
 		}
 
-		int[] joinedDigits = NumberUtils.joinArrays(intPart, decPart);
+		int[] joinedDigits = MathUtils.joinArrays(intPart, decPart);
 		exp -= decPart.length;
 
-		NumberUtils.validate(base, NumberFormatException.class, joinedDigits);
+		MathUtils.validate(base, NumberFormatException.class, joinedDigits);
 		return bigEndianDigits(base, signum, exp, joinedDigits);
 	}
 
-	public RealNumber round(int newExp){
+	public RealFloat round(int newExp){
 		if(signum == 0){
-			return new RealNumber(new int[0], newExp, base, 0);
+			return new RealFloat(new int[0], newExp, base, 0);
 		}
 		if(exp == newExp){
 			return this;
@@ -156,7 +156,7 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 			int[] newDigits = new int[digits.length + addDigits];
 			System.arraycopy(digits, 0, newDigits, addDigits, digits.length);
 //			Arrays.copyOf(digits, digits.length + addDigits);
-			return new RealNumber(newDigits, newExp, base, signum);
+			return new RealFloat(newDigits, newExp, base, signum);
 		}
 
 		int removeDigits = newExp - exp;
@@ -166,7 +166,7 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 		int[] newDigits = Arrays.copyOf(digits, digits.length - removeDigits);
 		if(digits[newDigits.length] >= base / 2){
 			newDigits[newDigits.length - 1]++;
-			int[] extra = NumberUtils.carry(newDigits, base);
+			int[] extra = MathUtils.carry(newDigits, base);
 			if(extra.length > 0){ // we are rounding, so the number of digits doesn't matter
 				if(BuildConfig.DEBUG && !(extra.length == 1 && extra[0] == 1)){
 					throw new AssertionError();
@@ -177,15 +177,15 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 				newDigits = ret;
 			}
 		}
-		return new RealNumber(newDigits, newExp, base, signum);
+		return new RealFloat(newDigits, newExp, base, signum);
 	}
 
-	public RealNumber negative(){
-		return new RealNumber(digits, exp, base, -signum);
+	public RealFloat negative(){
+		return new RealFloat(digits, exp, base, -signum);
 	}
 
 	@SuppressWarnings("UnnecessaryThis")
-	public RealNumber plus(RealNumber that){
+	public RealFloat plus(RealFloat that){
 //		@formatter:off
 		if(this.base != that.base) throw new UnsupportedOperationException();
 
@@ -202,18 +202,18 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 
 		int exp = this.exp;
 		if(this.exp > that.exp){
-			thisDigits = NumberUtils.leftPadArray(thisDigits, this.exp - that.exp);
+			thisDigits = MathUtils.leftPadArray(thisDigits, this.exp - that.exp);
 			exp = that.exp;
 		}else if(that.exp > this.exp){
-			thatDigits = NumberUtils.leftPadArray(thatDigits, that.exp - this.exp);
+			thatDigits = MathUtils.leftPadArray(thatDigits, that.exp - this.exp);
 		}
 
-		int[] add = NumberUtils.add(thisDigits, thatDigits, base);
-		return new RealNumber(add, exp, base, signum);
+		int[] add = MathUtils.add(thisDigits, thatDigits, base);
+		return new RealFloat(add, exp, base, signum);
 	}
 
 	@SuppressWarnings("UnnecessaryThis")
-	public RealNumber minus(RealNumber that){
+	public RealFloat minus(RealFloat that){
 //		@formatter:off
 		if(this.base != that.base) throw new UnsupportedOperationException();
 
@@ -225,7 +225,7 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 		if(this.signum == -1 && that.signum == -1) signum = -1;
 //		@formatter:on
 
-		int cmp = NumberUtils.cmp(this.digits, this.exp, that.digits, that.exp);
+		int cmp = MathUtils.cmp(this.digits, this.exp, that.digits, that.exp);
 		if(cmp < 0){
 			return that.minus(this).negative();
 		}
@@ -238,23 +238,23 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 
 		int exp = this.exp;
 		if(this.exp > that.exp){
-			thisDigits = NumberUtils.leftPadArray(thisDigits, this.exp - that.exp);
+			thisDigits = MathUtils.leftPadArray(thisDigits, this.exp - that.exp);
 			exp = that.exp;
 		}else if(that.exp > this.exp){
-			thatDigits = NumberUtils.leftPadArray(thatDigits, that.exp - this.exp);
+			thatDigits = MathUtils.leftPadArray(thatDigits, that.exp - this.exp);
 		}
 
-		int[] subtract = NumberUtils.subtract(thisDigits, thatDigits, base);
-		return new RealNumber(subtract, exp, base, signum);
+		int[] subtract = MathUtils.subtract(thisDigits, thatDigits, base);
+		return new RealFloat(subtract, exp, base, signum);
 	}
 
 	@SuppressWarnings("UnnecessaryThis")
-	public RealNumber times(RealNumber that){
+	public RealFloat times(RealFloat that){
 		if(this.base != that.base){
 			throw new UnsupportedOperationException();
 		}
 
-		int startBase = this.exp + that.exp;
+		int startExp = this.exp + that.exp;
 		int[] multiply = new int[this.digits.length + that.digits.length];
 
 		for(int i = 0; i < this.digits.length; i++){
@@ -263,18 +263,18 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 			}
 		}
 
-		NumberUtils.carry(multiply, base);
+		MathUtils.carry(multiply, base);
 
-		return bigEndianDigits(base, this.signum * that.signum, startBase, multiply);
+		return bigEndianDigits(base, this.signum * that.signum, startExp, multiply);
 	}
 
 	@SuppressWarnings("UnnecessaryThis")
 	@Override
 	public boolean equals(Object obj){
-		if(!(obj instanceof RealNumber)){
+		if(!(obj instanceof RealFloat)){
 			return false;
 		}
-		RealNumber that = (RealNumber) obj;
+		RealFloat that = (RealFloat) obj;
 
 		if(this.signum == 0){
 			return that.signum == 0;
@@ -345,12 +345,12 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 	}
 
 	@Override
-	public int compareTo(@NonNull RealNumber that){
+	public int compareTo(@NonNull RealFloat that){
 		return compareTo(that, false);
 	}
 
 	@SuppressWarnings("UnnecessaryThis")
-	public int compareTo(@NonNull RealNumber that, boolean ignoreSignum){
+	public int compareTo(@NonNull RealFloat that, boolean ignoreSignum){
 		if(this.signum < that.signum){
 			return -1;
 		}
@@ -365,7 +365,7 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 			throw new UnsupportedOperationException();
 		}
 
-		return NumberUtils.cmp(this.digits, this.exp, that.digits, that.exp) * (ignoreSignum ? 1 : signum);
+		return MathUtils.cmp(this.digits, this.exp, that.digits, that.exp) * (ignoreSignum ? 1 : signum);
 	}
 
 	@Override
@@ -373,7 +373,7 @@ public class RealNumber extends Number implements Comparable<RealNumber>, Clonea
 		if(signum == 0){
 			return "0";
 		}
-		String d = new String(NumberUtils.intsToChars(digits));
+		String d = new String(MathUtils.intsToChars(digits));
 		d = new StringBuilder(d).reverse().toString();
 		return (signum == -1 ? "-" : "") + d + " E" + exp + " _" + base;
 	}

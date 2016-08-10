@@ -37,7 +37,7 @@ public class ConfigEntry extends ConfigElement{
 			((TwoStatePreference) preference).setSummaryOff(summary);
 		}
 		preference.setDefaultValue(defaultValue);
-		preference.setKey(getFullId());
+		preference.setKey("Config:" + getFullId());
 		return preference;
 	}
 

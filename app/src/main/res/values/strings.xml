@@ -17,6 +17,8 @@
 	<!--<string name="main_input_delete">Delete</string>-->
 	<string name="main_input_reset">Reset</string>
 
+	<string name="no_generators">No problem types enabled. Addition is automatically enabled.</string>
+
 	<string name="menu_main_pref">Preferences</string>
 
 	<string name="pref_unlock_query">Please enter password to unlock preferences</string>

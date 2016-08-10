@@ -20,9 +20,11 @@ import lombok.Getter;
 import java.util.Random;
 
 public class HomeActivity extends BaseActivity{
-	@Getter(lazy = true) private final Random random = new Random();
+	public final static String PROBLEM_LAST_RANDOM_STATE = "Problem:lastRandomState";
 
-	@Getter private static Problem currentProblem = null;
+	@Getter(lazy = true) private final Random random = Main.getInstance(this).loadRandom(PROBLEM_LAST_RANDOM_STATE);
+
+	@Getter private Problem currentProblem = null;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -53,13 +55,14 @@ public class HomeActivity extends BaseActivity{
 
 	public Problem nextProblem(){
 		Log.i(Main.TAG, "Generating next problem", new Throwable("Backtrace"));
+		Main.getInstance(this).saveRandom(getRandom(), PROBLEM_LAST_RANDOM_STATE);
 		Problem newProblem = ProblemGenerator.generate(Main.getInstance(this).getConfig(), getRandom());
 		setCurrentProblem(newProblem);
 		return newProblem;
 	}
 
 	public void setCurrentProblem(Problem currentProblem){
-		HomeActivity.currentProblem = currentProblem;
+		this.currentProblem = currentProblem;
 		currentProblem.setOnAnswerCorrectListener(new Problem.OnAnswerCorrectListener(){
 			@Override
 			public void onAnswerCorrect(){

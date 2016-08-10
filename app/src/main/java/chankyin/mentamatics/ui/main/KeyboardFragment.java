@@ -62,6 +62,13 @@ public class KeyboardFragment extends Fragment{
 		((NumberInputField) focus).respondKeyboardButton(c);
 	}
 
+	@Override
+	public void onHiddenChanged(boolean hidden){
+		super.onHiddenChanged(hidden);
+
+		((BaseActivity) getActivity()).setKeyboardOpened(!hidden);
+	}
+
 	public static KeyboardFragment get(BaseActivity baseActivity){
 		return (KeyboardFragment) baseActivity.getFragmentManager().findFragmentByTag(TAG);
 	}

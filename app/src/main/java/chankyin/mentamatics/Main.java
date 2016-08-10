@@ -4,7 +4,12 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Base64;
+import android.util.Base64InputStream;
+import android.util.Base64OutputStream;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -15,7 +20,9 @@ import chankyin.mentamatics.ui.BaseActivity;
 import com.github.nantaphop.fluentview.FluentView;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
+import java.io.*;
 import java.lang.reflect.Field;
 import java.util.Random;
 
@@ -119,5 +126,48 @@ public class Main extends Application{
 			throw new Resources.NotFoundException(name);
 		}
 		return identifier;
+	}
+
+	public void saveRandom(Random random, String name){
+		PreferenceManager.getDefaultSharedPreferences(this).edit()
+				.putString(name, serialize(random))
+				.apply();
+	}
+
+	@NonNull
+	public Random loadRandom(String name){
+		return loadRandom(name, true);
+	}
+
+	public Random loadRandom(String name, boolean notNull){
+		Object unserialize = unserialize(PreferenceManager.getDefaultSharedPreferences(this).getString(name, null));
+		if(notNull && !(unserialize instanceof Random)){
+			return new Random();
+		}
+		return (Random) unserialize;
+	}
+
+	@SneakyThrows(IOException.class)
+	public static String serialize(Serializable serializable){
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		Base64OutputStream bos = new Base64OutputStream(baos, Base64.NO_WRAP);
+		ObjectOutputStream oos = new ObjectOutputStream(bos);
+		oos.writeObject(serializable);
+		oos.close();
+		return baos.toString();
+	}
+
+	@SneakyThrows({IOException.class, ClassNotFoundException.class})
+	@Nullable
+	public static Object unserialize(@Nullable String string){
+		if(string == null){
+			return null;
+		}
+		ByteArrayInputStream bais = new ByteArrayInputStream(string.getBytes());
+		Base64InputStream bis = new Base64InputStream(bais, Base64.NO_WRAP | Base64.NO_PADDING);
+		ObjectInputStream oos = new ObjectInputStream(bis);
+		Object ret = oos.readObject();
+		oos.close();
+		return ret;
 	}
 }

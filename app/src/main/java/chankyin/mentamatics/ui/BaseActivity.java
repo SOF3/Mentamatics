@@ -7,8 +7,12 @@ import android.util.Log;
 import android.view.View;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.ui.main.KeyboardFragment;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class BaseActivity extends AppCompatActivity{
+	@Getter @Setter private boolean keyboardOpened = false;
+
 	@Override
 	@CallSuper
 	protected void onCreate(Bundle savedInstanceState){

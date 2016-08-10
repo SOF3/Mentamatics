@@ -144,6 +144,10 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 		return bigEndianDigits(base, signum, exp, joinedDigits);
 	}
 
+	public static RealFloat fromDouble(double randomInt){
+		return parseString(String.format("%s", randomInt));
+	}
+
 	public RealFloat round(int newExp){
 		if(signum == 0){
 			return new RealFloat(new int[0], newExp, base, 0);

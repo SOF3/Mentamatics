@@ -73,25 +73,30 @@ public class NumberInputField extends EditText implements View.OnFocusChangeList
 			return;
 		}
 
-		FragmentManager manager = keyboardActivity.getFragmentManager();
+		if(keyboardActivity.isKeyboardOpened()){
+			Log.i(Main.TAG, "Keyboard already opened");
+			return;
+		}
 
+		FragmentManager manager = keyboardActivity.getFragmentManager();
 		manager.beginTransaction()
 				.show(manager.findFragmentById(R.id.fragment_keyboard))
 				.addToBackStack(KeyboardFragment.TAG)
 				.commit();
+
+//		keyboardActivity.setKeyboardOpened(true);
 	}
 
 	public void closeKeyboard(){
-		BaseActivity activity = Main.getInstance().getCurrentActivity();
-		if(activity == null){
-			Log.w(Main.TAG, "No keyboardActivity to close keyboard in");
-			return;
-		}
 
 		FragmentManager manager = keyboardActivity.getFragmentManager();
 		Fragment fragment = manager.findFragmentById(R.id.fragment_keyboard);
 		if(!(fragment instanceof KeyboardFragment)){
 			Log.w(Main.TAG, "keyboardActivity doesn't have a KeyboardFragment");
+			return;
+		}
+		if(!keyboardActivity.isKeyboardOpened()){
+			Log.w(Main.TAG, "Keyboard not already opened", new Throwable("Backtrace"));
 			return;
 		}
 		KeyboardFragment keyboard = (KeyboardFragment) fragment;
@@ -100,12 +105,19 @@ public class NumberInputField extends EditText implements View.OnFocusChangeList
 				.hide(keyboard)
 				.commit();
 		manager.popBackStack(KeyboardFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//		keyboardActivity.setKeyboardOpened(false);
 	}
 
 	public void respondKeyboardButton(char c){
 		Editable text = getText();
-		if('0' <= c && c <= '9' || c == '.'){
+		if('0' <= c && c <= '9'){
 			text.append(c);
+		}else if(c == '.'){
+			if(text.length() == 0 || text.toString().equals("-")){
+				text.append("0.");
+			}else if(text.toString().indexOf('.') == -1){
+				text.append('.');
+			}
 		}else if(c == '-'){
 			if(text.length() != 0 && text.charAt(0) == '-'){
 				text.delete(0, 1);
@@ -113,11 +125,13 @@ public class NumberInputField extends EditText implements View.OnFocusChangeList
 				text.insert(0, "-");
 			}
 		}else if(c == CHAR_SPECIAL_BACK){
-			text.delete(text.length() - 1, text.length());
+			if(text.length() > 0){
+				text.delete(text.length() - 1, text.length());
+			}
 		}else if(c == CHAR_SPECIAL_RESET){
 			text.clear();
 		}else{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(String.valueOf(new String(new char[]{c}).codePointAt(0)));
 		}
 
 		if(text.length() != 0 && onRealNumberValidListener != null){

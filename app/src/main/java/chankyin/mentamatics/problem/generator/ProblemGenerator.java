@@ -1,6 +1,9 @@
 package chankyin.mentamatics.problem.generator;
 
 import android.support.annotation.NonNull;
+import android.widget.Toast;
+import chankyin.mentamatics.Main;
+import chankyin.mentamatics.R;
 import chankyin.mentamatics.config.Config;
 import chankyin.mentamatics.config.ConfigConstants;
 import chankyin.mentamatics.math.real.RealFloat;
@@ -28,8 +31,9 @@ public abstract class ProblemGenerator implements ConfigConstants{
 	@SuppressWarnings("PointlessBooleanExpression")
 	public static Problem generate(Config config, Random random){
 		if(!IS_GENERATOR_IMPLEMENTED){
-			Question question = new LiteralQuestion("Question here");
-			Answer answer = new SingleAnswer(RealFloat.bigEndianDigits(1, 0, new int[]{1, 2, 3, 4}));
+			double randomInt = random.nextInt(100) / 10d;
+			Question question = new LiteralQuestion(String.format("%s", randomInt));
+			Answer answer = new SingleAnswer(RealFloat.fromDouble(randomInt));
 			return new Problem(question, answer);
 		}
 		List<ProblemGenerator> generators = new ArrayList<>(available);
@@ -45,6 +49,12 @@ public abstract class ProblemGenerator implements ConfigConstants{
 		if(!config.getBoolean(KEY_GEN_DIVISION_ENABLED)){
 			generators.remove(DivisionProblemGenerator.getInstance());
 		}
+
+		if(generators.size() == 0){
+			Toast.makeText(Main.getInstance(), R.string.no_generators, Toast.LENGTH_LONG).show();
+			generators.add(AdditionProblemGenerator.getInstance());
+		}
+
 		int i = Math.min(generators.size() - 1, (int) Math.floor(random.nextDouble() * generators.size()));
 		return generators.get(i).generateProblem(config, random);
 	}

@@ -78,15 +78,24 @@ public class RealFloatTest{
 
 	@Test
 	public void equalsExp(){
-		assertEqualsReflexive("equalsExp", RealFloat.parseString("00123400e+3"), RealFloat.parseString("00001234e+5"));
+		assertEqualsSymmetric("equalsExp", RealFloat.parseString("00123400e+3"), RealFloat.parseString("00001234e+5"));
 	}
 
 	@Test
 	public void addition(){
-		assertEqualsReflexive("addition", RealFloat.parseString("012345").plus(RealFloat.parseString("678900e-1")), RealFloat.parseString("0802.35e+2"));
+		assertEqualsSymmetric("addition", RealFloat.parseString("012345").plus(RealFloat.parseString("678900e-1")), RealFloat.parseString("0802.35e+2"));
 	}
 
-	private static void assertEqualsReflexive(String message, Object foo, Object bar){
+	@Test
+	public void addition0(){
+		assertEqualsSymmetric("addition0", RealFloat.parseString("47").plus(RealFloat.parseString("163")), RealFloat.parseString("210"));
+	}
+	@Test
+	public void addition00(){
+		assertEqualsSymmetric("addition00", RealFloat.parseString("37").plus(RealFloat.parseString("163")), RealFloat.parseString("200"));
+	}
+
+	private static void assertEqualsSymmetric(String message, Object foo, Object bar){
 		assertTrue(message, foo.equals(bar));
 		assertTrue(message, bar.equals(foo));
 	}

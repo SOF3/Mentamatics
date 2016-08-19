@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="chankyin.mentamatics">
-
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<application
 			android:name=".Main"
 			android:allowBackup="true"
@@ -19,5 +20,4 @@
 		<activity android:name=".ui.pref.PrefActivity" android:configChanges="orientation|keyboardHidden|screenSize">
 		</activity>
 	</application>
-
 </manifest>

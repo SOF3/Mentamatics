@@ -2,25 +2,20 @@ package chankyin.mentamatics.config.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.preference.DialogPreference;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.EditText;
 import lombok.Getter;
 
-import java.util.Locale;
-
 import static android.text.InputType.*;
 
-public class IntegerPreference extends DialogPreference{
+public class IntegerPreference extends MDialogPreference{
 	@Getter private boolean signed = false;
 	@Getter private final EditText editText;
 
 	@Getter private int value;
 
 	public IntegerPreference(Context context){
-		super(context, null);
+		super(context);
 		editText = new EditText(context);
 		editText.setInputType(TYPE_CLASS_NUMBER | (signed ? TYPE_NUMBER_FLAG_SIGNED : 0));
 	}
@@ -33,6 +28,7 @@ public class IntegerPreference extends DialogPreference{
 	public void setValue(int value){
 		this.value = value;
 		persistInt(value);
+		setSummary(getSummary());
 	}
 
 	@Override
@@ -41,18 +37,8 @@ public class IntegerPreference extends DialogPreference{
 	}
 
 	@Override
-	protected void onBindDialogView(View view){
-		super.onBindDialogView(view);
-
-		editText.setText(String.format(Locale.ENGLISH, "%d", value));
-
-		ViewParent oldParent = editText.getParent();
-		if(oldParent != view){
-			if(oldParent != null){
-				((ViewGroup) oldParent).removeView(editText);
-			}
-			((ViewGroup) view).addView(editText);
-		}
+	protected View createDialogView(){
+		return editText;
 	}
 
 	@Override

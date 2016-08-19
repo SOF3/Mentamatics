@@ -1,5 +1,6 @@
 package chankyin.mentamatics.config;
 
+import android.content.SharedPreferences;
 import android.preference.*;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,7 +30,7 @@ public class ConfigGroup extends ConfigElement{
 
 	@NonNull
 	@Override
-	public Preference addPreferenceTo(PreferenceFragment fragment, PreferenceGroup group){
+	public Preference addPreferenceTo(PreferenceFragment fragment, PreferenceGroup group, SharedPreferences sharedPrefs){
 		PreferenceGroup out;
 		if(header){
 			out = fragment.getPreferenceManager().createPreferenceScreen(fragment.getActivity());
@@ -42,7 +43,7 @@ public class ConfigGroup extends ConfigElement{
 		CheckBoxPreference checkBox = null;
 		List<Preference> prefs = new ArrayList<>(children.values().size());
 		for(ConfigElement element : children.values()){
-			Preference preference = element.addPreferenceTo(fragment, out);
+			Preference preference = element.addPreferenceTo(fragment, out, sharedPrefs);
 			if(element == groupToggle){
 				checkBox = (CheckBoxPreference) preference;
 			}else{
@@ -52,8 +53,7 @@ public class ConfigGroup extends ConfigElement{
 
 		if(checkBox != null){
 			for(Preference pref : prefs){
-				Log.d(Main.TAG, "Adding dependency for " + pref.getKey());
-//				pref.setDependency(checkBox.getKey());
+				pref.setDependency(checkBox.getKey());
 			}
 		}
 

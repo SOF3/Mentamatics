@@ -2,9 +2,7 @@ package chankyin.mentamatics.math;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.Size;
-import android.util.Log;
 import chankyin.mentamatics.BuildConfig;
-import chankyin.mentamatics.Main;
 import chankyin.mentamatics.math.real.annotation.AscendingDigits;
 import chankyin.mentamatics.math.real.annotation.DescendingDigits;
 import chankyin.mentamatics.math.real.annotation.Immutable;
@@ -15,30 +13,6 @@ import java.util.Locale;
 import java.util.Random;
 
 public class MathUtils{
-	public static boolean IS_TEST = classExists("junit.framework.Test");
-	public static boolean IS_ANDROID = classExists("android.app.Application");
-
-	public static void debug(String message){
-		if(IS_TEST){
-			System.err.println(message);
-		}else if(IS_ANDROID){
-			debugAndroid(message);
-		}
-	}
-
-	public static void debugAndroid(String message){
-		Log.d(Main.TAG, "AndroidRuntime");
-	}
-
-	public static boolean classExists(String name){
-		try{
-			Class.forName(name);
-			return true;
-		}catch(ClassNotFoundException e){
-			return false;
-		}
-	}
-
 	@AscendingDigits
 	public static int[] carry(@Mutable @AscendingDigits int[] digits, @IntRange(from = 2) int base){
 		int carry = 0;

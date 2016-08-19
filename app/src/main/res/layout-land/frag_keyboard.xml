@@ -5,8 +5,8 @@
 		android:layout_height="match_parent"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true"
-		android:rowCount="4"
-		android:columnCount="4"
+		android:rowCount="5"
+		android:columnCount="3"
 		android:id="@+id/mainKeyboard">
 	<Button
 			android:id="@+id/main_input_7"
@@ -112,9 +112,9 @@
 	<ImageButton
 			android:id="@+id/main_input_back"
 			android:layout_height="wrap_content"
-			android:layout_row="0"
-			android:layout_column="3"
-			android:layout_rowSpan="2"
+			android:layout_row="4"
+			android:layout_column="0"
+			android:layout_columnSpan="2"
 			android:src="@android:drawable/ic_input_delete"
 			style="@style/NumberButtons"
 			android:onClick="onKeyboardButtonClick"
@@ -123,9 +123,8 @@
 	<ImageButton
 			android:id="@+id/main_input_reset"
 			android:layout_height="wrap_content"
-			android:layout_row="2"
-			android:layout_column="3"
-			android:layout_rowSpan="2"
+			android:layout_row="4"
+			android:layout_column="2"
 			android:src="@android:drawable/ic_delete"
 			style="@style/NumberButtons"
 			android:onClick="onKeyboardButtonClick"

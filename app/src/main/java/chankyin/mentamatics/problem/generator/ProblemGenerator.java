@@ -41,13 +41,13 @@ public abstract class ProblemGenerator{
 		if(!config.getBoolean(KEY_GEN_ADDITION_ENABLED)){
 			generators.remove(AdditionProblemGenerator.getInstance());
 		}
-		if(!config.getBoolean(KEY_GEN_SUBTRACTION_ENABLED)){
+		if(!config.getBoolean(KEY_GEN_SUBTRACTION_ENABLED) || !SubtractionProblemGenerator.IS_IMPLEMENTED){
 			generators.remove(SubtractionProblemGenerator.getInstance());
 		}
-		if(!config.getBoolean(KEY_GEN_MULTIPLICATION_ENABLED)){
+		if(!config.getBoolean(KEY_GEN_MULTIPLICATION_ENABLED) || !MultiplicationProblemGenerator.IS_IMPLEMENTED){
 			generators.remove(MultiplicationProblemGenerator.getInstance());
 		}
-		if(!config.getBoolean(KEY_GEN_DIVISION_ENABLED)){
+		if(!config.getBoolean(KEY_GEN_DIVISION_ENABLED) || !DivisionProblemGenerator.IS_IMPLEMENTED){
 			generators.remove(DivisionProblemGenerator.getInstance());
 		}
 

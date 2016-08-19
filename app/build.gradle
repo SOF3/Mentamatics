@@ -27,8 +27,10 @@ dependencies {
     provided 'org.projectlombok:lombok:1.16.10'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'commons-io:commons-io:2.5'
     compile 'com.github.nantaphop:fluentview:1.0.0'
     compile 'org.florescu.android.rangeseekbar:rangeseekbar-library:0.3.0'
-    compile 'com.android.support:appcompat-v7:24.1.1'
-    compile 'com.android.support:support-v4:24.1.1'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:support-v4:24.2.0'
 }

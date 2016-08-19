@@ -1,5 +1,6 @@
 package chankyin.mentamatics.config;
 
+import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
@@ -12,11 +13,12 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PUBLIC)
 public class ConfigEntry extends ConfigElement{
 	@StringRes final int summary, summaryPositive;
-	final Type type;
+	final ConfigEntryType type;
 	final String[] typeArgs;
 	final Object defaultValue;
 
-	public ConfigEntry(String id, @StringRes int name, @StringRes int summary, int summaryPositive, Type type, String[] typeArgs, String defaultValue, @NonNull ConfigGroup parent){
+	public ConfigEntry(String id, @StringRes int name, @StringRes int summary, int summaryPositive,
+	                   ConfigEntryType type, String[] typeArgs, String defaultValue, @NonNull ConfigGroup parent){
 		super(id, name, parent);
 		this.summary = summary;
 		this.summaryPositive = summaryPositive == -1 ? summary : summaryPositive;
@@ -27,8 +29,9 @@ public class ConfigEntry extends ConfigElement{
 
 	@NonNull
 	@Override
-	public Preference addPreferenceTo(PreferenceFragment fragment, PreferenceGroup group){
-		Preference preference = type.createPreference(fragment, typeArgs);
+	public Preference addPreferenceTo(PreferenceFragment fragment, PreferenceGroup group, SharedPreferences sharedPrefs){
+		String prefKey = "Config:" + getFullId();
+		Preference preference = type.createPreference(fragment, typeArgs, sharedPrefs, prefKey, defaultValue);
 		group.addPreference(preference);
 		preference.setTitle(name);
 		preference.setSummary(summary);
@@ -37,7 +40,7 @@ public class ConfigEntry extends ConfigElement{
 			((TwoStatePreference) preference).setSummaryOff(summary);
 		}
 		preference.setDefaultValue(defaultValue);
-		preference.setKey("Config:" + getFullId());
+		preference.setKey(prefKey);
 		return preference;
 	}
 
@@ -49,7 +52,7 @@ public class ConfigEntry extends ConfigElement{
 		private final String id;
 		private final int name;
 		private int summary, summaryPositive = -1;
-		private Type type;
+		private ConfigEntryType type;
 		private String[] typeArgs;
 		private String defaultValue = "";
 		private final ConfigGroup parent;
@@ -71,7 +74,7 @@ public class ConfigEntry extends ConfigElement{
 			return this;
 		}
 
-		public Builder type(Type type){
+		public Builder type(ConfigEntryType type){
 			this.type = type;
 			return this;
 		}
@@ -94,7 +97,7 @@ public class ConfigEntry extends ConfigElement{
 		public ConfigEntry build(){
 			ConfigEntry entry = new ConfigEntry(id, name, summary, summaryPositive, type, typeArgs, defaultValue, parent);
 			if(groupToggle){
-				if(type != Type.bool){
+				if(type != ConfigEntryType.bool){
 					throw new AssertionError();
 				}
 

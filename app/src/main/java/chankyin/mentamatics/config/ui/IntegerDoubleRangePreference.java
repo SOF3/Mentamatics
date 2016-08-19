@@ -2,19 +2,18 @@ package chankyin.mentamatics.config.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.preference.DialogPreference;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.LinearLayout;
+import chankyin.mentamatics.R;
 import chankyin.mentamatics.config.range.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 
-import static chankyin.mentamatics.config.ConfigElement.Type.integerDoubleRange;
+import static chankyin.mentamatics.Main.MP_WC;
+import static chankyin.mentamatics.config.ConfigEntryType.integerDoubleRange;
 
-public class IntegerDoubleRangePreference extends DialogPreference implements DoubleRangeTriplet{
+public class IntegerDoubleRangePreference extends MDialogPreference implements DoubleRangeTriplet{
 	@Getter private DupletRange hardLimit;
 	@Deprecated @Getter private OctetRange softLimit;
 	@Getter private QuadretRange value;
@@ -25,14 +24,17 @@ public class IntegerDoubleRangePreference extends DialogPreference implements Do
 	private RangeSeekBar<Integer> upperBar, lowerBar;
 
 	public IntegerDoubleRangePreference(Context context, DupletRange hardLimit, final DoubleRangeConstraint constraint){
-		super(context, null);
+		super(context);
 		upperBar = new RangeSeekBar<>(context);
+		upperBar.setLayoutParams(MP_WC);
+		upperBar.setTextAboveThumbsColorResource(R.color.colorPrefThumb);
 		lowerBar = new RangeSeekBar<>(context);
+		lowerBar.setLayoutParams(MP_WC);
+		lowerBar.setTextAboveThumbsColorResource(R.color.colorPrefThumb);
 		layout = new LinearLayout(context);
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.addView(upperBar);
 		layout.addView(lowerBar);
-
 
 		setHardLimit(hardLimit);
 		setConstraint(constraint);
@@ -65,8 +67,10 @@ public class IntegerDoubleRangePreference extends DialogPreference implements Do
 
 	public void setValue(QuadretRange value){
 		this.value = value;
-
 		persistString(value.toString());
+		if(super.getSummary() != null){
+			setSummary(getSummary());
+		}
 	}
 
 	@Override
@@ -78,21 +82,13 @@ public class IntegerDoubleRangePreference extends DialogPreference implements Do
 	}
 
 	@Override
-	protected void onBindDialogView(View view){
-		super.onBindDialogView(view);
-
+	protected View createDialogView(){
 		upperBar.setSelectedMinValue(value.upperMin);
 		upperBar.setSelectedMaxValue(value.upperMax);
 		lowerBar.setSelectedMinValue(value.lowerMin);
 		lowerBar.setSelectedMaxValue(value.lowerMax);
 
-		ViewParent oldParent = layout.getParent();
-		if(oldParent != view){
-			if(oldParent != null){
-				((ViewGroup) oldParent).removeView(layout);
-			}
-			((ViewGroup) view).addView(layout);
-		}
+		return layout;
 	}
 
 	@Override
@@ -130,6 +126,13 @@ public class IntegerDoubleRangePreference extends DialogPreference implements Do
 		@Override
 		public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue){
 			constraint.updateValueForValue(IntegerDoubleRangePreference.this, whichSeekBar);
+			if(whichSeekBar == DoubleRangeConstraint.UPPER){
+				lowerBar.setSelectedMinValue(value.lowerMin);
+				lowerBar.setSelectedMaxValue(value.lowerMax);
+			}else{
+				upperBar.setSelectedMinValue(value.upperMin);
+				upperBar.setSelectedMaxValue(value.upperMax);
+			}
 		}
 	}
 }

@@ -2,14 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:padding="@dimen/dialog_inner_pad">
 	<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/pref_unlock_query"/>
+			android:text="@string/pref_unlock_query"
+			android:textSize="@dimen/dialog_query_size"/>
 	<EditText
 			android:id="@+id/pref_dialog_unlock_field"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:inputType="textPassword"/>
+			android:inputType="textPassword"
+			android:fontFamily="monospace"/>
 </LinearLayout>

@@ -18,6 +18,7 @@ import chankyin.mentamatics.problem.question.TripletQuestion;
 
 import java.util.Random;
 
+import static chankyin.mentamatics.LogUtils.debug;
 import static chankyin.mentamatics.config.ConfigConstants.*;
 
 public class AdditionProblemGenerator extends ProblemGenerator{
@@ -37,9 +38,8 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 		QuadretRange digits = config.getIntDoubleRange(KEY_GEN_ADDITION_DIGITS);
 		int upperDigitCount = Main.randomRange(random, digits.upperMin, digits.upperMax);
 		int lowerDigitCount = Main.randomRange(random, digits.lowerMin, digits.lowerMax);
+		debug("generateProblem: digits = %s, upperDigitCount = %d, lowerDigitCount = %d", digits, upperDigitCount, lowerDigitCount);
 		int base = RealFloat.DEFAULT_BASE;
-
-		RealFloat upper, lower;
 
 		@Size(2) RealFloat[] operands = config.getBoolean(KEY_GEN_ADDITION_CARRY_ALLOWED) ?
 				generateCarry(random, base, upperDigitCount, lowerDigitCount) :
@@ -54,7 +54,7 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 			}
 		}
 
-		return new Problem(new TripletQuestion(operands[0], OPERATOR, operands[1]), new SingleAnswer(answer)); // TODO
+		return new Problem(new TripletQuestion(operands[0], OPERATOR, operands[1]), new SingleAnswer(answer));
 	}
 
 	@Size(2)

@@ -8,7 +8,16 @@
 	</style>
 	<style name="NumberButtons" parent="Widget.AppCompat.Button.Borderless.Colored">
 		<item name="android:background">@color/colorNumberButtons</item>
+		<item name="android:textColor">@color/colorNumberButton</item>
 		<item name="android:gravity">center</item>
 		<item name="android:layout_gravity">fill</item>
+	</style>
+	<style name="QuestionExpression">
+		<item name="android:fontFamily">monospace</item>
+		<item name="android:textSize">@dimen/question_text_size</item>
+	</style>
+	<style name="VerticalOperand" parent="QuestionExpression">
+	</style>
+	<style name="VerticalOperator" parent="QuestionExpression">
 	</style>
 </resources>

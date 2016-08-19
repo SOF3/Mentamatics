@@ -7,6 +7,7 @@ import chankyin.mentamatics.problem.Problem;
 import java.util.Random;
 
 public class DivisionProblemGenerator extends ProblemGenerator{
+	public static final boolean IS_IMPLEMENTED = false;
 	private static DivisionProblemGenerator ourInstance = new DivisionProblemGenerator();
 
 	public static DivisionProblemGenerator getInstance(){

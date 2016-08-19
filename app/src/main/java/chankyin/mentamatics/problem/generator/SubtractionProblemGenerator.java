@@ -7,6 +7,7 @@ import chankyin.mentamatics.problem.Problem;
 import java.util.Random;
 
 public class SubtractionProblemGenerator extends ProblemGenerator{
+	public static final boolean IS_IMPLEMENTED = false;
 	private static SubtractionProblemGenerator ourInstance = new SubtractionProblemGenerator();
 
 	public static SubtractionProblemGenerator getInstance(){

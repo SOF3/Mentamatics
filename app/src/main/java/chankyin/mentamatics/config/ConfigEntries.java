@@ -1,9 +1,7 @@
 package chankyin.mentamatics.config;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 import chankyin.mentamatics.BuildConfig;
-import chankyin.mentamatics.Main;
 import chankyin.mentamatics.R;
 
 public class ConfigEntries extends ConfigGroup{
@@ -12,7 +10,6 @@ public class ConfigEntries extends ConfigGroup{
 	}
 
 	public ConfigEntry getEntry(@NonNull String key){
-		Log.d(Main.TAG, "Want: " + key);
 		String[] ids = key.split("\\.");
 		ConfigEntry entry = recurseGetEntry(ids, 0);
 		if(BuildConfig.DEBUG && !key.equals(entry.getFullId())){

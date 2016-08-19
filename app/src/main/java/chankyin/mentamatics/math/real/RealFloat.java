@@ -17,7 +17,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static chankyin.mentamatics.math.MathUtils.*;
+import static chankyin.mentamatics.LogUtils.debug;
+import static chankyin.mentamatics.math.MathUtils.flipIntArray;
 
 /**
  * Arbitrary-base floating-point infinite-precision real number class.
@@ -298,10 +299,13 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 		}
 		int dExp = that.exp - this.exp;
 
+		// dExp is number of zeroes in front of that.digits
+//		debug("Comparing %s against %s, dExp = %d", this, that, dExp);
 		for(int i = 0; i < Math.max(this.digits.length, that.digits.length + dExp); i++){
-			int thatIndex = dExp + i;
-			int thisDigit = i < this.digits.length ? this.digits[i] : 0;
-			int thatDigit = thatIndex < that.digits.length ? that.digits[thatIndex] : 0;
+			int thatIndex = i - dExp;
+			int thisDigit = 0 <= i && i < this.digits.length ? this.digits[i] : 0;
+			int thatDigit = 0 <= thatIndex && thatIndex < that.digits.length ? that.digits[thatIndex] : 0;
+//			debug("Cmp this[%d] = %d vs that[%d] = %d", i, thisDigit, thatIndex, thatDigit);
 			if(thisDigit != thatDigit){
 				return false;
 			}
@@ -364,7 +368,7 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 		if(this.signum > that.signum){
 			return 1;
 		}
-		if(signum == 0){
+		if(signum == 0){ // both zero
 			return 0;
 		}
 
@@ -372,7 +376,11 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 			throw new UnsupportedOperationException();
 		}
 
-		return MathUtils.cmp(this.digits, this.exp, that.digits, that.exp) * (ignoreSignum ? 1 : signum);
+		int ret = MathUtils.cmp(this.digits, this.exp, that.digits, that.exp) * (ignoreSignum ? 1 : signum);
+		if(ret == 0 && BuildConfig.DEBUG && !this.equals(that)){
+			throw new AssertionError();
+		}
+		return ret;
 	}
 
 	@Override
@@ -396,7 +404,14 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 		for(int i = digits.length - 1; i >= 0; i--){
 			output.append(MathUtils.intToChar(digits[i]));
 		}
-		if(exp != 0){
+
+		if(0 < exp && exp <= 4){
+			for(int i = 0; i < exp; i++){
+				output.append('0');
+			}
+		}else if(0 > exp && exp >= -4){
+			output.insert(output.length() + exp, '.');
+		}else if(exp != 0){
 			output.append(html ? "<sub>E</sub>" : " E")
 					.append(String.format(Locale.getDefault(), "%d", exp));
 		}

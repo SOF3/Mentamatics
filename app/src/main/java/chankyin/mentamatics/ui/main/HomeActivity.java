@@ -3,6 +3,7 @@ package chankyin.mentamatics.ui.main;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
@@ -16,12 +17,14 @@ import chankyin.mentamatics.ui.BaseActivity;
 import chankyin.mentamatics.ui.pref.PrefActivity;
 import chankyin.mentamatics.ui.view.NumberInputField;
 import lombok.Getter;
+import lombok.NonNull;
 
 import java.util.Random;
 
 public class HomeActivity extends BaseActivity{
 	public final static String PROBLEM_LAST_RANDOM_STATE = "Problem:lastRandomState";
 
+	@Getter(lazy = true) private final Handler handler = new Handler();
 	@Getter(lazy = true) private final Random random = Main.getInstance(this).loadRandom(PROBLEM_LAST_RANDOM_STATE);
 
 	@Getter private Problem currentProblem = null;
@@ -54,14 +57,13 @@ public class HomeActivity extends BaseActivity{
 	}
 
 	public Problem nextProblem(){
-		Log.i(Main.TAG, "Generating next problem", new Throwable("Backtrace"));
 		Main.getInstance(this).saveRandom(getRandom(), PROBLEM_LAST_RANDOM_STATE);
 		Problem newProblem = ProblemGenerator.generate(Main.getInstance(this).getConfig(), getRandom());
 		setCurrentProblem(newProblem);
 		return newProblem;
 	}
 
-	public void setCurrentProblem(Problem currentProblem){
+	public void setCurrentProblem(@NonNull Problem currentProblem){
 		this.currentProblem = currentProblem;
 		currentProblem.setOnAnswerCorrectListener(new Problem.OnAnswerCorrectListener(){
 			@Override
@@ -72,9 +74,16 @@ public class HomeActivity extends BaseActivity{
 			}
 		});
 
-		View currentFocus = getCurrentFocus();
-		if(currentFocus instanceof NumberInputField){
-			((NumberInputField) currentFocus).openKeyboard();
-		}
+		Log.d(Main.TAG, "Current problem's solution: " + currentProblem.getAnswer());
+
+		getHandler().postDelayed(new Runnable(){
+			@Override
+			public void run(){
+				View currentFocus = getCurrentFocus();
+				if(currentFocus instanceof NumberInputField){
+					((NumberInputField) currentFocus).openKeyboard();
+				}
+			}
+		}, 100);
 	}
 }

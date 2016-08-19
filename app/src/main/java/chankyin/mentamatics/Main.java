@@ -33,7 +33,7 @@ import java.util.Random;
 import static android.view.ViewGroup.LayoutParams.*;
 
 public class Main extends Application{
-	public final static String TAG = "AndroidRuntime";
+	public final static String TAG = "Mentamatics";
 
 	@Getter private static Main instance;
 	private final static Field fluentViewField;
@@ -154,7 +154,7 @@ public class Main extends Application{
 	@SneakyThrows(IOException.class)
 	public static String serialize(Serializable serializable){
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		Base64OutputStream bos = new Base64OutputStream(baos, Base64.NO_WRAP);
+		Base64OutputStream bos = new Base64OutputStream(baos, Base64.NO_WRAP | Base64.NO_PADDING);
 		ObjectOutputStream oos = new ObjectOutputStream(bos);
 		oos.writeObject(serializable);
 		oos.close();

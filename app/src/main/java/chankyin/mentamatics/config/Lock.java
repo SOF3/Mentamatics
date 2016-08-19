@@ -26,12 +26,12 @@ public class Lock{
 
 	@NonNull
 	public static String getString(Context context){
-		return PreferenceManager.getDefaultSharedPreferences(context).getString(ConfigConstants.KEY_LOCK, "");
+		return PreferenceManager.getDefaultSharedPreferences(context).getString("Config:" + ConfigConstants.KEY_LOCK, "");
 	}
 
 	public static void unlock(Context context){
 		PreferenceManager.getDefaultSharedPreferences(context).edit()
-				.putString(ConfigConstants.KEY_LOCK, "")
+				.putString("Config:" + ConfigConstants.KEY_LOCK, "")
 				.apply();
 	}
 }

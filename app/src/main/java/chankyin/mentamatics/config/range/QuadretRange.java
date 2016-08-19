@@ -1,8 +1,10 @@
 package chankyin.mentamatics.config.range;
 
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @EqualsAndHashCode
+@ToString
 public class QuadretRange{
 	public int upperMin;
 	public int upperMax;

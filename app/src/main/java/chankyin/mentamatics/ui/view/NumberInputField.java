@@ -62,7 +62,7 @@ public class NumberInputField extends EditText implements View.OnFocusChangeList
 		if(focused){
 			openKeyboard();
 		}else{
-			closeKeyboard();
+			closeKeyboard(true);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class NumberInputField extends EditText implements View.OnFocusChangeList
 		}
 
 		if(keyboardActivity.isKeyboardOpened()){
-			Log.i(Main.TAG, "Keyboard already opened");
+//			Log.i(Main.TAG, "Keyboard already opened");
 			return;
 		}
 
@@ -87,16 +87,21 @@ public class NumberInputField extends EditText implements View.OnFocusChangeList
 //		keyboardActivity.setKeyboardOpened(true);
 	}
 
-	public void closeKeyboard(){
-
+	public void closeKeyboard(boolean checkNewFocus){
 		FragmentManager manager = keyboardActivity.getFragmentManager();
 		Fragment fragment = manager.findFragmentById(R.id.fragment_keyboard);
 		if(!(fragment instanceof KeyboardFragment)){
 			Log.w(Main.TAG, "keyboardActivity doesn't have a KeyboardFragment");
 			return;
 		}
+		if(checkNewFocus){
+			View currentFocus = keyboardActivity.getCurrentFocus();
+			if(currentFocus != this && currentFocus instanceof NumberInputField){
+				return;
+			}
+		}
 		if(!keyboardActivity.isKeyboardOpened()){
-			Log.w(Main.TAG, "Keyboard not already opened", new Throwable("Backtrace"));
+//			Log.w(Main.TAG, "Keyboard not already opened", new Throwable("Backtrace"));
 			return;
 		}
 		KeyboardFragment keyboard = (KeyboardFragment) fragment;

@@ -180,7 +180,7 @@ public class ConfigParser{
 		}else{
 			query = new String[0];
 		}
-		ConfigElement.Type type = ConfigElement.Type.valueOf(typeName);
+		ConfigEntryType type = ConfigEntryType.valueOf(typeName);
 		if(type == null){
 			throw new XmlPullParserException("Unknown element type " + typeName);
 		}

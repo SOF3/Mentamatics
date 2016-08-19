@@ -2,15 +2,13 @@ package chankyin.mentamatics.config.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.preference.DialogPreference;
+import android.support.annotation.Size;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 
-import static chankyin.mentamatics.config.ConfigElement.Type.integerRange;
+import static chankyin.mentamatics.config.ConfigEntryType.integerRange;
 
-public class IntegerRangePreference extends DialogPreference{
+public class IntegerRangePreference extends MDialogPreference{
 	private int min, max;
 	private int[] value;
 
@@ -21,7 +19,7 @@ public class IntegerRangePreference extends DialogPreference{
 	}
 
 	public IntegerRangePreference(Context context, int min, int max){
-		super(context, null);
+		super(context);
 
 		rangeSeekBar = new RangeSeekBar<>(context);
 		setRange(min, max);
@@ -33,12 +31,13 @@ public class IntegerRangePreference extends DialogPreference{
 		rangeSeekBar.setRangeValues(min, max);
 	}
 
-	public void setValue(int[] value){
+	public void setValue(@Size(2) int[] value){
 		if(value.length != 2){
 			throw new ArrayIndexOutOfBoundsException();
 		}
 		this.value = value;
 		persistString(toString(value));
+		setSummary(getSummary());
 	}
 
 	@Override
@@ -47,19 +46,8 @@ public class IntegerRangePreference extends DialogPreference{
 	}
 
 	@Override
-	protected void onBindDialogView(View view){
-		super.onBindDialogView(view);
-
-		rangeSeekBar.setSelectedMinValue(value[0]);
-		rangeSeekBar.setSelectedMaxValue(value[1]);
-
-		ViewParent oldParent = rangeSeekBar.getParent();
-		if(oldParent != view){
-			if(oldParent != null){
-				((ViewGroup) oldParent).removeView(rangeSeekBar);
-			}
-			((ViewGroup) view).addView(rangeSeekBar);
-		}
+	protected View createDialogView(){
+		return rangeSeekBar;
 	}
 
 	@Override

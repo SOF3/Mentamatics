@@ -37,5 +37,4 @@ public abstract class ConfigElement{
 
 	@NonNull
 	public abstract Preference addPreferenceTo(PreferenceFragment fragment, PreferenceGroup group, SharedPreferences sharedPrefs);
-
 }

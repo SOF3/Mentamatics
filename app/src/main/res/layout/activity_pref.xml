@@ -6,7 +6,7 @@
 		android:layout_height="match_parent"
 		android:orientation="vertical"
 		android:id="@+id/pref_content_view"
-		tools:context=".ui.pref.PrefActivity">
+		tools:context=".ui.pref.ConfigActivity">
 	<fragment
 			android:name="chankyin.mentamatics.ui.EmptyFragment"
 			android:id="@+id/pref_pref"

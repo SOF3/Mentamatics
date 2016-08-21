@@ -6,7 +6,7 @@ import android.text.InputType;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.config.Lock;
 import chankyin.mentamatics.ui.BaseActivity;
-import chankyin.mentamatics.ui.pref.PrefActivity;
+import chankyin.mentamatics.ui.pref.ConfigActivity;
 
 public class LockPreference extends EditTextPreference{
 	private Lock lock;
@@ -29,7 +29,7 @@ public class LockPreference extends EditTextPreference{
 		super.onDialogClosed(positiveResult);
 
 		BaseActivity currentActivity = Main.getInstance().getCurrentActivity();
-		if(currentActivity instanceof PrefActivity){
+		if(currentActivity instanceof ConfigActivity){
 			currentActivity.finish();
 		}
 	}

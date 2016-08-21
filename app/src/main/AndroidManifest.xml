@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="chankyin.mentamatics">
-	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<application
 			android:name=".Main"
 			android:allowBackup="true"
+			android:fullBackupContent="@xml/backup_scheme"
 			android:icon="@mipmap/ic_launcher"
 			android:label="@string/app_name"
 			android:supportsRtl="true"
@@ -13,11 +12,11 @@
 		<activity android:name=".ui.main.HomeActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
-
+				<action android:name="android.intent.action.VIEW"/>
+				<data android:scheme="app" android:host="chankyin.mentamatics"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-		<activity android:name=".ui.pref.PrefActivity" android:configChanges="orientation|keyboardHidden|screenSize">
-		</activity>
+		<activity android:name=".ui.pref.ConfigActivity" android:configChanges="orientation|keyboardHidden|screenSize"/>
 	</application>
 </manifest>

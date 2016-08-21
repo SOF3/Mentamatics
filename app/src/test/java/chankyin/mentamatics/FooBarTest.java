@@ -12,24 +12,24 @@ import static org.junit.Assert.assertTrue;
 
 public class FooBarTest{
 	@Test
-	public void add(){
+	public void sum(){
 		for(int i = 0; i < 10; i++){
-			doAdd();
+			doSum();
 		}
 	}
 
-	public void doAdd(){
+	public void doSum(){
 		long seed = new Random().nextLong();
 		Random random = new Random(seed);
 		FooBarRange fooRange = FooBarRange.autoSort(random.nextInt(100), random.nextInt(100));
 		FooBarRange barRange = FooBarRange.autoSort(random.nextInt(100), random.nextInt(100));
 		int sum = new FooBarRange(fooRange.min + barRange.min, fooRange.max + barRange.max).generateRandom(random);
 
-		FooBar fooBar = FooBarFactory.sumLessThan(new Random(), fooRange, barRange, sum);
+		FooBar fooBar = FooBarFactory.getInstance().sumLessThan(new Random(), fooRange, barRange, sum);
 
-		assertTrue("add.matchFoo", fooRange.matches(fooBar.getFoo()));
-		assertTrue("add.matchBar", barRange.matches(fooBar.getBar()));
-		assertTrue("add.sum", fooBar.getFoo() + fooBar.getBar() <= sum);
+		assertTrue("sum.matchFoo", fooRange.matches(fooBar.getFoo()));
+		assertTrue("sum.matchBar", barRange.matches(fooBar.getBar()));
+		assertTrue("sum.sum", fooBar.getFoo() + fooBar.getBar() < sum);
 
 		debug("===========");
 	}

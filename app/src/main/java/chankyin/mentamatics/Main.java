@@ -39,7 +39,6 @@ public class Main extends Application{
 	private final static Field fluentViewField;
 
 	public final static LayoutParams WC_WC = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-
 	public final static LayoutParams WC_MP = new LayoutParams(WRAP_CONTENT, MATCH_PARENT);
 	public final static LayoutParams MP_WC = new LayoutParams(MATCH_PARENT, WRAP_CONTENT);
 	public final static LayoutParams MP_MP = new LayoutParams(MATCH_PARENT, MATCH_PARENT);

@@ -41,7 +41,7 @@ public class UnlockPrefsDialog extends DialogFragment{
 		public void onClick(DialogInterface dialogInterface, int i){
 			if(Lock.getString(getActivity()).equals(((EditText) view.findViewById(R.id.pref_dialog_unlock_field)).getText().toString())){
 				dismiss();
-				((PrefActivity) getActivity()).showPrefs();
+				((ConfigActivity) getActivity()).showPrefs();
 				Lock.unlock(getActivity());
 			}else{
 				Toast.makeText(getActivity(), R.string.cfg_lock_error, Toast.LENGTH_LONG).show();

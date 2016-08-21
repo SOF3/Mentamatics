@@ -5,7 +5,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import chankyin.mentamatics.Main;
 
-public class PrefFragment extends PreferenceFragment{
+public class ConfigFragment extends PreferenceFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);

@@ -62,4 +62,13 @@ public abstract class ProblemGenerator{
 
 	@NonNull
 	protected abstract Problem generateProblem(Config config, Random random);
+
+	protected int[] generateNumber(Random random, int length, int base){
+		int[] ret = new int[length];
+		ret[0] = random.nextInt(base - 1) + 1; // first number must be non-zero
+		for(int i = 1; i < length; i++){
+			ret[i] = random.nextInt(base);
+		}
+		return ret;
+	}
 }

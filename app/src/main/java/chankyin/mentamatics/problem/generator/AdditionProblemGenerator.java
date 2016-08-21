@@ -84,7 +84,7 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 				barRange = fooRange;
 			}
 
-			FooBar fooBar = FooBarFactory.sumLessThan(random, fooRange, barRange, base);
+			FooBar fooBar = FooBarFactory.getInstance().sumLessThan(random, fooRange, barRange, base);
 			upperDigits[i] = fooBar.getFoo();
 			lowerDigits[i] = fooBar.getBar();
 		}

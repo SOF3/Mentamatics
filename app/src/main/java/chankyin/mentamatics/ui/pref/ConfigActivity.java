@@ -5,7 +5,7 @@ import chankyin.mentamatics.R;
 import chankyin.mentamatics.config.Lock;
 import chankyin.mentamatics.ui.BaseActivity;
 
-public class PrefActivity extends BaseActivity{
+public class ConfigActivity extends BaseActivity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -21,7 +21,7 @@ public class PrefActivity extends BaseActivity{
 
 	public void showPrefs(){
 		getFragmentManager().beginTransaction()
-				.replace(R.id.pref_pref, new PrefFragment())
+				.replace(R.id.pref_pref, new ConfigFragment())
 				.commit();
 	}
 }

@@ -14,7 +14,7 @@ import chankyin.mentamatics.R;
 import chankyin.mentamatics.problem.Problem;
 import chankyin.mentamatics.problem.generator.ProblemGenerator;
 import chankyin.mentamatics.ui.BaseActivity;
-import chankyin.mentamatics.ui.pref.PrefActivity;
+import chankyin.mentamatics.ui.pref.ConfigActivity;
 import chankyin.mentamatics.ui.view.NumberInputField;
 import lombok.Getter;
 import lombok.NonNull;
@@ -51,7 +51,7 @@ public class HomeActivity extends BaseActivity{
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		if(item.getItemId() == R.id.menu_pref){
-			startActivity(new Intent(this, PrefActivity.class));
+			startActivity(new Intent(this, ConfigActivity.class));
 		}
 		return super.onOptionsItemSelected(item);
 	}

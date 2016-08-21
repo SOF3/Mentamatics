@@ -27,6 +27,8 @@ public class LogUtils{
 	}
 
 	public static void debugAndroid(String message){
-		Log.d(Main.TAG, message);
+		if(BuildConfig.DEBUG){
+			Log.d(Main.TAG, message);
+		}
 	}
 }

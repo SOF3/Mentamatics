@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+	<TableRow>
+		<TextView
+				style="@style/StatsTable"
+				android:text="@string/main_stats_correct_answers"/>
+		<TextView
+				style="@style/StatsTable"
+				android:text="@string/main_stats_total_time"/>
+		<TextView
+				style="@style/StatsTable"
+				android:text="@string/main_stats_average_time"/>
+	</TableRow>
+	<TableRow>
+		<TextView
+				style="@style/StatsTable"
+				android:id="@+id/main_stats_answers"/>
+		<TextView
+				style="@style/StatsTable"
+				android:id="@+id/main_stats_total_time"/>
+		<TextView
+				style="@style/StatsTable"
+				android:id="@+id/main_stats_avg_time"/>
+	</TableRow>
+</TableLayout>

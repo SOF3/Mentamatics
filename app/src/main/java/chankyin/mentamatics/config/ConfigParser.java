@@ -36,10 +36,7 @@ public class ConfigParser{
 		parser = context.getResources().getXml(R.xml.config_entries);
 		entries = new ConfigEntries();
 
-		while(true){
-			if(!handleEvent(parser.getEventType())){
-				break;
-			}
+		while(handleEvent(parser.getEventType())){
 			parser.next();
 		}
 

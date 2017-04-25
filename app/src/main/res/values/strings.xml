@@ -71,4 +71,24 @@
 	<string name="cfg_gen_division_enabled">Generate division problems</string>
 	<string name="cfg_gen_division_enabled_summary_positive">Division problems will be generated.</string>
 	<string name="cfg_gen_division_enabled_summary">Division problems will not be generated.</string>
+	<string name="cfg_special_resetStats">Reset statistics</string>
+	<string name="cfg_special_resetStats_summary">Delete all statistics about problem completion but preserve these
+		preferences
+	</string>
+
+	<string name="main_stats_correct_answers">Correct answers</string>
+	<string name="main_stats_total_time">Total time (s/q)</string>
+	<string name="main_stats_average_time">Average time (s/q)</string>
+	<string name="main_stats_format_correct_answers" formatted="false">%d</string>
+	<string name="main_stats_format_total_time" formatted="false">%s + %s</string>
+	<string name="main_stats_format_average_time" formatted="false">%s => %s</string>
+	<string name="btn_keyboard_gravity_left"><![CDATA[<]]></string>
+	<string name="btn_keyboard_gravity_right"><![CDATA[>]]></string>
+	<string name="cfgmsg_special_resetStats_cancelled">Cancelled resetting stats</string>
+	<string name="stats_na">N/A</string>
+	<string name="cfgmsg_special_resetStats_completion">Deleted all statistics about problem completion but preserve these
+		preferences.
+	</string>
+	<string name="cfgmsg_special_resetStats_message">The data cannot be restored once deleted.</string>
+	<string name="cfgmsg_special_resetStats_title">Reset all statistics?</string>
 </resources>

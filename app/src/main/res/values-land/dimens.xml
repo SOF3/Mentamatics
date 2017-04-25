@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<dimen name="keyboardWidth">225dp</dimen> <!-- buttonWidth * 3 -->
+	<dimen name="keyboardHeight">300dp</dimen> <!-- buttonHeight * (4 + 2) -->
+</resources>

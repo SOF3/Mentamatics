@@ -17,12 +17,53 @@
 			android:tag="ProblemFragment"
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
-			android:layout_weight="3"/>
+			android:layout_weight="3"
+			tools:layout="@layout/frag_problem"/>
 	<fragment
-			android:id="@+id/fragment_keyboard"
-			android:name="chankyin.mentamatics.ui.main.KeyboardFragment"
-			android:tag="KeyboardFragment"
+			android:id="@+id/fragment_stats"
+			android:name="chankyin.mentamatics.ui.main.StatsFragment"
+			android:tag="StatsFragment"
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
-			android:layout_weight="2"/>
+			android:layout_weight="1"
+			tools:layout="@layout/frag_stats"/>
+	<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		<fragment
+				android:id="@+id/fragment_keyboard"
+				android:name="chankyin.mentamatics.ui.main.KeyboardFragment"
+				android:tag="KeyboardFragment"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_alignParentRight="false"
+				android:layout_alignParentStart="true"
+				android:layout_alignParentEnd="false"
+				tools:layout="@layout/frag_keyboard"/>
+		<Button
+				android:id="@+id/keyboard_gravity_left"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/btn_keyboard_gravity_left"
+				android:onClick="moveKeyboardToLeft"
+				android:layout_centerVertical="true"
+				android:layout_alignParentLeft="true"
+				android:layout_alignParentStart="true"
+				android:layout_toLeftOf="@id/fragment_keyboard"
+				android:layout_toStartOf="@id/fragment_keyboard"
+				android:visibility="gone"/>
+		<Button
+				android:id="@+id/keyboard_gravity_right"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/btn_keyboard_gravity_right"
+				android:onClick="moveKeyboardToRight"
+				android:layout_centerVertical="true"
+				android:layout_alignParentRight="true"
+				android:layout_alignParentEnd="true"
+				android:layout_toRightOf="@id/fragment_keyboard"
+				android:layout_toEndOf="@id/fragment_keyboard"
+				android:visibility="visible"/>
+	</RelativeLayout>
 </LinearLayout>

@@ -13,10 +13,13 @@ import lombok.Setter;
 public class Problem{
 	private final Question question;
 	private final Answer answer;
+	@Getter @Setter private long startTime;
 
 	@Setter private OnAnswerCorrectListener onAnswerCorrectListener;
 
 	public void express(View container){
+		setStartTime(System.nanoTime());
+
 		LinearLayout questionLayout = (LinearLayout) container.findViewById(R.id.main_question);
 		questionLayout.removeAllViews();
 		question.populateQuestionLayout(questionLayout);

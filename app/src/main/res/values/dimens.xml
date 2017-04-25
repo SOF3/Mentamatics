@@ -6,4 +6,10 @@
 	<dimen name="question_operator_vert_right_pad">10dp</dimen>
 	<dimen name="dialog_query_size">16sp</dimen>
 	<dimen name="dialog_inner_pad">10dp</dimen>
+	<dimen name="stats_padding_vert">5dp</dimen>
+	<dimen name="stats_padding_horiz">5dp</dimen>
+	<dimen name="buttonWidth">75dp</dimen>
+	<dimen name="buttonHeight">50dp</dimen>
+	<dimen name="keyboardWidth">300dp</dimen> <!-- buttonWidth * 4 -->
+	<dimen name="keyboardHeight">200dp</dimen> <!-- buttonHeight * 4 -->
 </resources>

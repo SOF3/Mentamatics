@@ -11,6 +11,7 @@
 		<item name="android:textColor">@color/colorNumberButton</item>
 		<item name="android:gravity">center</item>
 		<item name="android:layout_gravity">fill</item>
+		<item name="android:layout_width">@dimen/buttonWidth</item>
 	</style>
 	<style name="QuestionExpression">
 		<item name="android:fontFamily">monospace</item>
@@ -19,5 +20,11 @@
 	<style name="VerticalOperand" parent="QuestionExpression">
 	</style>
 	<style name="VerticalOperator" parent="QuestionExpression">
+	</style>
+	<style name="StatsTable">
+		<item name="android:paddingTop">@dimen/stats_padding_vert</item>
+		<item name="android:paddingBottom">@dimen/stats_padding_vert</item>
+		<item name="android:paddingLeft">@dimen/stats_padding_horiz</item>
+		<item name="android:paddingRight">@dimen/stats_padding_horiz</item>
 	</style>
 </resources>

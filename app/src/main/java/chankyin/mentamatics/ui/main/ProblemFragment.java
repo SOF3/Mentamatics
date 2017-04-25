@@ -21,6 +21,7 @@ public class ProblemFragment extends Fragment{
 	public void onResume(){
 		super.onResume();
 
-		((HomeActivity) getActivity()).getCurrentProblem().express(getView());
+		HomeActivity activity = (HomeActivity) getActivity();
+		activity.getCurrentProblem().express(getView());
 	}
 }

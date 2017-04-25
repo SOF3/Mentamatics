@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.R;
 import chankyin.mentamatics.problem.Problem;
@@ -21,8 +22,17 @@ import lombok.NonNull;
 
 import java.util.Random;
 
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static android.view.ViewGroup.LayoutParams.*;
+import static android.widget.RelativeLayout.*;
+
 public class HomeActivity extends BaseActivity{
 	public final static String PROBLEM_LAST_RANDOM_STATE = "Problem:lastRandomState";
+	public final static String PROBLEM_TOTAL_ANSWERS = "Problem:totalAnswers";
+	public final static String PROBLEM_TOTAL_TIME = "Problem:totalTime";
 
 	@Getter(lazy = true) private final Handler handler = new Handler();
 	@Getter(lazy = true) private final Random random = Main.getInstance(this).loadRandom(PROBLEM_LAST_RANDOM_STATE);
@@ -63,14 +73,16 @@ public class HomeActivity extends BaseActivity{
 		return newProblem;
 	}
 
-	public void setCurrentProblem(@NonNull Problem currentProblem){
+	public void setCurrentProblem(@NonNull final Problem currentProblem){
 		this.currentProblem = currentProblem;
 		currentProblem.setOnAnswerCorrectListener(new Problem.OnAnswerCorrectListener(){
 			@Override
 			public void onAnswerCorrect(){
+				long endTime = System.nanoTime();
+				Main.getInstance(HomeActivity.this).incrementCorrect(endTime - currentProblem.getStartTime());
+
 				Problem newProblem = nextProblem();
 				newProblem.express(getFragmentManager().findFragmentById(R.id.fragment_problem).getView());
-				// TODO stat
 			}
 		});
 
@@ -85,5 +97,81 @@ public class HomeActivity extends BaseActivity{
 				}
 			}
 		}, 100);
+	}
+
+	public void moveKeyboardToLeft(View view){
+		findViewById(R.id.keyboard_gravity_left).setVisibility(GONE);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+		params.addRule(ALIGN_PARENT_LEFT);
+		if(SDK_INT >= JELLY_BEAN_MR1){
+			params.addRule(ALIGN_PARENT_START);
+		}
+		findViewById(R.id.fragment_keyboard).setLayoutParams(params);
+		findViewById(R.id.keyboard_gravity_right).setVisibility(VISIBLE);
+	}
+
+	public void moveKeyboardToRight(View view){
+		findViewById(R.id.keyboard_gravity_left).setVisibility(VISIBLE);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+		params.addRule(ALIGN_PARENT_RIGHT);
+		if(SDK_INT >= JELLY_BEAN_MR1){
+			params.addRule(ALIGN_PARENT_END);
+		}
+		findViewById(R.id.fragment_keyboard).setLayoutParams(params);
+		findViewById(R.id.keyboard_gravity_right).setVisibility(GONE);
+	}
+
+	public void landSwitchKeyboardPositionLeft(View view){
+		View main = findViewById(R.id.main_main_group);
+		View keyboard = findViewById(R.id.main_keyboard_group);
+		View left = findViewById(R.id.keyboard_land_gravity_left);
+		View right = findViewById(R.id.keyboard_land_gravity_right);
+
+		RelativeLayout.LayoutParams mainParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
+		mainParams.addRule(ALIGN_PARENT_RIGHT);
+		mainParams.addRule(RIGHT_OF, R.id.main_keyboard_group);
+		if(SDK_INT >= JELLY_BEAN_MR1){
+			mainParams.addRule(ALIGN_PARENT_END);
+			mainParams.addRule(END_OF, R.id.main_keyboard_group);
+		}
+
+		RelativeLayout.LayoutParams keyboardParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
+		keyboardParams.addRule(ALIGN_PARENT_LEFT);
+		if(SDK_INT >= JELLY_BEAN_MR1){
+			keyboardParams.addRule(ALIGN_PARENT_START);
+		}
+
+		keyboard.setLayoutParams(keyboardParams);
+		main.setLayoutParams(mainParams);
+
+		left.setVisibility(GONE);
+		right.setVisibility(VISIBLE);
+	}
+
+	public void landSwitchKeyboardPositionRight(View view){
+		View main = findViewById(R.id.main_main_group);
+		View keyboard = findViewById(R.id.main_keyboard_group);
+		View left = findViewById(R.id.keyboard_land_gravity_left);
+		View right = findViewById(R.id.keyboard_land_gravity_right);
+
+		RelativeLayout.LayoutParams mainParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
+		mainParams.addRule(ALIGN_PARENT_LEFT);
+		mainParams.addRule(LEFT_OF, R.id.main_keyboard_group);
+		if(SDK_INT >= JELLY_BEAN_MR1){
+			mainParams.addRule(ALIGN_PARENT_START);
+			mainParams.addRule(START_OF, R.id.main_keyboard_group);
+		}
+
+		RelativeLayout.LayoutParams keyboardParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
+		keyboardParams.addRule(ALIGN_PARENT_RIGHT);
+		if(SDK_INT >= JELLY_BEAN_MR1){
+			keyboardParams.addRule(ALIGN_PARENT_END);
+		}
+
+		keyboard.setLayoutParams(keyboardParams);
+		main.setLayoutParams(mainParams);
+
+		left.setVisibility(VISIBLE);
+		right.setVisibility(GONE);
 	}
 }

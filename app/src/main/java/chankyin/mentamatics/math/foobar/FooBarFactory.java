@@ -6,8 +6,8 @@ import lombok.Getter;
 import java.util.Random;
 
 public abstract class FooBarFactory{
-	@Getter
-	private final static FooBarFactory instance = new FooBarSweatshop();
+	@Getter(lazy = true)
+	private final static FooBarFactory instance = new FooBarRobotics();
 
 	@NonNull
 	public abstract FooBar sumLessThan(Random random, FooBarRange fooRange, FooBarRange barRange, int sum);

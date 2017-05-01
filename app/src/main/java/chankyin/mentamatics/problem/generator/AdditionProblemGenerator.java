@@ -68,7 +68,7 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 	@Size(2)
 	private RealFloat[] generateNoCarry(Random random, int base, int upperDigitCount, int lowerDigitCount){
 		boolean swap = upperDigitCount < lowerDigitCount;
-		int[] upperDigits = new int[swap ? lowerDigitCount : upperDigitCount];
+		int[] upperDigits = new int[swap ? lowerDigitCount : upperDigitCount]; // always longer
 		int[] lowerDigits = new int[swap ? upperDigitCount : lowerDigitCount];
 
 		for(int i = 0; i < upperDigits.length; i++){

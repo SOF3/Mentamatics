@@ -257,4 +257,19 @@ public class MathUtils{
 				(-b - root) / (2 * a),
 		};
 	}
+
+	@IntRange(from = 0)
+	public static int positionToOffsetInRightIsosTriangle(@IntRange(from = 0) int i, @IntRange(from = 0) int j){
+		// row above is the ith row
+		// (j+1)th column in row
+
+		return (i + 1) * i / 2 + j;
+	}
+
+	@Size(2)
+	public static int[] offsetToPositionInRightIsosTriangle(@IntRange(from = 0) int offset){
+		int i = (int) Math.ceil((-1 + Math.sqrt(8 * (offset + 1))) / 2) - 1;
+		int j = offset - (i + 1) * i / 2 - 1;
+		return new int[]{i, j};
+	}
 }

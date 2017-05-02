@@ -161,13 +161,6 @@ public class FooBarTest{
 		doSum(Double.doubleToLongBits(Math.random()));
 	}
 
-	@Test
-	public void repeatingSumTest(){
-		for(int i = 0; i < 1e+7; i++){
-			doSum(Double.doubleToLongBits(Math.random()));
-		}
-	}
-
 	private static int trialCount = 0;
 
 	public void doSum(long trial){

@@ -2,15 +2,15 @@ language: android
 jdk: oraclejdk8
 env:
   global:
-    - ANDROID_TARGET=android-24
+    - ANDROID_TARGET=android-25
     - ANDROID_ABI=armeabi-v7a
     - TERM=dumb
 android:
   components:
   - tools
   - platform-tools
-  - build-tools-24.0.0
-  - android-24
+  - build-tools-25.0.0
+  - android-25
   - extra-android-m2repository
 install:
   - chmod +x gradlew

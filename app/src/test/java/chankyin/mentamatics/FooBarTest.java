@@ -161,18 +161,19 @@ public class FooBarTest{
 		doSum(Double.doubleToLongBits(Math.random()));
 	}
 
-	@Test public void repeatingSumTest(){
-		for(int i = 0; i < 1e+9; i++){
+	@Test
+	public void repeatingSumTest(){
+		for(int i = 0; i < 1e+7; i++){
 			doSum(Double.doubleToLongBits(Math.random()));
 		}
 	}
 
-	private static int trialCount=0;
+	private static int trialCount = 0;
+
 	public void doSum(long trial){
 		System.err.println("Round " + ++trialCount);
 
 		long seed = new Random().nextLong();
-		System.err.println("seed = " + seed);
 		Random random = new Random(seed);
 		FooBarRange fooRange = FooBarRange.autoSort(random.nextInt(100), random.nextInt(100));
 		FooBarRange barRange = FooBarRange.autoSort(random.nextInt(100), random.nextInt(100));

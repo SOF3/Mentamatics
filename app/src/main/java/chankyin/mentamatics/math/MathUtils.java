@@ -269,7 +269,19 @@ public class MathUtils{
 	@Size(2)
 	public static int[] offsetToPositionInRightIsosTriangle(@IntRange(from = 0) int offset){
 		int i = (int) Math.ceil((-1 + Math.sqrt(8 * (offset + 1))) / 2) - 1;
-		int j = offset - (i + 1) * i / 2 - 1;
+		int j = offset - (i + 1) * i / 2;
 		return new int[]{i, j};
+	}
+
+	/**
+	 * @param offset offset counting in horizontal then vertical order (like normal LTR word wrapping)
+	 * @param width  horizontal length
+	 * @return {vertical index, horizontal index}
+	 */
+	public static int[] offsetToPositionInRectangle(int offset, int width){
+		return new int[]{
+				offset / width,
+				offset % width
+		};
 	}
 }

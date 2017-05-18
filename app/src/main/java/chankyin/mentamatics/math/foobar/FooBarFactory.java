@@ -1,13 +1,18 @@
 package chankyin.mentamatics.math.foobar;
 
 import android.support.annotation.NonNull;
-import lombok.Getter;
 
 import java.util.Random;
 
 public abstract class FooBarFactory{
-	@Getter(lazy = true)
-	private final static FooBarFactory instance = new FooBarRobotics();
+	private static FooBarFactory instance = null;
+
+	public static FooBarFactory getInstance(){
+		if(instance == null){
+			instance = new FooBarRobotics();
+		}
+		return instance;
+	}
 
 	@NonNull
 	public abstract FooBar sumLessThan(Random random, FooBarRange fooRange, FooBarRange barRange, int sum);

@@ -3,6 +3,7 @@ package chankyin.mentamatics;
 import chankyin.mentamatics.math.foobar.FooBar;
 import chankyin.mentamatics.math.foobar.FooBarFactory;
 import chankyin.mentamatics.math.foobar.FooBarRange;
+import chankyin.mentamatics.math.foobar.FooBarRobotics;
 import org.junit.Test;
 
 import java.util.Random;
@@ -63,120 +64,287 @@ public class FooBarTest{
 
 	@Test
 	public void sumRandom10(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom11(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom12(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom13(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom14(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom15(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom16(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom17(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom18(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom19(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom20(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom21(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom22(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom23(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom24(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom25(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom26(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom27(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom28(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
 	@Test
 	public void sumRandom29(){
-		doSum(Double.doubleToLongBits(Math.random()));
+		doSum(new Random(sumTrials).nextLong());
 	}
 
-	private static int trialCount = 0;
+	@Test
+	public void lte0(){
+		doLte(0);
+	}
+
+	@Test
+	public void lte1(){
+		doLte(1);
+	}
+
+	@Test
+	public void lte2(){
+		doLte(2);
+	}
+
+	@Test
+	public void lte3(){
+		doLte(3);
+	}
+
+	@Test
+	public void lte4(){
+		doLte(4);
+	}
+
+	@Test
+	public void lte5(){
+		doLte(5);
+	}
+
+	@Test
+	public void lte6(){
+		doLte(6);
+	}
+
+	@Test
+	public void lte7(){
+		doLte(7);
+	}
+
+	@Test
+	public void lte8(){
+		doLte(8);
+	}
+
+	@Test
+	public void lte9(){
+		doLte(9);
+	}
+
+	@Test
+	public void lteRandom10(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom11(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom12(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom13(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom14(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom15(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom16(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom17(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom18(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom19(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom20(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom21(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom22(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom23(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom24(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom25(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom26(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom27(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom28(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	@Test
+	public void lteRandom29(){
+		doLte(new Random(lteTrials).nextLong());
+	}
+
+	private static int sumTrials = 0;
+	private static int lteTrials = 0;
 
 	public void doSum(long trial){
-		System.err.println("Round " + ++trialCount);
+		System.err.println("Round " + ++sumTrials);
 
-		long seed = new Random().nextLong();
+		long seed = new Random(trial).nextLong();
 		Random random = new Random(seed);
 		FooBarRange fooRange = FooBarRange.autoSort(random.nextInt(100), random.nextInt(100));
 		FooBarRange barRange = FooBarRange.autoSort(random.nextInt(100), random.nextInt(100));
-		FooBarRange sumRange = new FooBarRange(fooRange.min + barRange.min, fooRange.max + barRange.max);
-		int sum = sumRange.generateRandom(random);
+		int sum = new FooBarRange(fooRange.min + barRange.min, fooRange.max + barRange.max).generateRandom(random);
 
 		FooBar fooBar = FooBarFactory.getInstance().sumLessThan(new Random(random.nextLong()), fooRange, barRange, sum);
 
 		assertTrue("sum.matchFoo", fooRange.matches(fooBar.getFoo()));
 		assertTrue("sum.matchBar", barRange.matches(fooBar.getBar()));
 		assertTrue("sum.sum", fooBar.getFoo() + fooBar.getBar() <= sum);
+	}
+
+	public void doLte(long trial){
+		System.err.println("Round #" + ++lteTrials);
+
+		long seed = new Random(trial).nextLong();
+		Random random = new Random(seed);
+		FooBarRange fooRange = FooBarRange.autoSort(random.nextInt(100), random.nextInt(100));
+		FooBarRange barRange = FooBarRange.autoSort(random.nextInt(100), random.nextInt(100));
+		int n = new FooBarRange(fooRange.min - barRange.max, fooRange.max - barRange.min + 10).generateRandom(random);
+
+		FooBarRobotics robotics = new FooBarRobotics();
+		FooBar fooBar = robotics.fooLteBarPlus(new Random(random.nextLong()), fooRange, barRange, n);
+
+		assertTrue("lte.matchFoo", fooRange.matches(fooBar.getFoo()));
+		assertTrue("lte.matchBar", barRange.matches(fooBar.getBar()));
+		assertTrue("lte.lte", fooBar.getFoo() <= fooBar.getBar() + n);
 	}
 }

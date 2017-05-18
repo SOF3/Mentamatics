@@ -274,14 +274,15 @@ public class MathUtils{
 	}
 
 	/**
-	 * @param offset offset counting in horizontal then vertical order (like normal LTR word wrapping)
-	 * @param width  horizontal length
-	 * @return {vertical index, horizontal index}
+	 * @param offset offset counting in vertical then horizontal order
+	 * @param height  vertical length
+	 * @return {horizontal index, vertical index}
 	 */
-	public static int[] offsetToPositionInRectangle(int offset, int width){
+	@Size(2)
+	public static int[] offsetToPositionInRectangle(int offset, int height){
 		return new int[]{
-				offset / width,
-				offset % width
+				offset / height,
+				offset % height
 		};
 	}
 }

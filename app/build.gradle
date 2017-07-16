@@ -8,12 +8,8 @@ android {
         applicationId "chankyin.mentamatics"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
-
-        jackOptions {
-            enabled false
-        }
+        versionCode 3
+        versionName "1.2.0"
     }
     buildTypes {
         release {

@@ -12,11 +12,23 @@
 		<activity android:name=".ui.main.HomeActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
-				<action android:name="android.intent.action.VIEW"/>
-				<data android:scheme="app" android:host="chankyin.mentamatics"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.RUN"/>
+				<data android:scheme="app" android:host="chankyin.mentamatics"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW"/>
+				<data android:scheme="app" android:host="chankyin.mentamatics"/>
+			</intent-filter>
 		</activity>
-		<activity android:name=".ui.pref.ConfigActivity" android:configChanges="orientation|keyboardHidden|screenSize"/>
+		<activity android:name=".ui.pref.ConfigActivity" android:configChanges="orientation|keyboardHidden|screenSize">
+			<intent-filter>
+				<category android:name="android.intent.category.PREFERENCE"/>
+				<action android:name="android.intent.action.APPLICATION_PREFERENCES"/>
+			</intent-filter>
+		</activity>
 	</application>
 </manifest>

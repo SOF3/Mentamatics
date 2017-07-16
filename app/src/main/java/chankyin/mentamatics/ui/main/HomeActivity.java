@@ -4,8 +4,8 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,8 +28,11 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.*;
 import static android.widget.RelativeLayout.*;
+import static chankyin.mentamatics.LogUtils.debug;
 
 public class HomeActivity extends BaseActivity{
+	public final static String INTENT_EXTRA_PROBLEM_COUNT_QUITS = "chankyin.mentamatics.HOME_PROBLEM_COUNT_QUITS";
+
 	public final static String PROBLEM_LAST_RANDOM_STATE = "Problem:lastRandomState";
 	public final static String PROBLEM_TOTAL_ANSWERS = "Problem:totalAnswers";
 	public final static String PROBLEM_TOTAL_TIME = "Problem:totalTime";
@@ -38,6 +41,8 @@ public class HomeActivity extends BaseActivity{
 	@Getter(lazy = true) private final Random random = Main.getInstance(this).loadRandom(PROBLEM_LAST_RANDOM_STATE);
 
 	@Getter private Problem currentProblem = null;
+
+	@Getter private int countQuits;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState){
@@ -50,6 +55,18 @@ public class HomeActivity extends BaseActivity{
 		if(currentProblem == null){
 			nextProblem();
 		}
+
+		int countQuits = getIntent().getIntExtra(INTENT_EXTRA_PROBLEM_COUNT_QUITS, 0);
+		if(countQuits <= 0 && savedInstanceState != null){
+			countQuits = savedInstanceState.getInt(INTENT_EXTRA_PROBLEM_COUNT_QUITS, 0);
+		}
+		this.countQuits = countQuits > 0 ? countQuits : -1;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState){
+		super.onSaveInstanceState(outState, outPersistentState);
+		outState.putInt(INTENT_EXTRA_PROBLEM_COUNT_QUITS, countQuits);
 	}
 
 	@Override
@@ -80,13 +97,18 @@ public class HomeActivity extends BaseActivity{
 			public void onAnswerCorrect(){
 				long endTime = System.nanoTime();
 				Main.getInstance(HomeActivity.this).incrementCorrect(endTime - currentProblem.getStartTime());
+				--countQuits;
+				if(countQuits == 0){
+					setResult(RESULT_OK);
+					finish();
+				}
 
 				Problem newProblem = nextProblem();
 				newProblem.express(getFragmentManager().findFragmentById(R.id.fragment_problem).getView());
 			}
 		});
 
-		Log.d(Main.TAG, "Current problem's solution: " + currentProblem.getAnswer());
+		debug("Current problem's solution: %s", currentProblem.getAnswer());
 
 		getHandler().postDelayed(new Runnable(){
 			@Override

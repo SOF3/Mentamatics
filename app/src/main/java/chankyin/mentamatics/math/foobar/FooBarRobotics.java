@@ -5,7 +5,8 @@ import android.support.annotation.Size;
 
 import java.util.Random;
 
-import static chankyin.mentamatics.math.MathUtils.*;
+import static chankyin.mentamatics.LogUtils.debug;
+import static chankyin.mentamatics.math.RealFloatUtils.*;
 import static java.lang.Math.*;
 
 public class FooBarRobotics extends FooBarFactory{
@@ -21,7 +22,7 @@ public class FooBarRobotics extends FooBarFactory{
 //		if(p + q <= s){
 //			int k = random.nextInt((p + 1) * (q + 1));
 //			System.err.println("k = " + k);
-//			int[] xy = MathUtils.offsetToPositionInRectangle(k, p + 1);
+//			int[] xy = RealFloatUtils.offsetToPositionInRectangle(k, p + 1);
 //			return new FooBar(fooRange.min + xy[0], barRange.min + xy[1]);
 //		}
 
@@ -48,19 +49,17 @@ public class FooBarRobotics extends FooBarFactory{
 	@NonNull
 	@Override
 	public FooBar fooGtBar(Random random, FooBarRange fooRange, FooBarRange barRange){
-		return fooLteBarPlus(random, barRange, fooRange, -1);
+		return fooLteBarPlus(random, barRange, fooRange, -1).swap();
 	}
 
 	@NonNull
 	@Override
 	public FooBar fooGteBar(Random random, FooBarRange fooRange, FooBarRange barRange){
-		return fooLteBarPlus(random, barRange, fooRange, 0);
+		return fooLteBarPlus(random, barRange, fooRange, 0).swap();
 	}
 
 	public FooBar fooLteBarPlus(Random random, FooBarRange fooRange, FooBarRange barRange, int n){
-		// a <= x <= b
-		// c <= y <= d
-		// x <= y + n
+		debug("%s <= %s + %d", fooRange, barRange, n);
 
 		int p = fooRange.max - fooRange.min;
 		int q = barRange.max - barRange.min;
@@ -92,6 +91,9 @@ public class FooBarRobotics extends FooBarFactory{
 			ij[1] = g - ij[1];
 		}
 
-		return new FooBar(ij[0] + fooRange.min, ij[1] + barRange.min);
+
+		FooBar result = new FooBar(ij[0] + fooRange.min, ij[1] + barRange.min);
+		debug("Yielded %d <= %d + %d", result.getFoo(), result.getBar(), n);
+		return result;
 	}
 }

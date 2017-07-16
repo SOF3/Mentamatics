@@ -1,6 +1,7 @@
 package chankyin.mentamatics;
 
 import android.util.Log;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class LogUtils{
 	public static boolean IS_TEST = classExists("junit.framework.Test");
@@ -16,6 +17,11 @@ public class LogUtils{
 	}
 
 	public static void debug(String message, Object... args){
+		for(int i = 0; i < args.length; i++){
+			if(args[i] != null && args[i].getClass().isArray()){
+				args[i] = ArrayUtils.toString(args[i]);
+			}
+		}
 		if(args.length > 0){
 			message = String.format(message, (Object[]) args);
 		}

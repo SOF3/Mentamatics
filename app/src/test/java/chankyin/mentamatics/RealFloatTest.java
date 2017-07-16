@@ -90,9 +90,25 @@ public class RealFloatTest{
 	public void addition0(){
 		assertEqualsSymmetric("addition0", RealFloat.parseString("47").plus(RealFloat.parseString("163")), RealFloat.parseString("210"));
 	}
+
 	@Test
 	public void addition00(){
 		assertEqualsSymmetric("addition00", RealFloat.parseString("37").plus(RealFloat.parseString("163")), RealFloat.parseString("200"));
+	}
+
+	@Test
+	public void subtractionNoBorrow0(){
+		assertEqualsSymmetric("subtractionNoBorrow", RealFloat.parseString("1267").minus(RealFloat.parseString("247")), RealFloat.parseString("1020"));
+	}
+
+	@Test
+	public void subtractionNoBorrow(){
+		assertEqualsSymmetric("subtractionNoBorrow", RealFloat.parseString("167").minus(RealFloat.parseString("43")), RealFloat.parseString("124"));
+	}
+
+	@Test
+	public void subtractionBorrow(){
+		assertEqualsSymmetric("subtractionBorrow", RealFloat.parseString("143").minus(RealFloat.parseString("67")), RealFloat.parseString("76"));
 	}
 
 	private static void assertEqualsSymmetric(String message, Object foo, Object bar){

@@ -334,8 +334,7 @@ public class FooBarTest{
 	public void doLte(long trial){
 		System.err.println("Round #" + ++lteTrials);
 
-		long seed = new Random(trial).nextLong();
-		Random random = new Random(seed);
+		Random random = new Random();
 		FooBarRange fooRange = FooBarRange.autoSort(random.nextInt(100), random.nextInt(100));
 		FooBarRange barRange = FooBarRange.autoSort(random.nextInt(100), random.nextInt(100));
 		int n = new FooBarRange(fooRange.min - barRange.max, fooRange.max - barRange.min + 10).generateRandom(random);

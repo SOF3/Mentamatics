@@ -7,6 +7,7 @@ import chankyin.mentamatics.math.foobar.FooBar;
 import chankyin.mentamatics.math.foobar.FooBarFactory;
 import chankyin.mentamatics.math.foobar.FooBarRange;
 import chankyin.mentamatics.math.real.RealFloat;
+import chankyin.mentamatics.math.real.annotation.DescendingDigits;
 import chankyin.mentamatics.problem.Answer;
 import chankyin.mentamatics.problem.Operator;
 import chankyin.mentamatics.problem.Problem;
@@ -16,6 +17,7 @@ import chankyin.mentamatics.problem.question.TripletQuestion;
 
 import java.util.Random;
 
+import static chankyin.mentamatics.LogUtils.debug;
 import static chankyin.mentamatics.config.ConfigConstants.*;
 
 public class SubtractionProblemGenerator extends ProblemGenerator{
@@ -37,46 +39,74 @@ public class SubtractionProblemGenerator extends ProblemGenerator{
 		FooBarRange upperDigitsRange = new FooBarRange(range.upperMin, range.upperMax);
 		boolean allowBorrow = config.getBoolean(KEY_GEN_SUBTRACTION_BORROW_ALLOWED);
 		boolean allowNegative = config.getBoolean(KEY_GEN_SUBTRACTION_NEGATIVE_ALLOWED);
-		int base = 10;
-		int[] upper, lower;
-		boolean swap = false;
 
-		FooBar digits = allowNegative ?
-				new FooBar(upperDigitsRange.generateRandom(random), lowerDigitsRange.generateRandom(random)) :
-				FooBarFactory.getInstance().fooGteBar(random, upperDigitsRange, lowerDigitsRange);
+		int base = 10;
+		RealFloat upper, lower;
 
 		if(allowBorrow){
-			upper = generateNumber(random, digits.getFoo(), base);
-			lower = generateNumber(random, digits.getBar(), base); // no need to worry about negative
+			if(allowNegative){
+				upper = RealFloat.bigEndianDigits(base, 1, 0, generateNumber(random, upperDigitsRange.generateRandom(random), base));
+				lower = RealFloat.bigEndianDigits(base, 1, 0, generateNumber(random, lowerDigitsRange.generateRandom(random), base));
+			}else{
+				// upperSize >= lowerSize
+				FooBar sizes = FooBarFactory.getInstance().fooGteBar(random, upperDigitsRange, lowerDigitsRange);
+				debug("sizes: %s, upperDigitsRange: %s, lowerDigitsRange: %s", sizes, upperDigitsRange, lowerDigitsRange);
+				@DescendingDigits int[] upperDigits = generateNumber(random, sizes.getFoo(), base),
+						lowerDigits = generateNumber(random, sizes.getBar(), base);
+				upper = RealFloat.bigEndianDigits(base, 1, 0, upperDigits);
+				lower = RealFloat.bigEndianDigits(base, 1, 0, lowerDigits);
+				if(upper.compareTo(lower, true) == -1){
+					if(upperDigits.length != lowerDigits.length){
+						throw new AssertionError();
+					}
+					FooBar firstDigits = FooBarFactory.getInstance().fooGtBar(random, new FooBarRange(0, base - 1), new FooBarRange(0, base - 1));
+					upperDigits[0] = firstDigits.getFoo();
+					lowerDigits[0] = firstDigits.getBar();
+					upper = RealFloat.bigEndianDigits(base, 1, 0, upperDigits);
+					lower = RealFloat.bigEndianDigits(base, 1, 0, lowerDigits);
+				}
+			}
 		}else{
-			upper = new int[digits.getFoo()];
-			lower = new int[digits.getBar()];
-			for(int i = 1; i <= upper.length; i++){
-				int upperIndex = upper.length - i;
-				int lowerIndex = lower.length - i; // may be negative
-				if(lowerIndex < 0){
-					upper[upperIndex] = upperIndex != 0 ? random.nextInt(base) : (random.nextInt(base - 1) + 1);
-				}else if(lowerIndex == 0){
-					FooBar fooBar = FooBarFactory.getInstance().fooGteBar(
-							random, new FooBarRange(1, base - 1), new FooBarRange(1, base - 1));
-					// no matter upperIndex is 0 or not, upper must not be 0 because upper >= lower and lower > 0
-					upper[upperIndex] = fooBar.getFoo();
-					lower[0] = fooBar.getBar();
+			boolean isNegative = allowNegative && random.nextBoolean();
+
+			@DescendingDigits int[] upperDigits, lowerDigits;
+
+			FooBar sizes;
+			if(isNegative){
+				sizes = FooBarFactory.getInstance().fooGteBar(random, lowerDigitsRange, upperDigitsRange);
+			}else{
+				sizes = FooBarFactory.getInstance().fooGteBar(random, upperDigitsRange, lowerDigitsRange);
+			}
+			upperDigits = new int[sizes.getFoo()];
+			lowerDigits = new int[sizes.getBar()];
+			// upperDigits.length >= lowerDigits.length is always true
+			for(int r = 0; r < upperDigits.length; ++r){
+				boolean hasLower = r < lowerDigits.length;
+				boolean isLowerLast = r + 1 == lowerDigits.length;
+				boolean isUpperLast = r + 1 == upperDigits.length;
+
+				if(hasLower){
+					FooBar digits = FooBarFactory.getInstance().fooGteBar(random,
+							new FooBarRange(isUpperLast ? 1 : 0, base - 1),
+							new FooBarRange(isLowerLast ? 1 : 0, base - 1));
+					upperDigits[upperDigits.length - 1 - r] = digits.getFoo();
+					lowerDigits[lowerDigits.length - 1 - r] = digits.getBar();
 				}else{
-					FooBar fooBar = FooBarFactory.getInstance().fooGteBar(
-							random, new FooBarRange(0, base - 1), new FooBarRange(0, base - 1));
-					upper[upperIndex] = fooBar.getFoo();
-					upper[lowerIndex] = fooBar.getBar();
+					upperDigits[upperDigits.length - 1 - r] = new FooBarRange(isUpperLast ? 1 : 0, base - 1).generateRandom(random);
 				}
 			}
 
-			swap = digits.getFoo() == digits.getBar() && random.nextBoolean(); // 50% probability to be negative
+			if(isNegative){
+				upper = RealFloat.bigEndianDigits(base, 1, 0, lowerDigits);
+				lower = RealFloat.bigEndianDigits(base, 1, 0, upperDigits);
+			}else{
+				upper = RealFloat.bigEndianDigits(base, 1, 0, upperDigits);
+				lower = RealFloat.bigEndianDigits(base, 1, 0, lowerDigits);
+			}
 		}
 
-		RealFloat a = RealFloat.bigEndianDigits(base, 1, 0, upper);
-		RealFloat b = RealFloat.bigEndianDigits(base, 1, 0, lower);
-		Question question = swap ? new TripletQuestion(b, Operator.SUBTRACTION, a) : new TripletQuestion(a, Operator.SUBTRACTION, b);
-		Answer answer = new SingleAnswer(swap ? b.minus(a) : a.minus(b));
+		Question question = new TripletQuestion(upper, Operator.SUBTRACTION, lower);
+		Answer answer = new SingleAnswer(upper.minus(lower));
 		return new Problem(question, answer);
 	}
 }

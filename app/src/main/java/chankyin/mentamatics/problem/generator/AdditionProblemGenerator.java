@@ -6,7 +6,7 @@ import chankyin.mentamatics.BuildConfig;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.config.Config;
 import chankyin.mentamatics.config.range.QuadretRange;
-import chankyin.mentamatics.math.MathUtils;
+import chankyin.mentamatics.math.RealFloatUtils;
 import chankyin.mentamatics.math.foobar.FooBar;
 import chankyin.mentamatics.math.foobar.FooBarFactory;
 import chankyin.mentamatics.math.foobar.FooBarRange;
@@ -22,8 +22,8 @@ import static chankyin.mentamatics.LogUtils.debug;
 import static chankyin.mentamatics.config.ConfigConstants.*;
 
 public class AdditionProblemGenerator extends ProblemGenerator{
+	public static final boolean IS_IMPLEMENTED = true;
 	private static AdditionProblemGenerator ourInstance = new AdditionProblemGenerator();
-	private final static Operator OPERATOR = Operator.ADDITION;
 
 	public static AdditionProblemGenerator getInstance(){
 		return ourInstance;
@@ -54,14 +54,14 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 			}
 		}
 
-		return new Problem(new TripletQuestion(operands[0], OPERATOR, operands[1]), new SingleAnswer(answer));
+		return new Problem(new TripletQuestion(operands[0], Operator.ADDITION, operands[1]), new SingleAnswer(answer));
 	}
 
 	@Size(2)
 	private RealFloat[] generateCarry(Random random, int base, int upperDigitCount, int lowerDigitCount){
 		return new RealFloat[]{
-				RealFloat.bigEndianDigits(base, 1, 0, MathUtils.randomRangeArray(random, upperDigitCount, 0, base)),
-				RealFloat.bigEndianDigits(base, 1, 0, MathUtils.randomRangeArray(random, lowerDigitCount, 0, base))
+				RealFloat.bigEndianDigits(base, 1, 0, RealFloatUtils.randomRangeArray(random, upperDigitCount, 0, base)),
+				RealFloat.bigEndianDigits(base, 1, 0, RealFloatUtils.randomRangeArray(random, lowerDigitCount, 0, base))
 		};
 	}
 

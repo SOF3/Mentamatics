@@ -6,4 +6,8 @@ import lombok.Value;
 public class FooBar{
 	int foo;
 	int bar;
+
+	public FooBar swap(){
+		return new FooBar(bar, foo);
+	}
 }

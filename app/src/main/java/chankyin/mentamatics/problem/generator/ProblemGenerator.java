@@ -6,6 +6,7 @@ import chankyin.mentamatics.Main;
 import chankyin.mentamatics.R;
 import chankyin.mentamatics.config.Config;
 import chankyin.mentamatics.math.real.RealFloat;
+import chankyin.mentamatics.math.real.annotation.DescendingDigits;
 import chankyin.mentamatics.problem.Answer;
 import chankyin.mentamatics.problem.Problem;
 import chankyin.mentamatics.problem.SingleAnswer;
@@ -13,7 +14,6 @@ import chankyin.mentamatics.problem.question.LiteralQuestion;
 import chankyin.mentamatics.problem.question.Question;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -22,12 +22,12 @@ import static chankyin.mentamatics.config.ConfigConstants.*;
 public abstract class ProblemGenerator{
 	public final static boolean IS_GENERATOR_IMPLEMENTED = true; // FIXME
 
-	private static List<ProblemGenerator> available = Arrays.asList(
+	private final static ProblemGenerator[] AVAILABLE_GENERATORS = {
 			AdditionProblemGenerator.getInstance(),
 			SubtractionProblemGenerator.getInstance(),
 			MultiplicationProblemGenerator.getInstance(),
 			DivisionProblemGenerator.getInstance()
-	);
+	};
 
 	@SuppressWarnings("PointlessBooleanExpression")
 	public static Problem generate(Config config, Random random){
@@ -37,18 +37,18 @@ public abstract class ProblemGenerator{
 			Answer answer = new SingleAnswer(RealFloat.fromDouble(randomInt));
 			return new Problem(question, answer);
 		}
-		List<ProblemGenerator> generators = new ArrayList<>(available);
-		if(!config.getBoolean(KEY_GEN_ADDITION_ENABLED)){
-			generators.remove(AdditionProblemGenerator.getInstance());
+		List<ProblemGenerator> generators = new ArrayList<>();
+		if(config.getBoolean(KEY_GEN_ADDITION_ENABLED)){
+			generators.add(AdditionProblemGenerator.getInstance());
 		}
-		if(!config.getBoolean(KEY_GEN_SUBTRACTION_ENABLED) || !SubtractionProblemGenerator.IS_IMPLEMENTED){
-			generators.remove(SubtractionProblemGenerator.getInstance());
+		if(SubtractionProblemGenerator.IS_IMPLEMENTED && config.getBoolean(KEY_GEN_SUBTRACTION_ENABLED)){
+			generators.add(SubtractionProblemGenerator.getInstance());
 		}
-		if(!config.getBoolean(KEY_GEN_MULTIPLICATION_ENABLED) || !MultiplicationProblemGenerator.IS_IMPLEMENTED){
-			generators.remove(MultiplicationProblemGenerator.getInstance());
+		if(MultiplicationProblemGenerator.IS_IMPLEMENTED && config.getBoolean(KEY_GEN_MULTIPLICATION_ENABLED)){
+			generators.add(MultiplicationProblemGenerator.getInstance());
 		}
-		if(!config.getBoolean(KEY_GEN_DIVISION_ENABLED) || !DivisionProblemGenerator.IS_IMPLEMENTED){
-			generators.remove(DivisionProblemGenerator.getInstance());
+		if(DivisionProblemGenerator.IS_IMPLEMENTED && config.getBoolean(KEY_GEN_DIVISION_ENABLED)){
+			generators.add(DivisionProblemGenerator.getInstance());
 		}
 
 		if(generators.size() == 0){
@@ -63,6 +63,7 @@ public abstract class ProblemGenerator{
 	@NonNull
 	protected abstract Problem generateProblem(Config config, Random random);
 
+	@DescendingDigits
 	protected int[] generateNumber(Random random, int length, int base){
 		int[] ret = new int[length];
 		ret[0] = random.nextInt(base - 1) + 1; // first number must be non-zero

@@ -12,7 +12,9 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 
-public class MathUtils{
+import static chankyin.mentamatics.LogUtils.debug;
+
+public class RealFloatUtils{
 	@AscendingDigits
 	public static int[] carry(@Mutable @AscendingDigits int[] digits, @IntRange(from = 2) int base){
 		int carry = 0;
@@ -75,6 +77,7 @@ public class MathUtils{
 
 	@AscendingDigits
 	public static int[] subtract(@Immutable @AscendingDigits int[] left, @Immutable @AscendingDigits int[] right, @IntRange(from = 2) int base){
+		// FIXME
 		if(BuildConfig.DEBUG && cmp(left, right) <= 0){
 			throw new IllegalArgumentException();
 		}
@@ -84,12 +87,16 @@ public class MathUtils{
 			subtract[i] -= right[i];
 		}
 
+		debug("left: %s, right: %s, subtract: %s", left, right, subtract);
+
 		borrow(subtract, base);
+		debug("borrowed: %s", (Object) subtract);
 
 		int length = 0;
-		for(int i = subtract.length - 1; i >= 0; i--){
-			if(subtract[i] != 0){
-				length = i + 1;
+		for(int i = subtract.length; i > 0; i--){
+			if(subtract[i - 1] != 0){
+				length = i;
+				break;
 			}
 		}
 
@@ -275,7 +282,7 @@ public class MathUtils{
 
 	/**
 	 * @param offset offset counting in vertical then horizontal order
-	 * @param height  vertical length
+	 * @param height vertical length
 	 * @return {horizontal index, vertical index}
 	 */
 	@Size(2)

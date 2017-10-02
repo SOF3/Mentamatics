@@ -6,7 +6,8 @@ import android.view.View;
 import android.widget.EditText;
 import lombok.Getter;
 
-import static android.text.InputType.*;
+import static android.text.InputType.TYPE_CLASS_NUMBER;
+import static android.text.InputType.TYPE_NUMBER_FLAG_SIGNED;
 
 public class IntegerPreference extends MDialogPreference{
 	@Getter private boolean signed = false;
@@ -69,5 +70,5 @@ public class IntegerPreference extends MDialogPreference{
 		setValue(restorePersistedValue ? getPersistedInt(0) : defaultInt);
 	}
 
-	// TODO: 8/6/2016 save instance state
+// TODO: 8/6/2016 save instance state
 }

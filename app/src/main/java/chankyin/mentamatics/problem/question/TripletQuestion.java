@@ -12,14 +12,17 @@ import chankyin.mentamatics.R;
 import chankyin.mentamatics.config.ConfigConstants;
 import chankyin.mentamatics.math.real.RealFloat;
 import chankyin.mentamatics.problem.Operator;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class TripletQuestion implements Question{
 	private final RealFloat a;
 	private final Operator op;
 	private final RealFloat b;
+	@Getter private final int type;
+	@Getter private final int flags;
 
 	@Override
 	public void populateQuestionLayout(LinearLayout layout){
@@ -54,7 +57,7 @@ public class TripletQuestion implements Question{
 		}else{
 			LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View view = inflater.inflate(R.layout.triplet_question_plain, layout);
-			TextView textView = (TextView) view.findViewById(R.id.triplet_expr);
+			TextView textView = view.findViewById(R.id.triplet_expr);
 			textView.setText(Main.fromHtml(
 					a.toUserString(true) + "&nbsp;" +
 							Html.escapeHtml(op.toString()) + "&nbsp;" +

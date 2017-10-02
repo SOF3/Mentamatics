@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -23,17 +22,21 @@ import chankyin.mentamatics.config.ConfigEntries;
 import chankyin.mentamatics.config.ConfigParser;
 import chankyin.mentamatics.ui.BaseActivity;
 import com.github.nantaphop.fluentview.FluentView;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Random;
 
-import static android.view.ViewGroup.LayoutParams.*;
-import static chankyin.mentamatics.ui.main.HomeActivity.*;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class Main extends Application{
 	public final static String TAG = "Mentamatics";
@@ -58,12 +61,19 @@ public class Main extends Application{
 	}
 
 	@Getter(lazy = true) private final Config config = reloadConfig();
-	@Getter(lazy = true) private final BriefStats briefStats = calculateBriefStats();
+	@Getter private StatsDb statsDb;
 
 	@Override
 	public void onCreate(){
 		super.onCreate();
 		instance = this;
+		statsDb = new StatsDb(this);
+	}
+
+	@Override
+	public void onTerminate(){
+		super.onTerminate();
+		statsDb.close();
 	}
 
 	public static Main getInstance(Activity activity){
@@ -139,38 +149,6 @@ public class Main extends Application{
 		PreferenceManager.getDefaultSharedPreferences(this).edit()
 				.putString(name, serialize(random))
 				.apply();
-	}
-
-	private BriefStats calculateBriefStats(){
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		int answers = prefs.getInt(PROBLEM_TOTAL_ANSWERS, 0);
-		float time = prefs.getFloat(PROBLEM_TOTAL_TIME, 0f);
-		return new BriefStats(answers, time);
-	}
-
-	public void incrementCorrect(long spentNanos){
-		BriefStats briefStats = getBriefStats();
-		++briefStats.answers;
-		briefStats.time += spentNanos * 1e-9;
-		PreferenceManager.getDefaultSharedPreferences(this).edit()
-				.putInt(PROBLEM_TOTAL_ANSWERS, briefStats.answers)
-				.putFloat(PROBLEM_TOTAL_TIME, briefStats.time)
-				.apply();
-	}
-
-	public void resetStats(){
-		getBriefStats().answers = 0;
-		getBriefStats().time = 0;
-		PreferenceManager.getDefaultSharedPreferences(this).edit()
-				.putInt(PROBLEM_TOTAL_ANSWERS, 0)
-				.putFloat(PROBLEM_TOTAL_TIME, 0)
-				.apply();
-	}
-
-	@AllArgsConstructor
-	public static class BriefStats{
-		public int answers;
-		public float time;
 	}
 
 	@NonNull

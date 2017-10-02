@@ -11,16 +11,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.R;
+import chankyin.mentamatics.StatsDb;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.text.DecimalFormat;
 
-public class StatsFragment extends Fragment implements Runnable{
-	private View contentView;
-	private TextView answers;
-	private TextView totalTime;
-	private TextView avgTime;
-	private Handler handler;
+import static chankyin.mentamatics.LogUtils.debug;
 
+public class StatsFragment extends Fragment implements Runnable{
+	private TextView overallAnswersView;
+	private TextView overallTotalTimeView;
+	private TextView overallAverageTimeView;
+	private TextView recentAnswersView;
+	private TextView recentTotalTimeView;
+	private TextView recentAverageTimeView;
+	private Handler handler;
 	private boolean resumed;
 
 	@Nullable
@@ -28,10 +33,13 @@ public class StatsFragment extends Fragment implements Runnable{
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState){
 		handler = new Handler();
 
-		contentView = inflater.inflate(R.layout.frag_stats, container, false);
-		answers = (TextView) contentView.findViewById(R.id.main_stats_answers);
-		totalTime = (TextView) contentView.findViewById(R.id.main_stats_total_time);
-		avgTime = (TextView) contentView.findViewById(R.id.main_stats_avg_time);
+		View contentView = inflater.inflate(R.layout.frag_stats, container, false);
+		overallAnswersView = contentView.findViewById(R.id.main_stats_answers);
+		overallTotalTimeView = contentView.findViewById(R.id.main_stats_total_time);
+		overallAverageTimeView = contentView.findViewById(R.id.main_stats_avg_time);
+		recentAnswersView = contentView.findViewById(R.id.main_stats_answers_recent);
+		recentTotalTimeView = contentView.findViewById(R.id.main_stats_total_time_recent);
+		recentAverageTimeView = contentView.findViewById(R.id.main_stats_avg_time_recent);
 		return contentView;
 	}
 
@@ -59,17 +67,45 @@ public class StatsFragment extends Fragment implements Runnable{
 		}
 		Main main = Main.getInstance(activity);
 
-		float oldTotal = main.getBriefStats().time;
-		double usedTime = (System.nanoTime() - activity.getCurrentProblem().getStartTime()) * 1e-9;
-		int oldAnswers = main.getBriefStats().answers;
+		// TODO show more stats
+		StatsDb statsDb = main.getStatsDb();
+		StatsDb.StatSet overall = statsDb.getStats();
+		StatsDb.StatSet last50 = statsDb.getLastStats(50);
+		debug(ToStringBuilder.reflectionToString(overall));
+		double overallSumDuration = overall.getSum() * 1e-9;
+		int overallAnswers = overall.getCount();
+		double recentSumDuration = overall.getSum() * 1e-9;
+		int recentAnswers = overall.getCount();
 
-		answers.setText(getString(R.string.main_stats_format_correct_answers, oldAnswers));
-		totalTime.setText(getString(R.string.main_stats_format_total_time,
-				DECIMAL_FORMAT.format(oldTotal),
+		double usedTime = (System.nanoTime() - activity.getCurrentProblem().getStartTime()) * 1e-9;
+
+		overallAnswersView.setText(getString(R.string.main_stats_format_correct_answers, overallAnswers));
+		overallTotalTimeView.setText(getString(R.string.main_stats_format_total_time,
+				DECIMAL_FORMAT.format(overallSumDuration),
 				DECIMAL_FORMAT.format(usedTime)));
-		avgTime.setText(getString(R.string.main_stats_format_average_time,
-				oldAnswers == 0 ? getResources().getString(R.string.stats_na) : DECIMAL_FORMAT.format(oldTotal / oldAnswers),
-				DECIMAL_FORMAT.format((oldTotal + usedTime) / (oldAnswers + 1))));
+		if(overallAnswers == 0){
+			overallAverageTimeView.setText(getString(R.string.main_stats_format_average_time,
+					getResources().getString(R.string.stats_na),
+					DECIMAL_FORMAT.format((overallSumDuration + usedTime) / (overallAnswers + 1))));
+		}else{
+			overallAverageTimeView.setText(getString(R.string.main_stats_format_average_time,
+					DECIMAL_FORMAT.format(overallSumDuration / overallAnswers),
+					DECIMAL_FORMAT.format((overallSumDuration + usedTime) / (overallAnswers + 1))));
+		}
+
+		recentAnswersView.setText(getString(R.string.main_stats_format_correct_answers, recentAnswers));
+		recentTotalTimeView.setText(getString(R.string.main_stats_format_total_time,
+				DECIMAL_FORMAT.format(recentSumDuration),
+				DECIMAL_FORMAT.format(usedTime)));
+		if(recentAnswers == 0){
+			recentAverageTimeView.setText(getString(R.string.main_stats_format_average_time,
+					getResources().getString(R.string.stats_na),
+					DECIMAL_FORMAT.format((recentSumDuration + usedTime) / (recentAnswers + 1))));
+		}else{
+			recentAverageTimeView.setText(getString(R.string.main_stats_format_average_time,
+					DECIMAL_FORMAT.format(recentSumDuration / recentAnswers),
+					DECIMAL_FORMAT.format((recentSumDuration + usedTime) / (recentAnswers + 1))));
+		}
 		if(resumed){
 			handler.postDelayed(this, 10);
 		}

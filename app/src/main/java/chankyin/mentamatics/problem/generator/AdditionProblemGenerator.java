@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Size;
 import chankyin.mentamatics.BuildConfig;
 import chankyin.mentamatics.Main;
+import chankyin.mentamatics.StatsDb;
 import chankyin.mentamatics.config.Config;
 import chankyin.mentamatics.config.range.QuadretRange;
 import chankyin.mentamatics.math.RealFloatUtils;
@@ -14,6 +15,7 @@ import chankyin.mentamatics.math.real.RealFloat;
 import chankyin.mentamatics.problem.Operator;
 import chankyin.mentamatics.problem.Problem;
 import chankyin.mentamatics.problem.SingleAnswer;
+import chankyin.mentamatics.problem.question.Question;
 import chankyin.mentamatics.problem.question.TripletQuestion;
 
 import java.util.Random;
@@ -22,7 +24,27 @@ import static chankyin.mentamatics.LogUtils.debug;
 import static chankyin.mentamatics.config.ConfigConstants.*;
 
 public class AdditionProblemGenerator extends ProblemGenerator{
-	public static final boolean IS_IMPLEMENTED = true;
+	public final static int FLAG_PREF_UPPER_DIGIT_MAX_MASK
+			= 0x000_0000F;
+	public final static int FLAG_PREF_UPPER_DIGIT_MIN_MASK
+			= 0x000_000F0;
+	public final static int FLAG_PREF_LOWER_DIGIT_MAX_MASK
+			= 0x000_00F00;
+	public final static int FLAG_PREF_LOWER_DIGIT_MIN_MASK
+			= 0x000_0F000;
+	public final static int FLAG_PREF_CARRY
+			= 0x000_10000;
+	public final static int FLAG_THIS_CARRIES
+			= 0x100_00000;
+	public final static int FLAG_THIS_DE_FACTO_MINUS
+			= 0x200_00000;
+	public final static int FLAG_THIS_LITERAL
+			= 0x400_00000;
+	public final static int FLAG_THIS_UPPER_DIGIT_MASK
+			= 0x00F_00000;
+	public final static int FLAG_THIS_LOWER_DIGIT_MASK
+			= 0x0F0_00000;
+
 	private static AdditionProblemGenerator ourInstance = new AdditionProblemGenerator();
 
 	public static AdditionProblemGenerator getInstance(){
@@ -41,7 +63,8 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 		debug("generateProblem: digits = %s, upperDigitCount = %d, lowerDigitCount = %d", digits, upperDigitCount, lowerDigitCount);
 		int base = RealFloat.DEFAULT_BASE;
 
-		@Size(2) RealFloat[] operands = config.getBoolean(KEY_GEN_ADDITION_CARRY_ALLOWED) ?
+		boolean configCarries = config.getBoolean(KEY_GEN_ADDITION_CARRY_ALLOWED);
+		@Size(2) RealFloat[] operands = configCarries ?
 				generateCarry(random, base, upperDigitCount, lowerDigitCount) :
 				generateNoCarry(random, base, upperDigitCount, lowerDigitCount);
 
@@ -54,7 +77,36 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 			}
 		}
 
-		return new Problem(new TripletQuestion(operands[0], Operator.ADDITION, operands[1]), new SingleAnswer(answer));
+		int flags = 0;
+		flags |= StatsDb.numberToFlag(digits.upperMax, FLAG_PREF_UPPER_DIGIT_MAX_MASK);
+		flags |= StatsDb.numberToFlag(digits.upperMin, FLAG_PREF_UPPER_DIGIT_MIN_MASK);
+		flags |= StatsDb.numberToFlag(digits.lowerMax, FLAG_PREF_LOWER_DIGIT_MAX_MASK);
+		flags |= StatsDb.numberToFlag(digits.lowerMin, FLAG_PREF_LOWER_DIGIT_MIN_MASK);
+		flags |= StatsDb.numberToFlag(upperDigitCount, FLAG_THIS_UPPER_DIGIT_MASK);
+		flags |= StatsDb.numberToFlag(lowerDigitCount, FLAG_THIS_LOWER_DIGIT_MASK);
+		if(configCarries){
+			flags |= FLAG_PREF_CARRY;
+			RealFloat.Operation prep = operands[0].prepareAddition(operands[1]);
+			if(prep instanceof RealFloat.Operation.Literal){
+				flags |= FLAG_THIS_LITERAL;
+			}
+			if(prep instanceof RealFloat.Operation.Arithmetic){
+				RealFloat.Operation.Arithmetic arithmetic = (RealFloat.Operation.Arithmetic) prep;
+				if(arithmetic.isAddition()){
+					int[] foo = arithmetic.getOperand1(), bar = arithmetic.getOperand2();
+					for(int i = 0; i < foo.length; i++){
+						if(foo[i] + bar[i] >= base){
+							flags |= FLAG_THIS_CARRIES;
+							break;
+						}
+					}
+				}else{
+					flags |= FLAG_THIS_DE_FACTO_MINUS;
+				}
+			}
+		}
+		TripletQuestion question = new TripletQuestion(operands[0], Operator.ADDITION, operands[1], Question.TYPE_ADD, flags);
+		return new Problem(question, new SingleAnswer(answer));
 	}
 
 	@Size(2)

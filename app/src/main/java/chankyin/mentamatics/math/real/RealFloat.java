@@ -2,6 +2,7 @@ package chankyin.mentamatics.math.real;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Spanned;
 import chankyin.mentamatics.BuildConfig;
 import chankyin.mentamatics.Main;
@@ -10,6 +11,9 @@ import chankyin.mentamatics.math.real.annotation.AscendingDigits;
 import chankyin.mentamatics.math.real.annotation.DescendingDigits;
 import chankyin.mentamatics.math.real.annotation.Immutable;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Arrays;
@@ -194,22 +198,27 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 
 	@SuppressWarnings("UnnecessaryThis")
 	public RealFloat plus(RealFloat that){
+		return prepareAddition(that).compute();
+	}
+
+	@SuppressWarnings("UnnecessaryThis")
+	public Operation prepareAddition(RealFloat that){
 		if(this.base != that.base){
 			throw new UnsupportedOperationException();
 		}
 
 		int signum = 1;
 		if(this.signum == 0){
-			return that;
+			return new Operation.Literal(that);
 		}
 		if(that.signum == 0){
-			return this;
+			return new Operation.Literal(this);
 		}
 		if(this.signum == 1 && that.signum == -1){
-			return this.minus(that.negative());
+			return this.prepareSubtraction(that.negative());
 		}
 		if(this.signum == -1 && that.signum == 1){
-			return that.minus(this.negative());
+			return that.prepareSubtraction(this.negative());
 		}
 		if(this.signum == -1 && that.signum == -1){
 			signum = -1;
@@ -226,42 +235,57 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 			thatDigits = RealFloatUtils.leftPadArray(thatDigits, that.exp - this.exp);
 		}
 
-		int[] add = RealFloatUtils.add(thisDigits, thatDigits, base);
-		return new RealFloat(add, exp, base, signum);
+		return new Operation.Arithmetic(true, exp, signum, base, thisDigits, thatDigits, false);
 	}
 
 	@SuppressWarnings("UnnecessaryThis")
 	public RealFloat minus(RealFloat that){
-		if(this.base != that.base){
+		return prepareSubtraction(that).compute();
+	}
+
+	public Operation prepareSubtraction(RealFloat that){
+		if(base != that.base){
 			throw new UnsupportedOperationException();
 		}
 
 		int signum = 1;
 		if(this.signum == 0){
-			return that.negative();
+			return new Operation.Literal(that.negative());
 		}
 		if(that.signum == 0){
-			return this;
+			return new Operation.Literal(this);
 		}
 		if(this.signum == 1 && that.signum == -1){
-			return this.plus(that.negative());
+			return prepareAddition(that.negative());
 		}
 		if(this.signum == -1 && that.signum == 1){
-			return this.negative().plus(that).negative();
+			Operation prep = negative().prepareAddition(that);
+			if(prep instanceof Operation.Arithmetic){
+				((Operation.Arithmetic) prep).setPostNegation(true);
+			}else if(prep instanceof Operation.Literal){
+				((Operation.Literal) prep).setResult(((Operation.Literal) prep).getResult().negative());
+			}
+			return prep;
 		}
 		if(this.signum == -1 && that.signum == -1){
 			signum = -1;
 		}
 
-		int cmp = RealFloatUtils.cmp(this.digits, this.exp, that.digits, that.exp);
+		int cmp = RealFloatUtils.cmp(digits, exp, that.digits, that.exp);
 		if(cmp < 0){
-			return that.minus(this).negative();
+			Operation prep = that.prepareSubtraction(this);
+			if(prep instanceof Operation.Arithmetic){
+				((Operation.Arithmetic) prep).setPostNegation(true);
+			}else if(prep instanceof Operation.Literal){
+				((Operation.Literal) prep).setResult(((Operation.Literal) prep).getResult().negative());
+			}
+			return prep;
 		}
 		if(cmp == 0){
-			return ZERO;
+			return new Operation.Literal(ZERO);
 		}
 
-		int[] thisDigits = this.digits;
+		int[] thisDigits = digits;
 		int[] thatDigits = that.digits;
 
 		int exp = this.exp;
@@ -272,8 +296,43 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 			thatDigits = RealFloatUtils.leftPadArray(thatDigits, that.exp - this.exp);
 		}
 
-		int[] subtract = RealFloatUtils.subtract(thisDigits, thatDigits, base);
-		return new RealFloat(subtract, exp, base, signum);
+		return new Operation.Arithmetic(false, exp, signum, base, thisDigits, thatDigits, false);
+	}
+
+	public interface Operation{
+		RealFloat compute();
+
+		@AllArgsConstructor
+		@Getter
+		@Setter
+		class Literal implements Operation{
+			RealFloat result;
+
+			@Override
+			public RealFloat compute(){
+				return result;
+			}
+		}
+
+		@AllArgsConstructor
+		@Getter
+		@Setter
+		class Arithmetic implements Operation{
+			boolean addition;
+			int exp;
+			int signum;
+			int base;
+			@lombok.NonNull int[] operand1;
+			@lombok.NonNull int[] operand2;
+			boolean postNegation;
+
+			@Override
+			public RealFloat compute(){
+				int[] digits = addition ? RealFloatUtils.add(operand1, operand2, base) : RealFloatUtils.subtract(operand1, operand2, base);
+				RealFloat f = new RealFloat(digits, exp, base, signum);
+				return postNegation ? f.negative() : f;
+			}
+		}
 	}
 
 	@SuppressWarnings("UnnecessaryThis")

@@ -21,4 +21,14 @@ public class ResLiteralQuestion implements Question{
 				.setLayoutParams(MP_MP)
 		));
 	}
+
+	@Override
+	public int getType(){
+		return Question.TYPE_PLACEHOLDER;
+	}
+
+	@Override
+	public int getFlags(){
+		return 0;
+	}
 }

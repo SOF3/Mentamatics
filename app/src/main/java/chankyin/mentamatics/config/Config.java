@@ -45,7 +45,7 @@ public class Config{
 						.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
 							@Override
 							public void onClick(DialogInterface dialog, int which){
-								Main.getInstance(fragment.getActivity()).resetStats();
+								Main.getInstance(fragment.getActivity()).getStatsDb().resetData(); // TODO resetData(since)
 								Toast.makeText(fragment.getActivity(), R.string.cfgmsg_special_resetStats_completion, Toast.LENGTH_SHORT).show();
 							}
 						})

@@ -25,10 +25,10 @@ public class LogUtils{
 		if(args.length > 0){
 			message = String.format(message, (Object[]) args);
 		}
-		if(IS_TEST){
-			System.err.println(message);
-		}else if(IS_ANDROID){
+		if(IS_ANDROID){
 			debugAndroid(message);
+		}else if(IS_TEST){
+			System.err.println(message);
 		}
 	}
 

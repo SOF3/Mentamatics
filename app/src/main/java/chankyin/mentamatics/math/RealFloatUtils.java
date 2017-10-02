@@ -77,7 +77,6 @@ public class RealFloatUtils{
 
 	@AscendingDigits
 	public static int[] subtract(@Immutable @AscendingDigits int[] left, @Immutable @AscendingDigits int[] right, @IntRange(from = 2) int base){
-		// FIXME
 		if(BuildConfig.DEBUG && cmp(left, right) <= 0){
 			throw new IllegalArgumentException();
 		}

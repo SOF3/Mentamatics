@@ -96,7 +96,7 @@ public class HomeActivity extends BaseActivity{
 			@Override
 			public void onAnswerCorrect(){
 				long endTime = System.nanoTime();
-				Main.getInstance(HomeActivity.this).incrementCorrect(endTime - currentProblem.getStartTime());
+				Main.getInstance(HomeActivity.this).getStatsDb().incrementCorrect(endTime - currentProblem.getStartTime(), currentProblem.getQuestion().getType(), currentProblem.getQuestion().getFlags());
 				--countQuits;
 				if(countQuits == 0){
 					setResult(RESULT_OK);

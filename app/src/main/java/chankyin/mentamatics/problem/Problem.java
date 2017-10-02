@@ -20,11 +20,11 @@ public class Problem{
 	public void express(View container){
 		setStartTime(System.nanoTime());
 
-		LinearLayout questionLayout = (LinearLayout) container.findViewById(R.id.main_question);
+		LinearLayout questionLayout = container.findViewById(R.id.main_question);
 		questionLayout.removeAllViews();
 		question.populateQuestionLayout(questionLayout);
 
-		LinearLayout answerLayout = (LinearLayout) container.findViewById(R.id.main_answer);
+		LinearLayout answerLayout = container.findViewById(R.id.main_answer);
 		answerLayout.removeAllViews();
 		answer.populateAnswerField(answerLayout, this);
 	}
@@ -35,7 +35,7 @@ public class Problem{
 		}
 	}
 
-	public static interface OnAnswerCorrectListener{
-		public void onAnswerCorrect();
+	public interface OnAnswerCorrectListener{
+		void onAnswerCorrect();
 	}
 }

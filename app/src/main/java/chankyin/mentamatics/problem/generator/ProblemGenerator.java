@@ -20,7 +20,7 @@ import java.util.Random;
 import static chankyin.mentamatics.config.ConfigConstants.*;
 
 public abstract class ProblemGenerator{
-	public final static boolean IS_GENERATOR_IMPLEMENTED = true; // FIXME
+	public final static boolean IS_GENERATOR_IMPLEMENTED = true;
 
 	private final static ProblemGenerator[] AVAILABLE_GENERATORS = {
 			AdditionProblemGenerator.getInstance(),
@@ -29,11 +29,10 @@ public abstract class ProblemGenerator{
 			DivisionProblemGenerator.getInstance()
 	};
 
-	@SuppressWarnings("PointlessBooleanExpression")
 	public static Problem generate(Config config, Random random){
 		if(!IS_GENERATOR_IMPLEMENTED){
 			double randomInt = random.nextInt(100) / 10d;
-			Question question = new LiteralQuestion(String.format("%s", randomInt));
+			Question question = new LiteralQuestion(String.format("%s", randomInt), Question.TYPE_PLACEHOLDER, 0);
 			Answer answer = new SingleAnswer(RealFloat.fromDouble(randomInt));
 			return new Problem(question, answer);
 		}
@@ -41,7 +40,7 @@ public abstract class ProblemGenerator{
 		if(config.getBoolean(KEY_GEN_ADDITION_ENABLED)){
 			generators.add(AdditionProblemGenerator.getInstance());
 		}
-		if(SubtractionProblemGenerator.IS_IMPLEMENTED && config.getBoolean(KEY_GEN_SUBTRACTION_ENABLED)){
+		if(config.getBoolean(KEY_GEN_SUBTRACTION_ENABLED)){
 			generators.add(SubtractionProblemGenerator.getInstance());
 		}
 		if(MultiplicationProblemGenerator.IS_IMPLEMENTED && config.getBoolean(KEY_GEN_MULTIPLICATION_ENABLED)){

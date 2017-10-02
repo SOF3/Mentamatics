@@ -21,7 +21,6 @@ import static chankyin.mentamatics.LogUtils.debug;
 import static chankyin.mentamatics.config.ConfigConstants.*;
 
 public class SubtractionProblemGenerator extends ProblemGenerator{
-	public static final boolean IS_IMPLEMENTED = true;
 	private static SubtractionProblemGenerator ourInstance = new SubtractionProblemGenerator();
 
 	public static SubtractionProblemGenerator getInstance(){
@@ -105,7 +104,7 @@ public class SubtractionProblemGenerator extends ProblemGenerator{
 			}
 		}
 
-		Question question = new TripletQuestion(upper, Operator.SUBTRACTION, lower);
+		Question question = new TripletQuestion(upper, Operator.SUBTRACTION, lower, Question.TYPE_SUBTRACT, 0); // TODO implement flags
 		Answer answer = new SingleAnswer(upper.minus(lower));
 		return new Problem(question, answer);
 	}

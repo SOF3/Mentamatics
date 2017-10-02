@@ -11,6 +11,8 @@ import static chankyin.mentamatics.Main.*;
 @RequiredArgsConstructor
 public class LiteralQuestion implements Question{
 	@Getter private final String literal;
+	@Getter private final int type;
+	@Getter private final int flags;
 
 	@Override
 	public void populateQuestionLayout(LinearLayout layout){

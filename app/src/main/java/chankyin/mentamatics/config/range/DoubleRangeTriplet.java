@@ -1,9 +1,9 @@
 package chankyin.mentamatics.config.range;
 
 public interface DoubleRangeTriplet{
-	public DupletRange getHardLimit();
+	DupletRange getHardLimit();
 
-	public OctetRange getSoftLimit();
+	OctetRange getSoftLimit();
 
-	public QuadretRange getValue();
+	QuadretRange getValue();
 }

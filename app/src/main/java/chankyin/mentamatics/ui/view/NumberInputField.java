@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
+
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.R;
 import chankyin.mentamatics.math.real.RealFloat;
@@ -20,13 +20,15 @@ import chankyin.mentamatics.ui.main.KeyboardFragment;
 import lombok.Getter;
 import lombok.Setter;
 
-public class NumberInputField extends EditText implements View.OnFocusChangeListener, View.OnTouchListener{
+public class NumberInputField extends android.support.v7.widget.AppCompatEditText implements View.OnFocusChangeListener, View.OnTouchListener{
 	public final static char CHAR_SPECIAL_BACK = '\b';
 	public final static char CHAR_SPECIAL_RESET = '\r';
 
 	private BaseActivity keyboardActivity;
 
-	@Getter @Setter private OnRealNumberValidListener onRealNumberValidListener;
+	@Getter
+	@Setter
+	private OnRealNumberValidListener onRealNumberValidListener;
 
 	public NumberInputField(Context context){
 		this(context, null);
@@ -151,7 +153,7 @@ public class NumberInputField extends EditText implements View.OnFocusChangeList
 		}
 	}
 
-	public static interface OnRealNumberValidListener{
-		public void onValid(@NonNull RealFloat number);
+	public interface OnRealNumberValidListener{
+		void onValid(@NonNull RealFloat number);
 	}
 }

@@ -94,8 +94,8 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 				RealFloat.Operation.Arithmetic arithmetic = (RealFloat.Operation.Arithmetic) prep;
 				if(arithmetic.isAddition()){
 					int[] foo = arithmetic.getOperand1(), bar = arithmetic.getOperand2();
-					for(int i = 0; i < foo.length; i++){
-						if(i < bar.length && foo[i] + bar[i] >= base){
+					for(int i = 0; i < foo.length && i < bar.length; i++){
+						if(foo[i] + bar[i] >= base){
 							flags |= FLAG_THIS_CARRIES;
 							break;
 						}

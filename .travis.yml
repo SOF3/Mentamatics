@@ -28,8 +28,9 @@ before_script:
   - export PATH=${ANDROID_NDK_HOME}:${PATH}
   - ./gradlew clean || true
 script:
-  - ./gradlew assembleDebug
-  - ./gradlew testDebug
+  - ./gradlew assembleDebug testDebug jacocoTestReport
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 after_failure:
   - zip -r reports.zip app/build
   - curl -T reports.zip https://transfer.sh/reports.zip

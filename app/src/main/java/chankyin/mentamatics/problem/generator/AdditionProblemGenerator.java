@@ -95,7 +95,7 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 				if(arithmetic.isAddition()){
 					int[] foo = arithmetic.getOperand1(), bar = arithmetic.getOperand2();
 					for(int i = 0; i < foo.length; i++){
-						if(foo[i] + bar[i] >= base){
+						if(i < bar.length && foo[i] + bar[i] >= base){
 							flags |= FLAG_THIS_CARRIES;
 							break;
 						}

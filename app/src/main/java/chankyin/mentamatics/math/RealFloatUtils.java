@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 
-import static chankyin.mentamatics.LogUtils.debug;
+import static chankyin.mentamatics.TestUtils.debug;
 
 public class RealFloatUtils{
 	@AscendingDigits

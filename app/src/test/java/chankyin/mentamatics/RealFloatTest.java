@@ -3,12 +3,18 @@ package chankyin.mentamatics;
 import chankyin.mentamatics.math.real.RealFloat;
 import org.junit.Test;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 public class RealFloatTest{
 	@Test
 	public void parseClean(){
 		assertEquals("parseClean", 12345, RealFloat.parseString("12345").doubleValue(), 1e-3);
+	}
+
+	@Test
+	public void parseVsLittleEndian(){
+		assertEqualsSymmetric("parseVsLittleEndian", RealFloat.parseString("12345"), RealFloat.littleEndianDigits(1, 0, new int[]{5, 4, 3, 2, 1}));
 	}
 
 	@Test
@@ -97,6 +103,16 @@ public class RealFloatTest{
 	}
 
 	@Test
+	public void additionZero(){
+		assertEqualsSymmetric("additionZero", RealFloat.parseString("-83").plus(RealFloat.ZERO), RealFloat.parseString("-83"));
+	}
+
+	@Test
+	public void additionZeroZero(){
+		assertEqualsSymmetric("additionZero", RealFloat.parseString("0").plus(RealFloat.ZERO), RealFloat.ZERO);
+	}
+
+	@Test
 	public void subtractionNoBorrow0(){
 		assertEqualsSymmetric("subtractionNoBorrow", RealFloat.parseString("1267").minus(RealFloat.parseString("247")), RealFloat.parseString("1020"));
 	}
@@ -109,6 +125,21 @@ public class RealFloatTest{
 	@Test
 	public void subtractionBorrow(){
 		assertEqualsSymmetric("subtractionBorrow", RealFloat.parseString("143").minus(RealFloat.parseString("67")), RealFloat.parseString("76"));
+	}
+
+	@Test
+	public void subtractionNegativeNegative(){
+		assertEqualsSymmetric("subtractionNegativeNegative", RealFloat.parseString("-143").minus(RealFloat.parseString("-67")), RealFloat.parseString("-76"));
+	}
+
+	@Test
+	public void xubtractionZero(){
+		assertEqualsSymmetric("additionZero", RealFloat.parseString("-83").minus(RealFloat.ZERO), RealFloat.parseString("-83"));
+	}
+
+	@Test
+	public void subtractionZeroZero(){
+		assertEqualsSymmetric("additionZero", RealFloat.parseString("0").minus(RealFloat.ZERO), RealFloat.ZERO);
 	}
 
 	private static void assertEqualsSymmetric(String message, Object foo, Object bar){

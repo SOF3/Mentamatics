@@ -2,12 +2,15 @@ package chankyin.mentamatics.math.foobar;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Size;
+import chankyin.mentamatics.TestUtils;
 
 import java.util.Random;
 
-import static chankyin.mentamatics.LogUtils.debug;
-import static chankyin.mentamatics.math.RealFloatUtils.*;
-import static java.lang.Math.*;
+import static chankyin.mentamatics.TestUtils.debug;
+import static chankyin.mentamatics.math.RealFloatUtils.offsetToPositionInRectangle;
+import static chankyin.mentamatics.math.RealFloatUtils.offsetToPositionInRightIsosTriangle;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class FooBarRobotics extends FooBarFactory{
 	@NonNull
@@ -19,19 +22,11 @@ public class FooBarRobotics extends FooBarFactory{
 		int a = min(p, max(0, s - q));
 		int b = min(q, max(0, s - p));
 
-//		if(p + q <= s){
-//			int k = random.nextInt((p + 1) * (q + 1));
-//			System.err.println("k = " + k);
-//			int[] xy = RealFloatUtils.offsetToPositionInRectangle(k, p + 1);
-//			return new FooBar(fooRange.min + xy[0], barRange.min + xy[1]);
-//		}
-
 		int sizeA = a * (q + 1);
 		int sizeB = (p - a + 1) * b; // min(p, s) is not necessary because b == 0 if s < p
 		int sizeC = (min(p, s) - a + 1) * (min(p, s) - a + 2) / 2; // min(p, s) is necessary to ensure only the innermost triangle is evaluated
 
 		int k = random.nextInt(sizeA + sizeB + sizeC);
-		int x, y;
 		int[] ij;
 		if(k < sizeA){
 			ij = offsetToPositionInRectangle(k, q + 1);
@@ -83,9 +78,7 @@ public class FooBarRobotics extends FooBarFactory{
 			ij = offsetToPositionInRectangle(rand, g - h + 1);
 		}else{
 			rand -= sizeB;
-			if(rand >= sizeC){
-				throw new AssertionError();
-			}
+			TestUtils.validate(rand < sizeC, new AssertionError());
 			ij = offsetToPositionInRightIsosTriangle(rand);
 			ij[0] = k - ij[0];
 			ij[1] = g - ij[1];

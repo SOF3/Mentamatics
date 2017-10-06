@@ -20,7 +20,7 @@ import chankyin.mentamatics.problem.question.TripletQuestion;
 
 import java.util.Random;
 
-import static chankyin.mentamatics.LogUtils.debug;
+import static chankyin.mentamatics.TestUtils.debug;
 import static chankyin.mentamatics.config.ConfigConstants.*;
 
 public class AdditionProblemGenerator extends ProblemGenerator{
@@ -142,8 +142,8 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 		}
 
 		return new RealFloat[]{
-				RealFloat.smallEndianDigits(base, 1, 0, swap ? lowerDigits : upperDigits),
-				RealFloat.smallEndianDigits(base, 1, 0, swap ? upperDigits : lowerDigits)
+				RealFloat.littleEndianDigits(base, 1, 0, swap ? lowerDigits : upperDigits),
+				RealFloat.littleEndianDigits(base, 1, 0, swap ? upperDigits : lowerDigits)
 		};
 	}
 }

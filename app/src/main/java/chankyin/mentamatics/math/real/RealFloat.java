@@ -2,7 +2,6 @@ package chankyin.mentamatics.math.real;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.Spanned;
 import chankyin.mentamatics.BuildConfig;
 import chankyin.mentamatics.Main;
@@ -21,7 +20,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static chankyin.mentamatics.LogUtils.debug;
+import static chankyin.mentamatics.TestUtils.debug;
+import static chankyin.mentamatics.TestUtils.validate;
 import static chankyin.mentamatics.math.RealFloatUtils.flipIntArray;
 
 /**
@@ -78,9 +78,7 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 					break;
 				}
 			}
-			if(end <= 0){
-				throw new AssertionError();
-			}
+			validate(end > 0, new AssertionError());
 
 			exp += digits.length - end;
 		}else{
@@ -99,11 +97,11 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 		return new RealFloat(newDigits, exp, base, signum);
 	}
 
-	public static RealFloat smallEndianDigits(int signum, int exp, @AscendingDigits int[] digits){
-		return smallEndianDigits(DEFAULT_BASE, signum, exp, digits);
+	public static RealFloat littleEndianDigits(int signum, int exp, @AscendingDigits int[] digits){
+		return littleEndianDigits(DEFAULT_BASE, signum, exp, digits);
 	}
 
-	public static RealFloat smallEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @Immutable @AscendingDigits int[] digits){
+	public static RealFloat littleEndianDigits(@IntRange(from = 2) int base, int signum, int exp, @Immutable @AscendingDigits int[] digits){
 		digits = digits.clone();
 		flipIntArray(digits);
 		return bigEndianDigits(base, signum, exp, true, digits);
@@ -112,9 +110,7 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 	public static RealFloat parseString(String string) throws NumberFormatException{
 		debug("Parsing: " + string);
 		Matcher matcher = parseFormat.matcher(string);
-		if(!matcher.matches()){
-			throw new NumberFormatException("Does not match format");
-		}
+		validate(matcher.matches(), new NumberFormatException("Does not match format"));
 		String sigStr = matcher.group(1);
 		String intPartStr = matcher.group(2);
 		String decPartStr = matcher.group(4);
@@ -141,9 +137,7 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 		}
 
 		int base = basePartStr != null ? Integer.parseInt(basePartStr) : DEFAULT_BASE;
-		if(base < 2){
-			throw new NumberFormatException("Illegal base");
-		}
+		validate(base > 1, new NumberFormatException("Illegal base"));
 
 		int[] joinedDigits = RealFloatUtils.joinArrays(intPart, decPart);
 		exp -= decPart.length;
@@ -203,9 +197,7 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 
 	@SuppressWarnings("UnnecessaryThis")
 	public Operation prepareAddition(RealFloat that){
-		if(this.base != that.base){
-			throw new UnsupportedOperationException();
-		}
+		validate(this.base == that.base, new UnsupportedOperationException());
 
 		int signum = 1;
 		if(this.signum == 0){

@@ -28,7 +28,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.*;
 import static android.widget.RelativeLayout.*;
-import static chankyin.mentamatics.LogUtils.debug;
+import static chankyin.mentamatics.TestUtils.debug;
 
 public class HomeActivity extends BaseActivity{
 	public final static String INTENT_EXTRA_PROBLEM_COUNT_QUITS = "chankyin.mentamatics.HOME_PROBLEM_COUNT_QUITS";

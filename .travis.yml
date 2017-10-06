@@ -17,10 +17,10 @@ android:
   - sys-img-${ANDROID_ABI}-${ANDROID_GOOGLE_API}
 install:
   - chmod +x gradlew
-#  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-#  - emulator -avd test -no-skin -no-audio -no-window &
-#  - android-wait-for-emulator
-#  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
 before_script:
   - export NDK_VERSION=r10e
   - curl -L http://dl.google.com/android/ndk/android-ndk-${NDK_VERSION}-linux-x86_64.bin -O
@@ -31,12 +31,7 @@ before_script:
   - export PATH=${ANDROID_NDK_HOME}:${PATH}
   - ./gradlew clean || true
 script:
-  - ./gradlew assembleDebug testDebug jacocoTestReport
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
-  - ./gradlew connectedCheck
+  - ./gradlew assembleDebug testDebug jacocoTestReport connectedCheck
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 after_failure:

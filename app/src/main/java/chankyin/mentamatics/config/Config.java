@@ -13,7 +13,7 @@ import chankyin.mentamatics.Main;
 import chankyin.mentamatics.R;
 import chankyin.mentamatics.config.range.QuadretRange;
 
-import static chankyin.mentamatics.LogUtils.debug;
+import static chankyin.mentamatics.TestUtils.debug;
 
 public class Config{
 	private final ConfigEntries entries;

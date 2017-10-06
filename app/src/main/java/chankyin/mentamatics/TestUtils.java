@@ -3,7 +3,7 @@ package chankyin.mentamatics;
 import android.util.Log;
 import org.apache.commons.lang3.ArrayUtils;
 
-public class LogUtils{
+public class TestUtils{
 	public static boolean IS_TEST = classExists("junit.framework.Test");
 	public static boolean IS_ANDROID = classExists("android.app.Application");
 
@@ -35,6 +35,17 @@ public class LogUtils{
 	public static void debugAndroid(String message){
 		if(BuildConfig.DEBUG){
 			Log.d(Main.TAG, message);
+		}
+	}
+
+	public static void validate(boolean condition, RuntimeException error){
+		if(!condition){
+			throw error;
+		}
+	}
+	public static void validate(boolean condition, Error error){
+		if(!condition){
+			throw error;
 		}
 	}
 }

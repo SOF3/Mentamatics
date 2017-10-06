@@ -16,7 +16,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.text.DecimalFormat;
 
-import static chankyin.mentamatics.LogUtils.debug;
+import static chankyin.mentamatics.TestUtils.debug;
 
 public class StatsFragment extends Fragment implements Runnable{
 	private TextView overallAnswersView;

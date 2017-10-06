@@ -17,7 +17,7 @@ import chankyin.mentamatics.problem.question.TripletQuestion;
 
 import java.util.Random;
 
-import static chankyin.mentamatics.LogUtils.debug;
+import static chankyin.mentamatics.TestUtils.debug;
 import static chankyin.mentamatics.config.ConfigConstants.*;
 
 public class SubtractionProblemGenerator extends ProblemGenerator{

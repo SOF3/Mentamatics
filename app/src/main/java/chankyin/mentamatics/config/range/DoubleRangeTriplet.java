@@ -5,5 +5,5 @@ public interface DoubleRangeTriplet{
 
 	OctetRange getSoftLimit();
 
-	QuadretRange getValue();
+	QuartetRange getValue();
 }

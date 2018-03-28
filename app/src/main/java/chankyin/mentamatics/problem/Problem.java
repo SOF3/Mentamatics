@@ -3,6 +3,7 @@ package chankyin.mentamatics.problem;
 import android.view.View;
 import android.widget.LinearLayout;
 import chankyin.mentamatics.R;
+import chankyin.mentamatics.problem.answer.Answer;
 import chankyin.mentamatics.problem.question.Question;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,10 @@ public class Problem{
 
 	public interface OnAnswerCorrectListener{
 		void onAnswerCorrect();
+	}
+
+	@Override
+	public String toString(){
+		return "Question = {" + question.toString() + "} Answer = {" + answer.toString() + "}";
 	}
 }

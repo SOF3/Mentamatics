@@ -2,16 +2,16 @@ package chankyin.mentamatics.problem.generator;
 
 import android.support.annotation.NonNull;
 import chankyin.mentamatics.config.Config;
-import chankyin.mentamatics.config.range.QuadretRange;
+import chankyin.mentamatics.config.range.QuartetRange;
 import chankyin.mentamatics.math.foobar.FooBar;
 import chankyin.mentamatics.math.foobar.FooBarFactory;
 import chankyin.mentamatics.math.foobar.FooBarRange;
 import chankyin.mentamatics.math.real.RealFloat;
 import chankyin.mentamatics.math.real.annotation.DescendingDigits;
-import chankyin.mentamatics.problem.Answer;
+import chankyin.mentamatics.problem.answer.Answer;
 import chankyin.mentamatics.problem.Operator;
 import chankyin.mentamatics.problem.Problem;
-import chankyin.mentamatics.problem.SingleAnswer;
+import chankyin.mentamatics.problem.answer.SingleAnswer;
 import chankyin.mentamatics.problem.question.Question;
 import chankyin.mentamatics.problem.question.TripletQuestion;
 
@@ -33,7 +33,7 @@ public class SubtractionProblemGenerator extends ProblemGenerator{
 	@NonNull
 	@Override
 	protected Problem generateProblem(Config config, Random random){
-		QuadretRange range = config.getIntDoubleRange(KEY_GEN_SUBTRACTION_DIGITS);
+		QuartetRange range = config.getIntDoubleRange(KEY_GEN_SUBTRACTION_DIGITS);
 		FooBarRange lowerDigitsRange = new FooBarRange(range.lowerMin, range.lowerMax);
 		FooBarRange upperDigitsRange = new FooBarRange(range.upperMin, range.upperMax);
 		boolean allowBorrow = config.getBoolean(KEY_GEN_SUBTRACTION_BORROW_ALLOWED);

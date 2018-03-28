@@ -16,7 +16,7 @@ import static chankyin.mentamatics.config.ConfigEntryType.integerDoubleRange;
 public class IntegerDoubleRangePreference extends MDialogPreference implements DoubleRangeTriplet{
 	@Getter private DupletRange hardLimit;
 	@Deprecated @Getter private OctetRange softLimit;
-	@Getter private QuadretRange value;
+	@Getter private QuartetRange value;
 
 	@Getter private DoubleRangeConstraint constraint;
 
@@ -65,7 +65,7 @@ public class IntegerDoubleRangePreference extends MDialogPreference implements D
 		}
 	}
 
-	public void setValue(QuadretRange value){
+	public void setValue(QuartetRange value){
 		this.value = value;
 		persistString(value.toString());
 		if(super.getSummary() != null){
@@ -96,7 +96,7 @@ public class IntegerDoubleRangePreference extends MDialogPreference implements D
 		super.onDialogClosed(positiveResult);
 
 		if(positiveResult){
-			QuadretRange newValue = new QuadretRange(new int[]{
+			QuartetRange newValue = new QuartetRange(new int[]{
 					upperBar.getSelectedMinValue(),
 					upperBar.getSelectedMaxValue(),
 					lowerBar.getSelectedMinValue(),
@@ -115,7 +115,7 @@ public class IntegerDoubleRangePreference extends MDialogPreference implements D
 
 	@Override
 	protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue){
-		setValue(restorePersistedValue ? (QuadretRange) integerDoubleRange.fromString(getPersistedString("")) : (QuadretRange) defaultValue);
+		setValue(restorePersistedValue ? (QuartetRange) integerDoubleRange.fromString(getPersistedString("")) : (QuartetRange) defaultValue);
 	}
 
 	@RequiredArgsConstructor

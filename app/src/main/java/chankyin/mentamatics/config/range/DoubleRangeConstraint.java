@@ -19,7 +19,7 @@ public enum DoubleRangeConstraint{
 	UPPER_GE_LOWER(">="){
 		@Override
 		public void updateValueForValue(DoubleRangeTriplet triplet, boolean upperModified){
-			QuadretRange value = triplet.getValue();
+			QuartetRange value = triplet.getValue();
 			if(value.upperMax < value.lowerMax){
 				if(upperModified){
 					value.lowerMax = value.upperMax;

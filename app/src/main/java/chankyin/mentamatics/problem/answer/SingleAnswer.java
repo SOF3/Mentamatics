@@ -1,4 +1,4 @@
-package chankyin.mentamatics.problem;
+package chankyin.mentamatics.problem.answer;
 
 import android.graphics.Typeface;
 import android.os.Build;
@@ -9,13 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.math.real.RealFloat;
+import chankyin.mentamatics.problem.Problem;
 import chankyin.mentamatics.ui.view.NumberInputField;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @RequiredArgsConstructor
-@ToString
 public class SingleAnswer implements Answer{
 	@Getter @NonNull private final RealFloat solution;
 
@@ -32,6 +31,21 @@ public class SingleAnswer implements Answer{
 		}
 		answerField.addView(field);
 		field.requestFocus();
+	}
+
+	@Override
+	public void handleTab(){
+
+	}
+
+	@Override
+	public boolean usesTab(){
+		return false;
+	}
+
+	@Override
+	public String toString(){
+		return "single solution: " + solution.toString();
 	}
 
 	@RequiredArgsConstructor

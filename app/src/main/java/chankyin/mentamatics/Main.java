@@ -133,10 +133,6 @@ public class Main extends Application{
 		return new Config(entries, this);
 	}
 
-	public static int getStringIdentifier(String name){
-		return getStringIdentifier(getInstance(), name);
-	}
-
 	public static int getStringIdentifier(Context context, String name){
 		int identifier = context.getResources().getIdentifier(name, "string", context.getPackageName());
 		if(identifier == 0){

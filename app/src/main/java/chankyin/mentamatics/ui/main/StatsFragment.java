@@ -12,11 +12,8 @@ import android.widget.TextView;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.R;
 import chankyin.mentamatics.StatsDb;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.text.DecimalFormat;
-
-import static chankyin.mentamatics.TestUtils.debug;
 
 public class StatsFragment extends Fragment implements Runnable{
 	private TextView overallAnswersView;
@@ -71,7 +68,6 @@ public class StatsFragment extends Fragment implements Runnable{
 		StatsDb statsDb = main.getStatsDb();
 		StatsDb.StatSet overall = statsDb.getStats();
 		StatsDb.StatSet last50 = statsDb.getLastStats(50);
-		debug(ToStringBuilder.reflectionToString(overall));
 		double overallSumDuration = overall.getSum() * 1e-9;
 		int overallAnswers = overall.getCount();
 		double recentSumDuration = overall.getSum() * 1e-9;

@@ -7,7 +7,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import chankyin.mentamatics.config.range.DoubleRangeConstraint;
 import chankyin.mentamatics.config.range.DupletRange;
-import chankyin.mentamatics.config.range.QuadretRange;
+import chankyin.mentamatics.config.range.QuartetRange;
 import chankyin.mentamatics.config.ui.IntegerDoubleRangePreference;
 import chankyin.mentamatics.config.ui.IntegerPreference;
 import chankyin.mentamatics.config.ui.IntegerRangePreference;
@@ -122,7 +122,7 @@ public enum ConfigEntryType{
 
 		@Override
 		public boolean validate(Object value){
-			return value instanceof QuadretRange;
+			return value instanceof QuartetRange;
 		}
 
 		@Override
@@ -131,7 +131,7 @@ public enum ConfigEntryType{
 			if(!matcher.matches()){
 				throw new NumberFormatException();
 			}
-			return new QuadretRange(new int[]{
+			return new QuartetRange(new int[]{
 					Integer.parseInt(matcher.group(1)),
 					Integer.parseInt(matcher.group(2)),
 					Integer.parseInt(matcher.group(3)),
@@ -141,7 +141,7 @@ public enum ConfigEntryType{
 
 		@Override
 		public String toString(Object value){
-			QuadretRange array = (QuadretRange) value;
+			QuartetRange array = (QuartetRange) value;
 			return array.toString();
 		}
 
@@ -160,9 +160,9 @@ public enum ConfigEntryType{
 			}
 			IntegerDoubleRangePreference pref = new IntegerDoubleRangePreference(fragment.getActivity(), hardLimit, constraint);
 			if(prefs.contains(prefKey)){
-				pref.setValue((QuadretRange) fromString(prefs.getString(prefKey, null)));
+				pref.setValue((QuartetRange) fromString(prefs.getString(prefKey, null)));
 			}else{
-				pref.setValue((QuadretRange) defaultValue);
+				pref.setValue((QuartetRange) defaultValue);
 			}
 			return pref;
 		}

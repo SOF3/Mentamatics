@@ -12,4 +12,5 @@
 	<dimen name="buttonHeight">50dp</dimen>
 	<dimen name="keyboardWidth">300dp</dimen> <!-- buttonWidth * 4 -->
 	<dimen name="keyboardHeight">200dp</dimen> <!-- buttonHeight * 4 -->
+    <dimen name="coefWidth">60sp</dimen>
 </resources>

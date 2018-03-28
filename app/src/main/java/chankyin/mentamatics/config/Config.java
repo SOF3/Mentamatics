@@ -11,9 +11,7 @@ import android.preference.PreferenceScreen;
 import android.widget.Toast;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.R;
-import chankyin.mentamatics.config.range.QuadretRange;
-
-import static chankyin.mentamatics.TestUtils.debug;
+import chankyin.mentamatics.config.range.QuartetRange;
 
 public class Config{
 	private final ConfigEntries entries;
@@ -93,17 +91,16 @@ public class Config{
 		}
 	}
 
-	public QuadretRange getIntDoubleRange(String key){
+	public QuartetRange getIntDoubleRange(String key){
 		ConfigEntry entry = entries.getEntry(key);
 		if(entry.type != ConfigEntryType.integerDoubleRange){
 			throw new ClassCastException("Expected integerDoubleRange for " + key + ", got " + entry.type.name());
 		}
 		String rangeString = prefs.getString("Config:" + key, null);
-		debug("getIntDoubleRange: rangeString = %s", rangeString);
 		if(rangeString == null){
-			return (QuadretRange) entry.defaultValue;
+			return (QuartetRange) entry.defaultValue;
 		}else{
-			return (QuadretRange) ConfigEntryType.integerDoubleRange.fromString(rangeString);
+			return (QuartetRange) ConfigEntryType.integerDoubleRange.fromString(rangeString);
 		}
 	}
 }

@@ -64,6 +64,11 @@
 				<EntryType>bool</EntryType>
 				<DefaultValue>false</DefaultValue>
 			</ConfigEntry>
+			<ConfigEntry id="digits" name="cfg_gen_multiplication_digits">
+				<EntrySummary>cfg_gen_multiplication_digits_summary</EntrySummary>
+				<EntryType>integerDoubleRange?1,10,1,10</EntryType>
+				<DefaultValue>1,2;1,2</DefaultValue>
+			</ConfigEntry>
 		</ConfigGroup>
 		<ConfigGroup id="division" name="cfg_gen_division">
 			<ConfigEntry id="enabled" name="cfg_gen_division_enabled" groupToggle="true">

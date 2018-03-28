@@ -77,8 +77,8 @@ public class RealFloatUtils{
 
 	@AscendingDigits
 	public static int[] subtract(@Immutable @AscendingDigits int[] left, @Immutable @AscendingDigits int[] right, @IntRange(from = 2) int base){
-		if(BuildConfig.DEBUG && cmp(left, right) <= 0){
-			throw new IllegalArgumentException();
+		if(BuildConfig.DEBUG && cmpAsc(left, right) <= 0){
+			throw new IllegalArgumentException("Does not support negative answers");
 		}
 
 		int[] subtract = left.clone();
@@ -137,30 +137,31 @@ public class RealFloatUtils{
 		return true;
 	}
 
-	public static int cmp(@Immutable @AscendingDigits int[] foo0, int fooExp, @Immutable @AscendingDigits int[] bar0, int barExp){
-		@DescendingDigits int[] foo = foo0.clone();
-		flipIntArray(foo);
-		@DescendingDigits int[] bar = bar0.clone();
-		flipIntArray(bar);
-
+	public static int cmpAsc(@Immutable @AscendingDigits int[] foo, int fooExp, @Immutable @AscendingDigits int[] bar, int barExp){
 		if(fooExp > barExp){
-			foo = Arrays.copyOf(foo, foo.length + fooExp - barExp);
+			// insert (fooExp - barExp) leading (ascending) zeroes for foo
+			int[] newFoo = new int[foo.length + fooExp - barExp];
+			System.arraycopy(foo, 0, newFoo, fooExp - barExp, foo.length);
+			foo = newFoo;
 		}else if(fooExp < barExp){
-			bar = Arrays.copyOf(bar, bar.length + barExp - fooExp);
+			// insert (barExp - fooExp) leading (ascending) zeroes for bar
+			int[] newBar = new int[bar.length + barExp - fooExp];
+			System.arraycopy(bar, 0, newBar, barExp - fooExp, bar.length);
+			bar = newBar;
 		}
 		// now both are of the same exponent
 
-		return cmp(foo, bar);
+		return cmpAsc(foo, bar);
 	}
 
-	private static int cmp(@Immutable @DescendingDigits int[] foo, @Immutable @DescendingDigits int[] bar){
+	private static int cmpAsc(@Immutable @AscendingDigits int[] foo, @Immutable @AscendingDigits int[] bar){
 		if(foo.length > bar.length){
 			return 1;
 		}
 		if(foo.length < bar.length){
 			return -1;
 		}
-		for(int i = 0; i < foo.length; i++){
+		for(int i = foo.length - 1; i >= 0; i--){
 			if(foo[i] > bar[i]){
 				return 1;
 			}
@@ -237,16 +238,20 @@ public class RealFloatUtils{
 	}
 
 	/**
-	 * @param random random object to create pseudorandomness with
-	 * @param length length of array to generate
-	 * @param min    inclusive minimum value in array
-	 * @param max    exclusive maximum value in array
+	 * Generates an array where each digit is in the half-open range {@code [min, max)}.
+	 *
+	 * @param random    random object to create pseudorandomness with
+	 * @param length    length of array to generate
+	 * @param min       inclusive minimum value in array
+	 * @param max       exclusive maximum value in array
+	 * @param firstExcl if true, the last digit will exclude {@code min}.
 	 * @return an array of length {@code length} filled with integers where {@code min <= i < max}
 	 */
-	public static int[] randomRangeArray(Random random, int length, int min, int max){
+	@DescendingDigits
+	public static int[] randomRangeArray(Random random, int length, int min, int max, boolean firstExcl){
 		int[] array = new int[length];
 		for(int i = 0; i < length; i++){
-			array[i] = random.nextInt(max - min) + min;
+			array[i] = max - 1 - random.nextInt(max - (min + (firstExcl && i == 0 ? 1 : 0)));
 		}
 		return array;
 	}

@@ -42,6 +42,7 @@ public class TripletQuestion implements Question{
 //			table.addView(row1);
 //			layout.addView(table);
 			LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			assert inflater != null;
 			View view = inflater.inflate(R.layout.triplet_question_vert, layout);
 			CharSequence aText = a.toUserStringHtml();
 			CharSequence bText = b.toUserStringHtml();
@@ -56,6 +57,7 @@ public class TripletQuestion implements Question{
 			((TextView) view.findViewById(R.id.triplet_operator)).setText(op.toString());
 		}else{
 			LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			assert inflater != null;
 			View view = inflater.inflate(R.layout.triplet_question_plain, layout);
 			TextView textView = view.findViewById(R.id.triplet_expr);
 			textView.setText(Main.fromHtml(
@@ -63,5 +65,10 @@ public class TripletQuestion implements Question{
 							Html.escapeHtml(op.toString()) + "&nbsp;" +
 							b.toUserString(true)));
 		}
+	}
+
+	@Override
+	public String toString(){
+		return a.toString() + " {" + op.name() + "} " + b.toString() + " (type = " + type + ")";
 	}
 }

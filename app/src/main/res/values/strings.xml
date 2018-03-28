@@ -67,6 +67,8 @@
 	<string name="cfg_gen_multiplication_enabled">Generate multiplication problems</string>
 	<string name="cfg_gen_multiplication_enabled_summary_positive">Multiplication problems will be generated.</string>
 	<string name="cfg_gen_multiplication_enabled_summary">Multiplication problems will not be generated.</string>
+	<string name="cfg_gen_multiplication_digits">Number of digits</string>
+	<string name="cfg_gen_multiplication_digits_summary" formatted="false">%d-%d digits &#xd7; %d-%d digits</string>
 	<string name="cfg_gen_division">Division</string>
 	<string name="cfg_gen_division_enabled">Generate division problems</string>
 	<string name="cfg_gen_division_enabled_summary_positive">Division problems will be generated.</string>
@@ -93,4 +95,6 @@
 	<string name="cfgmsg_special_resetStats_title">Reset all statistics?</string>
 	<string name="main_stats_header_recent">Recent</string>
 	<string name="main_stats_header_overall">Overall</string>
+	<string name="main_input_tab">Next field</string>
+    <string name="plus">+</string>
 </resources>

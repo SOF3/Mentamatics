@@ -18,6 +18,7 @@ public final class ConfigConstants{
 	public final static String KEY_GEN_SUBTRACTION_DIGITS = "gen.subtraction.digits";
 
 	public final static String KEY_GEN_MULTIPLICATION_ENABLED = "gen.multiplication.enabled";
+	public final static String KEY_GEN_MULTIPLICATION_DIGITS = "gen.multiplication.digits";
 
 	public final static String KEY_GEN_DIVISION_ENABLED = "gen.division.enabled";
 

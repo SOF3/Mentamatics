@@ -3,13 +3,13 @@ package chankyin.mentamatics.config.range;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
-public class QuadretRange{
+public class QuartetRange{
 	public int upperMin;
 	public int upperMax;
 	public int lowerMin;
 	public int lowerMax;
 
-	public QuadretRange(int[] array){
+	public QuartetRange(int[] array){
 		upperMin = array[0];
 		upperMax = array[1];
 		lowerMin = array[2];

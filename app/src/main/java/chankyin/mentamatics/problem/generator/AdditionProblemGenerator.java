@@ -6,7 +6,7 @@ import chankyin.mentamatics.BuildConfig;
 import chankyin.mentamatics.Main;
 import chankyin.mentamatics.StatsDb;
 import chankyin.mentamatics.config.Config;
-import chankyin.mentamatics.config.range.QuadretRange;
+import chankyin.mentamatics.config.range.QuartetRange;
 import chankyin.mentamatics.math.RealFloatUtils;
 import chankyin.mentamatics.math.foobar.FooBar;
 import chankyin.mentamatics.math.foobar.FooBarFactory;
@@ -14,14 +14,15 @@ import chankyin.mentamatics.math.foobar.FooBarRange;
 import chankyin.mentamatics.math.real.RealFloat;
 import chankyin.mentamatics.problem.Operator;
 import chankyin.mentamatics.problem.Problem;
-import chankyin.mentamatics.problem.SingleAnswer;
+import chankyin.mentamatics.problem.answer.SingleAnswer;
 import chankyin.mentamatics.problem.question.Question;
 import chankyin.mentamatics.problem.question.TripletQuestion;
 
 import java.util.Random;
 
 import static chankyin.mentamatics.TestUtils.debug;
-import static chankyin.mentamatics.config.ConfigConstants.*;
+import static chankyin.mentamatics.config.ConfigConstants.KEY_GEN_ADDITION_CARRY_ALLOWED;
+import static chankyin.mentamatics.config.ConfigConstants.KEY_GEN_ADDITION_DIGITS;
 
 public class AdditionProblemGenerator extends ProblemGenerator{
 	public final static int FLAG_PREF_UPPER_DIGIT_MAX_MASK
@@ -57,10 +58,10 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 	@NonNull
 	@Override
 	protected Problem generateProblem(Config config, Random random){
-		QuadretRange digits = config.getIntDoubleRange(KEY_GEN_ADDITION_DIGITS);
+		QuartetRange digits = config.getIntDoubleRange(KEY_GEN_ADDITION_DIGITS);
 		int upperDigitCount = Main.randomRange(random, digits.upperMin, digits.upperMax);
 		int lowerDigitCount = Main.randomRange(random, digits.lowerMin, digits.lowerMax);
-		debug("generateProblem: digits = %s, upperDigitCount = %d, lowerDigitCount = %d", digits, upperDigitCount, lowerDigitCount);
+		debug("Addition.generateProblem: digits = %s, upperDigitCount = %d, lowerDigitCount = %d", digits, upperDigitCount, lowerDigitCount);
 		int base = RealFloat.DEFAULT_BASE;
 
 		boolean configCarries = config.getBoolean(KEY_GEN_ADDITION_CARRY_ALLOWED);
@@ -112,8 +113,8 @@ public class AdditionProblemGenerator extends ProblemGenerator{
 	@Size(2)
 	private RealFloat[] generateCarry(Random random, int base, int upperDigitCount, int lowerDigitCount){
 		return new RealFloat[]{
-				RealFloat.bigEndianDigits(base, 1, 0, RealFloatUtils.randomRangeArray(random, upperDigitCount, 0, base)),
-				RealFloat.bigEndianDigits(base, 1, 0, RealFloatUtils.randomRangeArray(random, lowerDigitCount, 0, base))
+				RealFloat.bigEndianDigits(base, 1, 0, RealFloatUtils.randomRangeArray(random, upperDigitCount, 0, base, true)),
+				RealFloat.bigEndianDigits(base, 1, 0, RealFloatUtils.randomRangeArray(random, lowerDigitCount, 0, base, true))
 		};
 	}
 

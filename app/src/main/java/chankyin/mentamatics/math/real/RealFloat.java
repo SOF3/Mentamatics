@@ -9,6 +9,7 @@ import chankyin.mentamatics.math.RealFloatUtils;
 import chankyin.mentamatics.math.real.annotation.AscendingDigits;
 import chankyin.mentamatics.math.real.annotation.DescendingDigits;
 import chankyin.mentamatics.math.real.annotation.Immutable;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,8 +45,6 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 		this.exp = exp;
 		this.base = base;
 		this.signum = RealFloatUtils.isZero(digits) ? 0 : signum;
-
-		debug("Constructed RealFloat: " + toString());
 	}
 
 	public static RealFloat bigEndianDigits(int signum, int exp, @DescendingDigits int[] digits){
@@ -232,7 +231,9 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 
 	@SuppressWarnings("UnnecessaryThis")
 	public RealFloat minus(RealFloat that){
-		return prepareSubtraction(that).compute();
+		Operation operation = prepareSubtraction(that);
+		debug(ToStringBuilder.reflectionToString(operation));
+		return operation.compute();
 	}
 
 	public Operation prepareSubtraction(RealFloat that){
@@ -263,7 +264,7 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 			signum = -1;
 		}
 
-		int cmp = RealFloatUtils.cmp(digits, exp, that.digits, that.exp);
+		int cmp = RealFloatUtils.cmpAsc(digits, exp, that.digits, that.exp);
 		if(cmp < 0){
 			Operation prep = that.prepareSubtraction(this);
 			if(prep instanceof Operation.Arithmetic){
@@ -449,7 +450,7 @@ public class RealFloat extends Number implements Comparable<RealFloat>, Cloneabl
 			throw new UnsupportedOperationException();
 		}
 
-		int ret = RealFloatUtils.cmp(this.digits, this.exp, that.digits, that.exp) * (ignoreSignum ? 1 : signum);
+		int ret = RealFloatUtils.cmpAsc(this.digits, this.exp, that.digits, that.exp) * (ignoreSignum ? 1 : signum);
 		if(ret == 0 && BuildConfig.DEBUG && !this.equals(that)){
 			throw new AssertionError();
 		}

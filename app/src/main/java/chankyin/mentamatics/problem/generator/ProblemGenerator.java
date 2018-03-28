@@ -7,9 +7,9 @@ import chankyin.mentamatics.R;
 import chankyin.mentamatics.config.Config;
 import chankyin.mentamatics.math.real.RealFloat;
 import chankyin.mentamatics.math.real.annotation.DescendingDigits;
-import chankyin.mentamatics.problem.Answer;
 import chankyin.mentamatics.problem.Problem;
-import chankyin.mentamatics.problem.SingleAnswer;
+import chankyin.mentamatics.problem.answer.Answer;
+import chankyin.mentamatics.problem.answer.SingleAnswer;
 import chankyin.mentamatics.problem.question.LiteralQuestion;
 import chankyin.mentamatics.problem.question.Question;
 
@@ -17,7 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static chankyin.mentamatics.config.ConfigConstants.*;
+import static chankyin.mentamatics.config.ConfigConstants.KEY_GEN_ADDITION_ENABLED;
+import static chankyin.mentamatics.config.ConfigConstants.KEY_GEN_DIVISION_ENABLED;
+import static chankyin.mentamatics.config.ConfigConstants.KEY_GEN_MULTIPLICATION_ENABLED;
+import static chankyin.mentamatics.config.ConfigConstants.KEY_GEN_SUBTRACTION_ENABLED;
 
 public abstract class ProblemGenerator{
 	public final static boolean IS_GENERATOR_IMPLEMENTED = true;

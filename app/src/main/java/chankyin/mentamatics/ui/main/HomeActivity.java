@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,16 +27,24 @@ import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static android.view.ViewGroup.LayoutParams.*;
-import static android.widget.RelativeLayout.*;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static android.widget.RelativeLayout.ALIGN_PARENT_END;
+import static android.widget.RelativeLayout.ALIGN_PARENT_LEFT;
+import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
+import static android.widget.RelativeLayout.ALIGN_PARENT_START;
+import static android.widget.RelativeLayout.END_OF;
+import static android.widget.RelativeLayout.LEFT_OF;
+import static android.widget.RelativeLayout.RIGHT_OF;
+import static android.widget.RelativeLayout.START_OF;
 import static chankyin.mentamatics.TestUtils.debug;
 
 public class HomeActivity extends BaseActivity{
 	public final static String INTENT_EXTRA_PROBLEM_COUNT_QUITS = "chankyin.mentamatics.HOME_PROBLEM_COUNT_QUITS";
 
 	public final static String PROBLEM_LAST_RANDOM_STATE = "Problem:lastRandomState";
-	public final static String PROBLEM_TOTAL_ANSWERS = "Problem:totalAnswers";
-	public final static String PROBLEM_TOTAL_TIME = "Problem:totalTime";
+
+	public final static String GUI_GRAVITY_RIGHT = "Gui:keyboardGravity";
 
 	@Getter(lazy = true) private final Handler handler = new Handler();
 	@Getter(lazy = true) private final Random random = Main.getInstance(this).loadRandom(PROBLEM_LAST_RANDOM_STATE);
@@ -48,6 +57,9 @@ public class HomeActivity extends BaseActivity{
 	protected void onCreate(@Nullable Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(GUI_GRAVITY_RIGHT, true)){
+			moveKeyboardToRight(null);
+		}
 		FragmentManager manager = getFragmentManager();
 		manager.beginTransaction()
 				.hide(manager.findFragmentById(R.id.fragment_keyboard))
@@ -86,6 +98,7 @@ public class HomeActivity extends BaseActivity{
 	public Problem nextProblem(){
 		Main.getInstance(this).saveRandom(getRandom(), PROBLEM_LAST_RANDOM_STATE);
 		Problem newProblem = ProblemGenerator.generate(Main.getInstance(this).getConfig(), getRandom());
+		debug("Generated problem: " + newProblem);
 		setCurrentProblem(newProblem);
 		return newProblem;
 	}
@@ -108,8 +121,6 @@ public class HomeActivity extends BaseActivity{
 			}
 		});
 
-		debug("Current problem's solution: %s", currentProblem.getAnswer());
-
 		getHandler().postDelayed(new Runnable(){
 			@Override
 			public void run(){
@@ -121,7 +132,7 @@ public class HomeActivity extends BaseActivity{
 		}, 100);
 	}
 
-	public void moveKeyboardToLeft(View view){
+	public void moveKeyboardToLeft(@Nullable View view){
 		findViewById(R.id.keyboard_gravity_left).setVisibility(GONE);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
 		params.addRule(ALIGN_PARENT_LEFT);
@@ -130,9 +141,10 @@ public class HomeActivity extends BaseActivity{
 		}
 		findViewById(R.id.fragment_keyboard).setLayoutParams(params);
 		findViewById(R.id.keyboard_gravity_right).setVisibility(VISIBLE);
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(GUI_GRAVITY_RIGHT, false).apply();
 	}
 
-	public void moveKeyboardToRight(View view){
+	public void moveKeyboardToRight(@Nullable View view){
 		findViewById(R.id.keyboard_gravity_left).setVisibility(VISIBLE);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
 		params.addRule(ALIGN_PARENT_RIGHT);
@@ -141,6 +153,7 @@ public class HomeActivity extends BaseActivity{
 		}
 		findViewById(R.id.fragment_keyboard).setLayoutParams(params);
 		findViewById(R.id.keyboard_gravity_right).setVisibility(GONE);
+		PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(GUI_GRAVITY_RIGHT, true).apply();
 	}
 
 	public void landSwitchKeyboardPositionLeft(View view){

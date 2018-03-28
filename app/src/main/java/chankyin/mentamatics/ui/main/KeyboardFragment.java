@@ -55,6 +55,9 @@ public class KeyboardFragment extends Fragment{
 			c = NumberInputField.CHAR_SPECIAL_RESET;
 		}else if(i == R.id.main_input_sign){
 			c = '-';
+		}else if(i == R.id.main_input_tab){
+			((HomeActivity) getActivity()).getCurrentProblem().getAnswer().handleTab();
+			return;
 		}else{
 			throw new UnsupportedOperationException(getResources().getResourceName(view.getId()) + " not handled");
 		}
@@ -71,5 +74,9 @@ public class KeyboardFragment extends Fragment{
 
 	public static KeyboardFragment get(BaseActivity baseActivity){
 		return (KeyboardFragment) baseActivity.getFragmentManager().findFragmentByTag(TAG);
+	}
+
+	public void showTabButton(){
+
 	}
 }
